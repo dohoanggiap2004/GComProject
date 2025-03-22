@@ -1,0 +1,35 @@
+import {MdPeople, MdRocketLaunch, MdSettings, MdViewList} from "react-icons/md";
+
+const HorizontalWorkspace = ({name, memberQuantity}) => {
+
+    return (
+        <div className="flex flex-col md:flex-row md:justify-between mb-4 space-y-2 md:space-y-0 ">
+            <div className={'flex items-center'}>
+                <button className="flex items-center px-3 py-1 bg-green-500 text-white rounded w-fit">
+                    G
+                </button>
+                <p className={'ms-3 text-xl font-bold'}>
+                    {name.length > 15 ? `${name.slice(0, 15)}...` : name}
+                </p>
+            </div>
+
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-2 md:gap-2">
+                <button className="flex items-center justify-center px-3 py-1 bg-gray-200 rounded md:w-32 h-10 text-sm">
+                    <MdViewList className="mr-1 flex-shrink-0"/> Boards
+                </button>
+                <button className="flex items-center justify-center px-3 py-1 bg-gray-200 rounded md:w-32 h-10 text-sm">
+                    <MdPeople className="mr-1 flex-shrink-0"/> Members ({memberQuantity})
+                </button>
+                <button className="flex items-center justify-center px-3 py-1 bg-gray-200 rounded md:w-32 h-10 text-sm">
+                    <MdSettings className="mr-1 flex-shrink-0"/> Settings
+                </button>
+                <button
+                    className="flex items-center justify-center px-3 py-1 bg-purple-500 text-white rounded md:w-32 h-10 text-sm">
+                    <MdRocketLaunch className="mr-1 flex-shrink-0"/> Upgrade
+                </button>
+            </div>
+        </div>
+    )
+}
+
+export default HorizontalWorkspace;

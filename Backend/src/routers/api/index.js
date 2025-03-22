@@ -1,0 +1,25 @@
+const express = require('express')
+const router = express.Router()
+const userRouter = require('./user')
+const mailRouter = require('./mail')
+const payosRouter = require('./payos')
+const boardRouter = require('./board')
+const listRouter = require('./list')
+const cardRouter = require('./card')
+const taskRouter = require('./task')
+const activityRouter = require('./activity')
+const workspaceRouter = require('./workspace')
+const verifyJWT = require('../../middlewares/verifyJWT')
+
+router.use('/boards', boardRouter)
+router.use('/workspaces', workspaceRouter)
+router.use('/acts', activityRouter)
+router.use('/tasks', taskRouter)
+router.use('/cards', cardRouter)
+router.use('/lists', listRouter)
+router.use('/users', userRouter)
+router.use('/mail', mailRouter)
+router.use('/payos', payosRouter)
+
+
+module.exports = router

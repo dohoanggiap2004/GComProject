@@ -1,0 +1,13 @@
+const express = require('express')
+const router = express.Router()
+const WorkspaceController = require('../../app/controllers/apiController/WorkspaceController')
+const verifyJWT = require('../../middlewares/verifyJWT')
+const verifyRoles = require('../../middlewares/verifyRoles')
+
+// router.get('/', verifyJWT, verifyRoles('user'), WorkspaceController.getWorkspaces)
+router.get('/member', WorkspaceController.getWorkspaceByMemberId)
+router.post('/', WorkspaceController.createWorkspace)
+router.put('/', WorkspaceController.updateWorkspace)
+router.delete('/', WorkspaceController.deleteWorkspace)
+
+module.exports = router
