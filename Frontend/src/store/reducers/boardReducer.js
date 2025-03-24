@@ -1,10 +1,18 @@
 // reducers/productSlice.js
 import {createSlice} from '@reduxjs/toolkit';
-import {getBoardByBoardId, createBoard, updateBoard, deleteBoard, getBoardByWorkspaceId} from "../actions/boardAction";
+import {
+    getBoardByBoardId,
+    getBoardByWorkspaceIds,
+    createBoard,
+    updateBoard,
+    deleteBoard,
+    getBoardByWorkspaceId
+} from "../actions/boardAction";
 
 const boardSlice = createSlice({
     initialState: {
         boards: [],
+        boardTitle: [],
         board: null,
         loading: false,
         error: null,
@@ -28,7 +36,40 @@ const boardSlice = createSlice({
             })
 
 
-            // get board by workspace
+            // get boards by workspace
+            .addCase(getBoardByWorkspaceIds.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(getBoardByWorkspaceIds.fulfilled, (state, action) => {
+                state.loading = false;
+
+                if (Array.isArray(action.payload) && action.payload.length > 0) {
+                    const boardsByWorkspace = {...state.boards};
+
+                    action.payload.forEach((board) => {
+                        const {workspaceId, _id} = board;
+
+                        if (!boardsByWorkspace[workspaceId]) {
+                            boardsByWorkspace[workspaceId] = [];
+                        }
+
+                        // Tránh trùng lặp board
+                        if (!boardsByWorkspace[workspaceId].some(b => b._id === _id)) {
+                            boardsByWorkspace[workspaceId].push(board);
+                        }
+                    });
+
+                    state.boards = boardsByWorkspace;
+                }
+            })
+            .addCase(getBoardByWorkspaceIds.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            })
+
+
+            // get 1board by workspace
             .addCase(getBoardByWorkspaceId.pending, (state) => {
                 state.loading = true;
                 state.error = null;
@@ -37,12 +78,11 @@ const boardSlice = createSlice({
                 state.loading = false;
                 if (Array.isArray(action.payload) && action.payload.length > 0) {
                     const newBoards = action.payload.filter(
-                        (board) => !state.boards.some((b) => b._id === board._id)
+                        (board) => !state.boardTitle.some((b) => b._id === board._id)
                     );
-                    state.boards.push(...newBoards);
+                    state.boardTitle.push(...newBoards);
                 }
             })
-
             .addCase(getBoardByWorkspaceId.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
@@ -55,7 +95,13 @@ const boardSlice = createSlice({
             })
             .addCase(createBoard.fulfilled, (state, action) => {
                 state.loading = false;
-                state.boards.push(action.payload);
+                const {workspaceId, ...board} = action.payload;
+
+                if (!state.boards[workspaceId]) {
+                    state.boards[workspaceId] = [];
+                }
+
+                state.boards[workspaceId].push(board);
             })
             .addCase(createBoard.rejected, (state, action) => {
                 state.loading = false;
@@ -69,9 +115,13 @@ const boardSlice = createSlice({
             })
             .addCase(updateBoard.fulfilled, (state, action) => {
                 state.loading = false;
-                const index = state.boards.findIndex(board => board._id === action.payload._id);
-                if (index > -1) {
-                    state.boards[index] = action.payload;
+                const {workspaceId, board} = action.payload;
+
+                if (state.boards[workspaceId]) {
+                    const index = state.boards[workspaceId].findIndex(b => b._id === board._id);
+                    if (index > -1) {
+                        state.boards[workspaceId][index] = board;
+                    }
                 }
             })
             .addCase(updateBoard.rejected, (state, action) => {
@@ -86,12 +136,58 @@ const boardSlice = createSlice({
             })
             .addCase(deleteBoard.fulfilled, (state, action) => {
                 state.loading = false;
-                state.boards = state.boards.filter(board => board._id !== action.payload._id);
+                const {workspaceId, boardId} = action.payload;
+
+                if (state.boards[workspaceId]) {
+                    state.boards[workspaceId] = state.boards[workspaceId].filter(b => b._id !== boardId);
+                }
             })
             .addCase(deleteBoard.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
-            });
+            })
+
+            // Cập nhật trạng thái hoàn thành của card
+            // .addCase(toggleCardCompletion.fulfilled, (state, action) => {
+            //     const {cardId, isCompleted} = action.payload;
+            //     if (state.board && state.board.lists) {
+            //         for (const listId in state.board.lists) {
+            //             const list = state.board.lists[listId];
+            //             const cardIndex = list.cards.findIndex(card => card._id === cardId);
+            //             if (cardIndex !== -1) {
+            //                 list.cards[cardIndex].isCompleted = isCompleted;
+            //                 break;
+            //             }
+            //         }
+            //     }
+            // })
+            //
+            // // Di chuyển card
+            // .addCase(moveCard.fulfilled, (state, action) => {
+            //     const {cardId, newListId, newIndex} = action.payload;
+            //     if (state.board && state.board.lists) {
+            //         let sourceListId = null;
+            //         let movedCard = null;
+            //
+            //         // Tìm list nguồn và card
+            //         for (const listId in state.board.lists) {
+            //             const list = state.board.lists[listId];
+            //             const cardIndex = list.cards.findIndex(card => card._id === cardId);
+            //             if (cardIndex !== -1) {
+            //                 sourceListId = listId;
+            //                 movedCard = list.cards[cardIndex];
+            //                 list.cards.splice(cardIndex, 1);
+            //                 break;
+            //             }
+            //         }
+            //
+            //         // Di chuyển card sang list mới
+            //         if (sourceListId && movedCard && state.board.lists[newListId]) {
+            //             state.board.lists[newListId].cards.splice(newIndex, 0, movedCard);
+            //         }
+            //     }
+            // });
+
     }
 });
 

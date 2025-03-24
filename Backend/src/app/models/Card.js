@@ -16,6 +16,10 @@ const cardSchema = new mongoose.Schema({
     dueDate: {
         type: Date,
     },
+    isCompleted: {
+        type: Boolean,
+        default: false,
+    },
     tasks: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Task', // Tham chiếu đến Task thay vì nhúng

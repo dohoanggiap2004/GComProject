@@ -5,15 +5,15 @@ import {BsGrid1X2Fill} from "react-icons/bs";
 
 const Sidebar = () => {
     return (
-        <div className="bg-gray-100 w-64 min-h-screen p-4 hidden md:block">
+        <div className="w-72 p-4 hidden md:block">
             <div className="space-y-2">
-                <button className="flex items-center w-full p-2 text-blue-600 bg-blue-100 rounded-lg">
+                <button className="flex items-center w-full p-2 text-blue-600 bg-blue-100 rounded-lg text-sm">
                     <FaRegClipboard className="mr-2" /> Boards
                 </button>
-                <button className="flex items-center w-full p-2 text-gray-700 hover:bg-gray-200 rounded-lg">
+                <button className="flex items-center w-full p-2 text-gray-700 hover:bg-gray-200 rounded-lg text-sm">
                     <BsGrid1X2Fill className="mr-2"/> Templates
                 </button>
-                <button className="flex items-center w-full p-2 text-gray-700 hover:bg-gray-200 rounded-lg">
+                <button className="flex items-center w-full p-2 text-gray-700 hover:bg-gray-200 rounded-lg text-sm">
                     <FaHome className="mr-2" /> Home
                 </button>
             </div>
@@ -23,7 +23,7 @@ const Sidebar = () => {
                 <VerticalWorkspace/>
             </div>
 
-            <div className="mt-6 p-4 bg-white rounded-lg shadow-md">
+            <div className="mt-6 p-4 bg-white border-2 border-gray-300 rounded-lg text-sm shadow-md">
                 <h3 className="text-gray-800 font-semibold">Try GCom Premium</h3>
                 <p className="text-gray-600 text-sm mt-2">
                     Get unlimited boards, card mirroring, unlimited automation, and more.

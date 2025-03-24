@@ -41,7 +41,7 @@ const Navbar = () => {
         dispatch(logoutUser());
     }
     return (
-        <nav className="fixed top-0 left-0 right-0 z-50 bg-white shadow-md md:rounnd-md max-h-20 flex items-center">
+        <nav className="fixed top-0 left-0 right-0 z-50 bg-white shadow-md md:rounnd-md max-h-16 flex items-center">
             <motion.div
                 initial={{opacity: 0, y: -50}}
                 animate={{opacity: 1, y: 0}}
@@ -58,7 +58,7 @@ const Navbar = () => {
                             <li key={menu.id}>
                                 <a
                                     href={menu.path}
-                                    className="flex items-center gap-1 py-2 px-3 hover:text-secondary relative group text-xl font-semibold"
+                                    className="flex items-center gap-1 py-2 px-3 hover:text-secondary relative group text-lg font-semibold"
                                 >
                                     <div
                                         className="w-e h-2  bg-secondary absolute mt-4 rounded-full left-1/2 -translate-x-1/2 top-1/2 bottom-0 group-hover:block hidden"></div>

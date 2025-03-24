@@ -1,0 +1,82 @@
+import {FaRegClipboard, FaUserFriends, FaCog,} from "react-icons/fa";
+import {CiViewTable} from "react-icons/ci";
+import {IoCalendarOutline} from "react-icons/io5";
+import {useSelector} from "react-redux";
+import {Link} from "react-router-dom";
+import {useState} from "react";
+
+const SidebarBoard = ({workspaceName, workspaceId}) => {
+    const {boardTitle} = useSelector((state) => state.board);
+    const [isSelected, setIsSelected] = useState('1')
+    return (
+        <div className="w-72 min-h-screen p-4 hidden md:block">
+            <div className="flex items-center">
+                <span className="bg-green-500 text-white px-3 py-2 rounded-md text-xs mr-2">G</span>
+                {/*{workspace.name.length > 15 ? `${workspace.name.slice(0, 15)}...` : workspace.name}*/}
+                {workspaceName.length > 15 ? `${workspaceName.slice(0, 15)}...` : workspaceName}
+            </div>
+
+            <div className={'border-b-2 border-gray-400 m-4'}></div>
+
+            <div className="space-y-2">
+                <button
+                    className="flex items-center w-full p-1 text-gray-700 hover:bg-gray-200 rounded-lg text-sm">
+                    <FaRegClipboard className="mr-2"/> Boards
+                </button>
+                <button
+                    className="flex items-center w-full p-1 text-gray-700 hover:bg-gray-200 rounded-lg text-sm">
+                    <FaUserFriends className="mr-2"/> Members
+                </button>
+                <button
+                    className="flex items-center w-full p-1 text-gray-700 hover:bg-gray-200 rounded-lg text-sm">
+                    <FaCog className="mr-2"/> Settings
+                </button>
+            </div>
+
+            <div className="mt-4">
+                <h3 className="text-gray-500 text-sm font-semibold">Workspaces</h3>
+                <div className="ml-1 space-y-2 mt-2">
+                    <button
+                        className="flex items-center w-full p-1 text-gray-700 hover:bg-gray-200 rounded-lg text-sm">
+                        <CiViewTable className="mr-2"/> Table
+                    </button>
+                    <button
+                        className="flex items-center w-full p-1 text-gray-700 hover:bg-gray-200 rounded-lg text-sm">
+                        <IoCalendarOutline className="mr-2"/> Calendar
+                    </button>
+                </div>
+            </div>
+
+            <div className="mt-4">
+                <h3 className="text-gray-500 text-sm font-semibold">Your boards</h3>
+                <div className="ml-1 space-y-2 mt-2">
+                    {Array.isArray(boardTitle) && boardTitle.length > 0 ? (
+                        boardTitle.map((board) => (
+                            <button key={board._id}
+                                className="flex items-center w-full p-1 text-gray-700 hover:bg-gray-200 rounded-lg text-sm">
+                                <Link to={`/user-workspace/board/${board._id}`} className="flex items-center"
+                                      state={{ workspaceName: workspaceName, workspaceId: workspaceId }}>
+                                    <img src={board.background} alt={board.title} className="w-5 h-5 object-cover mr-2 " />
+                                    <div>
+                                        {board.title}
+                                    </div>
+                                </Link>
+                            </button>
+                        ))
+                    ) : (
+                        <div></div>
+                    )}
+
+                </div>
+            </div>
+
+            <div className={'border-t-2 border-gray-400 mt-4'}></div>
+
+            <div className="mt-6 p-4 bg-white rounded-lg text-sm shadow-md">
+                <h3 className="text-gray-800 font-semibold">Try GCom Premium</h3>
+            </div>
+        </div>
+    );
+};
+
+export default SidebarBoard;

@@ -10,6 +10,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@dnd-kit/core": "^6.3.1",
+    "@dnd-kit/sortable": "^10.0.0",
+    "@dnd-kit/utilities": "^3.2.2",
     "caniuse-lite": "^1.0.30001706",
     "framer-motion": "^11.3.19",
     "prop-types": "^15.8.1",

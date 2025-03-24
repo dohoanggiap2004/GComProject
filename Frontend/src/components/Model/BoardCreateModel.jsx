@@ -1,4 +1,4 @@
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import {createBoard} from "../../store/actions/boardAction.js";
 import {useDispatch} from "react-redux";
 
@@ -37,6 +37,13 @@ const CreateBoardModal = ({ isOpen, onClose, workspaceId }) => {
         dispatch(createBoard(formData))
         onClose();
     };
+
+    useEffect(() => {
+        setFormData({
+            ...formData,
+            workspaceId: workspaceId,
+        })
+    }, [workspaceId]);
 
     return isOpen ? (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
