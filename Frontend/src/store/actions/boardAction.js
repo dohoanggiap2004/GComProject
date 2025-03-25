@@ -60,6 +60,71 @@ export const deleteBoard = createAsyncThunk('boards/deleteBoard', async (payload
     }
 })
 
+//list action
+
+export const createList = createAsyncThunk('lists/createList', async (payload, thunkAPI) => {
+    try {
+        const response = await instanceAxios8000.post('/api/lists', payload);
+        console.log('check response', response.data.newList);
+        return response.data.newList;
+    } catch (error) {
+        thunkAPI.rejectWithValue(error.response.data);
+    }
+})
+
+export const updateList = createAsyncThunk('lists/updateList', async (payload, thunkAPI) => {
+    try {
+        await instanceAxios8000.put('/api/lists', payload);
+        return payload;
+    } catch (error) {
+        thunkAPI.rejectWithValue(error.response.data);
+    }
+})
+
+export const deleteList = createAsyncThunk('lists/deleteList', async (payload, thunkAPI) => {
+    try {
+        await instanceAxios8000.delete('/api/lists', {
+            params: {
+                _id: payload,
+            }
+        });
+        return payload;
+    } catch (error) {
+        thunkAPI.rejectWithValue(error.response.data);
+    }
+})
+
+//card action
+export const createCard = createAsyncThunk('cards/createCard', async (payload, thunkAPI) => {
+    try {
+        const response = await instanceAxios8000.post('/api/cards', payload);
+        return response.data.newCard;
+    } catch (error) {
+        thunkAPI.rejectWithValue(error.response.data);
+    }
+})
+
+export const updateCard = createAsyncThunk('cards/updateCard', async (payload, thunkAPI) => {
+    try {
+        const response = await instanceAxios8000.put('/api/cards', payload);
+        return response.data.rowsEffected;
+    } catch (error) {
+        thunkAPI.rejectWithValue(error.response.data);
+    }
+})
+
+export const deleteCard = createAsyncThunk('cards/deleteCard', async (payload, thunkAPI) => {
+    try {
+        await instanceAxios8000.delete('/api/cards', {
+            params: {
+                _id: payload,
+            }
+        });
+        return payload;
+    } catch (error) {
+        thunkAPI.rejectWithValue(error.response.data);
+    }
+})
 
 
 

@@ -22,7 +22,7 @@ const cardSchema = new mongoose.Schema({
     },
     tasks: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Task', // Tham chiếu đến Task thay vì nhúng
+        ref: 'Task',
     }],
 });
 

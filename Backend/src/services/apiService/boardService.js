@@ -22,7 +22,11 @@ const createBoardService = async (board) => {
 
 const updateBoardService = async (board) => {
     const { _id, ...updateFields } = board;
-    return Board.findByIdAndUpdate(_id, updateFields, {new: true});
+    return Board.findByIdAndUpdate(
+        _id,
+        { $set: updateFields },
+        { new: true }
+    );
 };
 
 const deleteBoardService = async (boardId) => {

@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { DndContext, pointerWithin } from '@dnd-kit/core';
 import {
-    arrayMove,
     SortableContext,
     verticalListSortingStrategy,
     useSortable,
@@ -12,7 +11,14 @@ import SidebarBoard from "../components/Sidebar/SidebarBoard.jsx";
 import HeaderBoard from "../components/Header/HeaderBoard.jsx";
 import { useLocation, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getBoardByBoardId, getBoardByWorkspaceId } from "../store/actions/boardAction.js";
+import {
+    createCard,
+    createList,
+    getBoardByBoardId,
+    getBoardByWorkspaceId,
+    updateCard
+} from "../store/actions/boardAction.js";
+import {reorderCards} from "../store/reducers/boardReducer.js";
 
 // Component cho card
 const SortableCard = ({ card, onToggleCheck }) => {
@@ -28,7 +34,7 @@ const SortableCard = ({ card, onToggleCheck }) => {
 
     const handleToggleCheck = (e) => {
         e.stopPropagation(); // Ngăn sự kiện lan truyền nếu cần
-        onToggleCheck(card._id);
+        onToggleCheck();
     };
 
     return (
@@ -141,8 +147,8 @@ const SortableList = ({ list, cards, onToggleCheck, onAddCard }) => {
         <div ref={setNodeRef} className="bg-gray-100 px-4 py-3 w-72 rounded-lg">
             <h3 className="text-md font-bold text-gray-700 mb-2">{list.title}</h3>
             <SortableContext items={cards.map((card) => card._id)} strategy={verticalListSortingStrategy}>
-                {cards.map((card) => (
-                    <SortableCard key={card._id} card={card} onToggleCheck={onToggleCheck} />
+                {Array.isArray(cards) && cards.length > 0 && cards.map((card) => (
+                    <SortableCard key={card._id} card={card} onToggleCheck={() => onToggleCheck(card.isCompleted, card._id, list._id)} />
                 ))}
             </SortableContext>
             {isAddingCard ? (
@@ -187,9 +193,10 @@ function BoardWorkspace() {
     const workspaceName = location.state?.workspaceName || "Default Title";
     const workspaceId = location.state?.workspaceId || "Default Title";
     const { boardId } = useParams();
-    const [lists, setLists] = useState({});
     const dispatch = useDispatch();
     const { board } = useSelector((state) => state.board);
+    const [isAddingList, setIsAddingList] = useState(false);
+    const [listTitle, setListTitle] = useState("");
 
     useEffect(() => {
         dispatch(getBoardByWorkspaceId(workspaceId));
@@ -200,56 +207,26 @@ function BoardWorkspace() {
     }, [boardId, dispatch]);
 
     useEffect(() => {
-        if (board && board.lists) {
-            const updatedLists = {};
-            Object.entries(board.lists).forEach(([listId, list]) => {
-                updatedLists[listId] = {
-                    ...list,
-                    cards: list.cards.map(card => ({
-                        ...card,
-                        isCompleted: card.isCompleted || false
-                    }))
-                };
-            });
-            setLists(updatedLists);
-        }
+        console.log('check board', board)
     }, [board]);
 
     const handleAddCard = (listId, content) => {
         const newCard = {
-            _id: `card-${Date.now()}`,
             title: content,
-            isCompleted: false,
+            listId: listId,
+            boardId: boardId,
         };
-        setLists((prevLists) => ({
-            ...prevLists,
-            [listId]: {
-                ...prevLists[listId],
-                cards: [...prevLists[listId].cards, newCard],
-            },
-        }));
+        dispatch(createCard(newCard));
     };
 
-    const handleToggleCheck = (cardId) => {
-        setLists((prevLists) => {
-            const updatedLists = { ...prevLists }; // Sao chép object lists
-            for (const listId in updatedLists) {
-                const list = updatedLists[listId];
-                const cardIndex = list.cards.findIndex((card) => card._id === cardId);
-                if (cardIndex !== -1) {
-                    // Sao chép mảng cards và cập nhật trạng thái isCompleted
-                    const updatedCards = [...list.cards];
-                    updatedCards[cardIndex] = {
-                        ...updatedCards[cardIndex],
-                        isCompleted: !updatedCards[cardIndex].isCompleted,
-                    };
-                    // Gán lại mảng cards đã cập nhật vào list
-                    updatedLists[listId] = { ...list, cards: updatedCards };
-                    break; // Thoát vòng lặp sau khi tìm thấy card
-                }
-            }
-            return updatedLists; // Trả về state mới
-        });
+    const handleToggleCheck = (isCompleted, _id, listId) => {
+        const newCard = {
+            boardId: boardId,
+            listId: listId,
+            _id: _id,
+            isCompleted: !isCompleted,
+        }
+        dispatch(updateCard(newCard));
     };
 
     const handleDragEnd = (event) => {
@@ -259,54 +236,54 @@ function BoardWorkspace() {
         const activeId = active.id;
         const overId = over.id;
 
-        let sourceListId, sourceCardIndex;
-        for (const [listId, list] of Object.entries(lists)) {
-            const cardIndex = list.cards.findIndex((card) => card._id === activeId);
-            if (cardIndex !== -1) {
-                sourceListId = listId;
-                sourceCardIndex = cardIndex;
-                break;
+        let sourceListId = null;
+        let sourceCardIndex = -1;
+
+        // Vì board.lists là một mảng, duyệt qua từng list để tìm card được kéo
+        board.lists.forEach((list) => {
+            const idx = list.cards.findIndex((card) => card._id === activeId);
+            if (idx !== -1) {
+                sourceListId = list._id;
+                sourceCardIndex = idx;
             }
-        }
+        });
 
         if (!sourceListId) return;
 
-        let destListId, destCardIndex;
-        if (lists[overId]) {
-            destListId = overId;
-            destCardIndex = lists[overId].cards.length;
+        let destListId = null;
+        let destCardIndex = -1;
+
+        // Nếu over.id trùng với list _id
+        const overList = board.lists.find((list) => list._id === overId);
+        if (overList) {
+            destListId = overList._id;
+            destCardIndex = overList.cards.length;
         } else {
-            for (const [listId, list] of Object.entries(lists)) {
-                const cardIndex = list.cards.findIndex((card) => card._id === overId);
-                if (cardIndex !== -1) {
-                    destListId = listId;
-                    destCardIndex = cardIndex;
-                    break;
+            // Nếu không, tìm card trong các list
+            board.lists.forEach((list) => {
+                const idx = list.cards.findIndex((card) => card._id === overId);
+                if (idx !== -1) {
+                    destListId = list._id;
+                    destCardIndex = idx;
                 }
-            }
+            });
         }
 
         if (!destListId) return;
 
-        if (sourceListId === destListId) {
-            const newCards = arrayMove(lists[sourceListId].cards, sourceCardIndex, destCardIndex);
-            setLists({
-                ...lists,
-                [sourceListId]: { ...lists[sourceListId], cards: newCards },
-            });
-        } else {
-            const sourceCards = [...lists[sourceListId].cards];
-            const destCards = [...lists[destListId].cards];
-            const [draggedCard] = sourceCards.splice(sourceCardIndex, 1);
-            destCards.splice(destCardIndex, 0, draggedCard);
-
-            setLists({
-                ...lists,
-                [sourceListId]: { ...lists[sourceListId], cards: sourceCards },
-                [destListId]: { ...lists[destListId], cards: destCards },
-            });
-        }
+        // Dispatch action để cập nhật vị trí card
+        dispatch(reorderCards({ sourceListId, destListId, sourceCardIndex, destCardIndex }));
     };
+
+    const handleAddList = (e) => {
+        e.preventDefault();
+        const payload = {
+            boardId: boardId,
+            title: listTitle,
+        }
+        dispatch(createList(payload));
+        setIsAddingList(false)
+    }
 
     return (
         <>
@@ -318,7 +295,7 @@ function BoardWorkspace() {
                     <div className="min-h-screen bg-pink-300 p-4 w-full">
                         <DndContext collisionDetection={pointerWithin} onDragEnd={handleDragEnd}>
                             <div className="flex space-x-4 overflow-x-auto">
-                                {Object.entries(lists).map(([listId, list]) => (
+                                {board && Array.isArray(board.lists) && board.lists.length > 0 && Object.entries(board.lists).map(([listId, list]) => (
                                     <SortableList
                                         key={listId}
                                         list={list}
@@ -327,9 +304,38 @@ function BoardWorkspace() {
                                         onAddCard={handleAddCard}
                                     />
                                 ))}
-                                <button className="bg-pink-400 text-white p-2 rounded-lg hover:bg-pink-500 h-full">
-                                    + Add another list
-                                </button>
+                                {isAddingList ? (
+                                    <div className="bg-pink-400 p-2 rounded-lg hover:bg-pink-500 h-full w-72">
+                                        <input
+                                            type="text"
+                                            value={listTitle}
+                                            onChange={(e) => setListTitle(e.target.value)}
+                                            placeholder="Enter a title or paste a link"
+                                            className="w-full p-2 rounded-lg border border-gray-300 focus:outline-none focus:border-blue-500"
+                                        />
+                                        <div className="flex space-x-2 mt-2">
+                                            <button
+                                                onClick={(e) => handleAddList(e)}
+                                                className="bg-blue-500 text-white px-4 py-1 rounded-lg hover:bg-blue-600"
+                                            >
+                                                Add list
+                                            </button>
+                                            <button
+                                                onClick={() => {setIsAddingList(false); setListTitle('')}}
+                                                className="text-gray-500 hover:text-gray-700"
+                                            >
+                                                ✕
+                                            </button>
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <button
+                                        className="bg-pink-400 text-white p-2 rounded-lg hover:bg-pink-500 h-full w-72 text-start"
+                                        onClick={() => setIsAddingList(true)}
+                                    >
+                                        + Add a list
+                                    </button>
+                                )}
                             </div>
                         </DndContext>
                     </div>

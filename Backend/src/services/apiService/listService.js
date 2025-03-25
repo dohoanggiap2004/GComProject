@@ -20,10 +20,16 @@ const createListService = async (listData) => {
 };
 
 const updateListService = async (updateData) => {
-    const { boardId, listId, ...updateFields } = updateData;
+    const { boardId, _id, ...updateFields } = updateData;
+
     const updatedBoard = await Board.findOneAndUpdate(
-        { _id: boardId, 'lists._id': listId },
-        { $set: { 'lists.$': { ...updateFields, _id: listId } } },
+        { _id: boardId, 'lists._id': _id },
+        {
+            $set: Object.keys(updateFields).reduce((acc, key) => {
+                acc[`lists.$.${key}`] = updateFields[key];
+                return acc;
+            }, {})
+        },
         { new: true }
     );
 
@@ -31,7 +37,7 @@ const updateListService = async (updateData) => {
         throw new Error('Board or List not found');
     }
 
-    return updatedBoard.lists.find(list => list._id.toString() === listId);
+    return updatedBoard.lists.find(list => list._id.toString() === _id);
 };
 
 const deleteListService = async (boardId, listId) => {

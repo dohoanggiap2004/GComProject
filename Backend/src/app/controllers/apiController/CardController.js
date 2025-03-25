@@ -50,7 +50,7 @@ class CardController {
       if (!req?.body)
        return res.status(400).json({ message: "Card information is required" });
 
-      const card= req.body;
+      const card = req.body;
       const result = await updateCardService(card);
       console.log(result)
       if (!result) return res.status(200).json({ message: "No cardchanged" });

@@ -60,28 +60,28 @@ const createCardService = async (cardData) => {
 };
 
 const updateCardService = async (updateData) => {
-    const { boardId, listId, cardId, ...updateFields } = updateData;
+    const { boardId, listId, _id, ...updateFields } = updateData;
 
     const board = await Board.findOneAndUpdate(
         {
             _id: boardId,
             'lists._id': listId,
-            'lists.cards._id': cardId
+            'lists.cards._id': _id
         },
         {
             $set: {
-                'lists.$[list].cards.$[card]': {
-                    _id: cardId,
-                    listId,
-                    ...updateFields
-                }
+                'lists.$[list].cards.$[card].listId': listId,
+                ...Object.keys(updateFields).reduce((acc, key) => {
+                    acc[`lists.$[list].cards.$[card].${key}`] = updateFields[key];
+                    return acc;
+                }, {})
             }
         },
         {
-            new: true, // Trả lại document đã cập nhật
+            new: true,
             arrayFilters: [
                 { 'list._id': listId },
-                { 'card._id': cardId }
+                { 'card._id': _id }
             ]
         }
     );
@@ -90,9 +90,8 @@ const updateCardService = async (updateData) => {
         throw new Error('Board, List or Card not found');
     }
 
-    // Trả về card vừa cập nhật (cho frontend sử dụng)
     const updatedList = board.lists.id(listId);
-    const updatedCard = updatedList?.cards.id(cardId);
+    const updatedCard = updatedList?.cards.id(_id);
 
     return updatedCard;
 };

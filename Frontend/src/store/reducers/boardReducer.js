@@ -1,23 +1,59 @@
 // reducers/productSlice.js
-import {createSlice} from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
+import { arrayMove } from '@dnd-kit/sortable';
 import {
     getBoardByBoardId,
     getBoardByWorkspaceIds,
     createBoard,
     updateBoard,
     deleteBoard,
-    getBoardByWorkspaceId
+    getBoardByWorkspaceId,
+    createCard,
+    updateCard,
+    deleteCard,
+    createList,
+    updateList,
+    deleteList,
 } from "../actions/boardAction";
 
 const boardSlice = createSlice({
+    name: 'boards',
     initialState: {
-        boards: [],
+        boards: {},
         boardTitle: [],
         board: null,
         loading: false,
         error: null,
     },
-    name: 'boards',
+    reducers: {
+        // Synchronous reducer cập nhật vị trí card sau drag & drop
+        reorderCards: (state, action) => {
+            const { sourceListId, destListId, sourceCardIndex, destCardIndex } = action.payload;
+            if (!state.board || !Array.isArray(state.board.lists)) return;
+
+            // Tìm vị trí của list nguồn và list đích dựa trên _id
+            const sourceListIndex = state.board.lists.findIndex(list => list._id === sourceListId);
+            const destListIndex = state.board.lists.findIndex(list => list._id === destListId);
+            if (sourceListIndex === -1 || destListIndex === -1) return;
+
+            if (sourceListId === destListId) {
+                // Di chuyển trong cùng một list
+                state.board.lists[sourceListIndex].cards = arrayMove(
+                    state.board.lists[sourceListIndex].cards,
+                    sourceCardIndex,
+                    destCardIndex
+                );
+            } else {
+                // Di chuyển giữa hai list khác nhau
+                const sourceCards = [...state.board.lists[sourceListIndex].cards];
+                const destCards = [...state.board.lists[destListIndex].cards];
+                const [draggedCard] = sourceCards.splice(sourceCardIndex, 1);
+                destCards.splice(destCardIndex, 0, draggedCard);
+                state.board.lists[sourceListIndex].cards = sourceCards;
+                state.board.lists[destListIndex].cards = destCards;
+            }
+        },
+    },
     extraReducers: (builder) => {
         builder
 
@@ -35,7 +71,6 @@ const boardSlice = createSlice({
                 state.error = action.payload;
             })
 
-
             // get boards by workspace
             .addCase(getBoardByWorkspaceIds.pending, (state) => {
                 state.loading = true;
@@ -43,23 +78,17 @@ const boardSlice = createSlice({
             })
             .addCase(getBoardByWorkspaceIds.fulfilled, (state, action) => {
                 state.loading = false;
-
                 if (Array.isArray(action.payload) && action.payload.length > 0) {
-                    const boardsByWorkspace = {...state.boards};
-
+                    const boardsByWorkspace = { ...state.boards };
                     action.payload.forEach((board) => {
-                        const {workspaceId, _id} = board;
-
+                        const { workspaceId, _id } = board;
                         if (!boardsByWorkspace[workspaceId]) {
                             boardsByWorkspace[workspaceId] = [];
                         }
-
-                        // Tránh trùng lặp board
                         if (!boardsByWorkspace[workspaceId].some(b => b._id === _id)) {
                             boardsByWorkspace[workspaceId].push(board);
                         }
                     });
-
                     state.boards = boardsByWorkspace;
                 }
             })
@@ -68,8 +97,7 @@ const boardSlice = createSlice({
                 state.error = action.payload;
             })
 
-
-            // get 1board by workspace
+            // get 1 board by workspace
             .addCase(getBoardByWorkspaceId.pending, (state) => {
                 state.loading = true;
                 state.error = null;
@@ -95,12 +123,10 @@ const boardSlice = createSlice({
             })
             .addCase(createBoard.fulfilled, (state, action) => {
                 state.loading = false;
-                const {workspaceId, ...board} = action.payload;
-
+                const { workspaceId, ...board } = action.payload;
                 if (!state.boards[workspaceId]) {
                     state.boards[workspaceId] = [];
                 }
-
                 state.boards[workspaceId].push(board);
             })
             .addCase(createBoard.rejected, (state, action) => {
@@ -115,8 +141,7 @@ const boardSlice = createSlice({
             })
             .addCase(updateBoard.fulfilled, (state, action) => {
                 state.loading = false;
-                const {workspaceId, board} = action.payload;
-
+                const { workspaceId, board } = action.payload;
                 if (state.boards[workspaceId]) {
                     const index = state.boards[workspaceId].findIndex(b => b._id === board._id);
                     if (index > -1) {
@@ -136,8 +161,7 @@ const boardSlice = createSlice({
             })
             .addCase(deleteBoard.fulfilled, (state, action) => {
                 state.loading = false;
-                const {workspaceId, boardId} = action.payload;
-
+                const { workspaceId, boardId } = action.payload;
                 if (state.boards[workspaceId]) {
                     state.boards[workspaceId] = state.boards[workspaceId].filter(b => b._id !== boardId);
                 }
@@ -147,48 +171,121 @@ const boardSlice = createSlice({
                 state.error = action.payload;
             })
 
-            // Cập nhật trạng thái hoàn thành của card
-            // .addCase(toggleCardCompletion.fulfilled, (state, action) => {
-            //     const {cardId, isCompleted} = action.payload;
-            //     if (state.board && state.board.lists) {
-            //         for (const listId in state.board.lists) {
-            //             const list = state.board.lists[listId];
-            //             const cardIndex = list.cards.findIndex(card => card._id === cardId);
-            //             if (cardIndex !== -1) {
-            //                 list.cards[cardIndex].isCompleted = isCompleted;
-            //                 break;
-            //             }
-            //         }
-            //     }
-            // })
-            //
-            // // Di chuyển card
-            // .addCase(moveCard.fulfilled, (state, action) => {
-            //     const {cardId, newListId, newIndex} = action.payload;
-            //     if (state.board && state.board.lists) {
-            //         let sourceListId = null;
-            //         let movedCard = null;
-            //
-            //         // Tìm list nguồn và card
-            //         for (const listId in state.board.lists) {
-            //             const list = state.board.lists[listId];
-            //             const cardIndex = list.cards.findIndex(card => card._id === cardId);
-            //             if (cardIndex !== -1) {
-            //                 sourceListId = listId;
-            //                 movedCard = list.cards[cardIndex];
-            //                 list.cards.splice(cardIndex, 1);
-            //                 break;
-            //             }
-            //         }
-            //
-            //         // Di chuyển card sang list mới
-            //         if (sourceListId && movedCard && state.board.lists[newListId]) {
-            //             state.board.lists[newListId].cards.splice(newIndex, 0, movedCard);
-            //         }
-            //     }
-            // });
+            // list reducers
+            .addCase(createList.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(createList.fulfilled, (state, action) => {
+                state.loading = false;
+                const newList = action.payload;
+                if (state.board) {
+                    // Nếu board.lists là mảng
+                    state.board.lists.push(newList);
+                }
+            })
+            .addCase(createList.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            })
+            .addCase(updateList.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(updateList.fulfilled, (state, action) => {
+                state.loading = false;
+                const updatedList = action.payload;
+                if (state.board && Array.isArray(state.board.lists)) {
+                    const listIndex = state.board.lists.findIndex(list => list._id === updatedList._id);
+                    if (listIndex !== -1) {
+                        state.board.lists[listIndex] = updatedList;
+                    }
+                }
+            })
+            .addCase(updateList.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            })
+            .addCase(deleteList.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(deleteList.fulfilled, (state, action) => {
+                state.loading = false;
+                const { listId } = action.payload;
+                if (state.board && Array.isArray(state.board.lists)) {
+                    state.board.lists = state.board.lists.filter(list => list._id !== listId);
+                }
+            })
+            .addCase(deleteList.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            })
 
-    }
+            // card reducers
+            .addCase(createCard.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(createCard.fulfilled, (state, action) => {
+                state.loading = false;
+                const newCard = action.payload;
+                if (state.board && Array.isArray(state.board.lists)) {
+                    const listIndex = state.board.lists.findIndex(list => list._id === newCard.listId);
+                    if (listIndex !== -1) {
+                        state.board.lists[listIndex].cards = [
+                            ...state.board.lists[listIndex].cards,
+                            newCard,
+                        ];
+                    }
+                }
+            })
+            .addCase(createCard.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            })
+            .addCase(updateCard.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(updateCard.fulfilled, (state, action) => {
+                state.loading = false;
+                const updatedCard = action.payload;
+                const { listId, _id } = updatedCard;
+                if (state.board && Array.isArray(state.board.lists)) {
+                    const listIndex = state.board.lists.findIndex(list => list._id === listId);
+                    if (listIndex !== -1) {
+                        const cardIndex = state.board.lists[listIndex].cards.findIndex(card => card._id === _id);
+                        if (cardIndex !== -1) {
+                            state.board.lists[listIndex].cards[cardIndex] = updatedCard;
+                        }
+                    }
+                }
+            })
+            .addCase(updateCard.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            })
+            .addCase(deleteCard.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(deleteCard.fulfilled, (state, action) => {
+                state.loading = false;
+                const { listId, cardId } = action.payload;
+                if (state.board && Array.isArray(state.board.lists)) {
+                    const listIndex = state.board.lists.findIndex(list => list._id === listId);
+                    if (listIndex !== -1) {
+                        state.board.lists[listIndex].cards = state.board.lists[listIndex].cards.filter(card => card._id !== cardId);
+                    }
+                }
+            })
+            .addCase(deleteCard.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            });
+    },
 });
 
+export const { reorderCards } = boardSlice.actions;
 export default boardSlice.reducer;
