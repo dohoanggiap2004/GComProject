@@ -13,3 +13,10 @@
     filter: drop-shadow(6px 8px 10px rgba(0, 0, 0, 0.5));
   }
 }
+
+.dnd-sortable-ghost {
+  opacity: 0.5;
+  background: #f0f0f0;
+  border: 2px dashed #ccc;
+  transition: all 0.2s ease;
+}

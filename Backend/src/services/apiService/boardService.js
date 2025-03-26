@@ -62,5 +62,37 @@ const deleteBoardService = async (boardId) => {
         throw error;
     }
 };
+
+const reorderCardService = async(info) => {
+    console.log(info);
+    const {boardId, sourceListId, destListId, sourceCardIndex, destCardIndex } = info;
+    const board = await Board.findById(boardId);
+    if (!board) {
+        throw new Error("Board not found");
+    }
+
+    // Tìm list nguồn và list đích theo _id
+    const sourceList = board.lists.id(sourceListId);
+    const destList = board.lists.id(destListId);
+
+    if (!sourceList || !destList) {
+        throw new Error("List not found");
+    }
+
+    // Xử lý reorder
+    if (sourceListId.toString() === destListId.toString()) {
+        // Cập nhật sắp xếp lại card trong cùng 1 list
+        const movedCard = sourceList.cards.splice(sourceCardIndex, 1)[0];
+        sourceList.cards.splice(destCardIndex, 0, movedCard);
+    } else {
+        // Di chuyển card giữa 2 list khác nhau
+        const movedCard = sourceList.cards.splice(sourceCardIndex, 1)[0];
+        destList.cards.splice(destCardIndex, 0, movedCard);
+    }
+
+    // Lưu thay đổi
+    await board.save();
+    return board
+}
 module.exports = { getBoardsService, getBoardByIdService, getBoardByWorkspaceIdService,
-    createBoardService, updateBoardService, deleteBoardService, };
+    createBoardService, updateBoardService, deleteBoardService, reorderCardService };

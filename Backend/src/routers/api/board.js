@@ -9,6 +9,7 @@ router.get('/', BoardController.getBoards)
 router.get('/:_id', BoardController.getBoardById)
 router.get('/workspace/:workspaceId', BoardController.getBoardByWorkspaceId)
 router.post('/', BoardController.createBoard)
+router.put('/re-card', BoardController.reorderCard)
 router.put('/', BoardController.updateBoard)
 router.delete('/', BoardController.deleteBoard)
 
