@@ -94,6 +94,16 @@ export const deleteList = createAsyncThunk('lists/deleteList', async (payload, t
     }
 })
 
+export const updateListIndex = createAsyncThunk('cards/updateListIndex', async (payload, thunkAPI) => {
+    try {
+        const response = await instanceAxios8000.put('/api/boards/re-list', payload);
+        return response.data.data;
+    } catch (error) {
+        thunkAPI.rejectWithValue(error.response.data);
+    }
+})
+
+
 //card action
 export const createCard = createAsyncThunk('cards/createCard', async (payload, thunkAPI) => {
     try {
@@ -126,7 +136,7 @@ export const deleteCard = createAsyncThunk('cards/deleteCard', async (payload, t
     }
 })
 
-export const reOrderCard = createAsyncThunk('cards/reOrderCard', async (payload, thunkAPI) => {
+export const updateCardIndex = createAsyncThunk('cards/updateCardIndex', async (payload, thunkAPI) => {
     try {
         const response = await instanceAxios8000.put('/api/boards/re-card', payload);
         return response.data.data;

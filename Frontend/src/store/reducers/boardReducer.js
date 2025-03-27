@@ -1,6 +1,6 @@
 // reducers/productSlice.js
 import {createSlice} from '@reduxjs/toolkit';
-import {arrayMove} from '@dnd-kit/sortable';
+
 import {
     getBoardByBoardId,
     getBoardByWorkspaceIds,
@@ -11,10 +11,11 @@ import {
     createCard,
     updateCard,
     deleteCard,
-    reOrderCard,
+    updateCardIndex,
     createList,
     updateList,
     deleteList,
+    updateListIndex,
 } from "../actions/boardAction";
 
 const boardSlice = createSlice({
@@ -257,13 +258,22 @@ const boardSlice = createSlice({
                 state.error = action.payload;
             })
 
-            .addCase(reOrderCard.fulfilled, (state, action) => {
+            .addCase(updateCardIndex.fulfilled, (state, action) => {
                 state.loading = false
                 state.board = action.payload;
             })
-            .addCase(reOrderCard.rejected, (state, action) => {
-                // Xử lý lỗi nếu cần
-                console.error('Reorder cards failed:', action.payload);
+            .addCase(updateCardIndex.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            })
+
+            .addCase(updateListIndex.fulfilled, (state, action) => {
+                state.loading = false
+                state.board = action.payload;
+            })
+            .addCase(updateListIndex.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
             });
     },
 });

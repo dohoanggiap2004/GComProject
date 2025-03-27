@@ -63,7 +63,7 @@ const deleteBoardService = async (boardId) => {
     }
 };
 
-const reorderCardService = async(info) => {
+const updateCardIndexService = async(info) => {
     console.log(info);
     const {boardId, sourceListId, destListId, sourceCardIndex, destCardIndex } = info;
     const board = await Board.findById(boardId);
@@ -94,5 +94,31 @@ const reorderCardService = async(info) => {
     await board.save();
     return board
 }
+
+const updateListIndexService = async(info) => {
+    const {boardId, sourceIndex, destIndex } = info;
+    const board = await Board.findById(boardId);
+    if (!board) {
+        throw new Error("Board not found");
+    }
+    if (
+        sourceIndex < 0 ||
+        sourceIndex >= board.lists.length ||
+        destIndex < 0 ||
+        destIndex >= board.lists.length
+    ) {
+        throw new Error('Invalid source or destination index');
+    }
+
+    // Di chuyển list trong mảng lists
+    const listToMove = board.lists[sourceIndex];
+    board.lists.splice(sourceIndex, 1); // Xóa list khỏi vị trí cũ
+    board.lists.splice(destIndex, 0, listToMove); // Chèn list vào vị trí mới
+
+    // Lưu thay đổi
+    await board.save();
+    return board
+}
+
 module.exports = { getBoardsService, getBoardByIdService, getBoardByWorkspaceIdService,
-    createBoardService, updateBoardService, deleteBoardService, reorderCardService };
+    createBoardService, updateBoardService, deleteBoardService, updateCardIndexService, updateListIndexService };

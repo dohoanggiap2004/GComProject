@@ -4,10 +4,10 @@ import {MdAccessTime,} from "react-icons/md";
 import HorizontalWorkspace from "../Workspace/HorizontalWorkspace.jsx";
 import {GoPlus} from "react-icons/go";
 import {useDispatch, useSelector} from "react-redux";
-import WorkspaceCreateModel from "../Model/WorkspaceCreateModel.jsx";
+import WorkspaceCreateModel from "../Modal/WorkspaceCreateModal.jsx";
 import {useEffect, useState} from "react";
 import { getBoardByWorkspaceIds} from "../../store/actions/boardAction.js";
-import BoardCreateModel from "../Model/BoardCreateModel.jsx";
+import BoardCreateModel from "../Modal/BoardCreateModal.jsx";
 import {Link} from "react-router-dom";
 
 

@@ -3,7 +3,10 @@ const {
   getBoardByIdService,
   createBoardService,
   updateBoardService,
-  deleteBoardService, getBoardByWorkspaceIdService, reorderCardService,
+  deleteBoardService,
+  getBoardByWorkspaceIdService,
+  updateCardIndexService,
+  updateListIndexService,
 } = require("../../../services/apiService/boardService");
 class BoardController {
   async getBoards(req, res) {
@@ -120,13 +123,32 @@ class BoardController {
     }
   }
 
-  async reorderCard(req, res) {
+  async updateListIndex(req, res) {
+    try {
+      if (!req?.body)
+        return res.status(400).json({ message: "List information is required" });
+
+      const info = req.body;
+      const result = await updateListIndexService(info);
+
+      if (!result) return res.status(200).json({ message: "No board changed" });
+
+      res.status(200).json({
+        data: result,
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Internal Server Error" });
+    }
+  }
+
+  async updateCardIndex(req, res) {
     try {
       if (!req?.body)
         return res.status(400).json({ message: "Card information is required" });
 
       const info = req.body;
-      const result = await reorderCardService(info);
+      const result = await updateCardIndexService(info);
 
       if (!result) return res.status(200).json({ message: "No board changed" });
 
