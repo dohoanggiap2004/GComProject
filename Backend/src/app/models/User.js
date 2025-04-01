@@ -43,6 +43,10 @@ const userSchema = new mongoose.Schema({
   dob: {
     type: Date,
   },
+  totalPayment: {
+    type: Number,
+    default: 0
+  },
   service: {
     type: String,
     enum: ['standard', 'premium'],

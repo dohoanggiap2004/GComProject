@@ -202,26 +202,40 @@ function BoardWorkspace() {
     }, [reListInfo, dispatch]);
 
     return (
-        <>
-            <NavbarWorkspace />
-            <div className="flex">
-                <SidebarBoard workspaceName={workspaceName} workspaceId={workspaceId} />
-                <div className="w-full">
-                    <HeaderBoard />
-                    <div className="min-h-screen bg-pink-300 p-4 w-full">
+        <div className="flex flex-col h-screen">
+            {/* Navbar cố định trên cùng */}
+            <div className="flex-shrink-0 bg-gray-200">
+                <NavbarWorkspace />
+            </div>
+
+            {/* Phần dưới: chia 2 cột (Sidebar trái - Nội dung phải) */}
+            <div className="flex flex-1 overflow-hidden">
+                <div className="w-72 flex-shrink-0 bg-gray-100 hidden md:flex">
+                    <SidebarBoard workspaceName={workspaceName} workspaceId={workspaceId} />
+                </div>
+
+                {/* Nội dung bên phải */}
+                <div className="flex-1 flex flex-col bg-pink-300 overflow-hidden">
+                    {/* HeaderBoard cố định ở đầu nội dung */}
+                    <div className="flex-shrink-0 bg-gray-100 border-b">
+                        <HeaderBoard workspaceId={workspaceId || 'default'} />
+                    </div>
+
+                    {/* Vùng board (màu hồng) chiếm toàn bộ không gian còn lại, cuộn ngang */}
+                    <div className="flex-1 overflow-x-auto overflow-y-hidden p-4">
                         <DndContext
                             collisionDetection={closestCenter}
                             onDragOver={handleDragOver}
                             onDragEnd={handleDragEnd}
                         >
                             <SortableContext
-                                items={tempBoard?.lists.map((list) => list._id) || []}
+                                items={tempBoard?.lists?.map((list) => list._id) || []}
                                 strategy={horizontalListSortingStrategy}
                             >
-                                <div className="flex space-x-4 overflow-x-auto">
-                                    {tempBoard &&
-                                        Array.isArray(tempBoard.lists) &&
-                                        tempBoard.lists.length > 0 &&
+                                {/* Thêm min-w-max ở đây */}
+                                <div className="flex space-x-4 min-w-max">
+                                    {/* Hiển thị các list */}
+                                    {tempBoard?.lists?.length > 0 &&
                                         tempBoard.lists.map((list) => (
                                             <SortableList
                                                 key={list._id}
@@ -229,10 +243,15 @@ function BoardWorkspace() {
                                                 cards={list.cards}
                                                 onToggleCheck={handleToggleCheck}
                                                 onAddCard={handleAddCard}
+                                                boardId={boardId}
+                                                // Mỗi list có chiều rộng cố định, để khi nhiều list thì cuộn ngang
+                                                className="w-72 flex-shrink-0"
                                             />
                                         ))}
+
+                                    {/* Form / button thêm list mới */}
                                     {isAddingList ? (
-                                        <div className="bg-pink-400 p-2 rounded-lg hover:bg-pink-500 h-full w-72">
+                                        <div className="bg-pink-400 p-2 rounded-lg hover:bg-pink-500 h-fit w-72 flex-shrink-0">
                                             <input
                                                 type="text"
                                                 value={listTitle}
@@ -260,7 +279,7 @@ function BoardWorkspace() {
                                         </div>
                                     ) : (
                                         <button
-                                            className="bg-pink-400 text-white p-2 rounded-lg hover:bg-pink-500 h-full w-72 text-start"
+                                            className="bg-pink-400 text-white p-2 rounded-lg hover:bg-pink-500 h-fit w-72 flex-shrink-0 text-start"
                                             onClick={() => setIsAddingList(true)}
                                         >
                                             + Add a list
@@ -272,7 +291,8 @@ function BoardWorkspace() {
                     </div>
                 </div>
             </div>
-        </>
+        </div>
+
     );
 }
 

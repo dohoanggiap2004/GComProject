@@ -1,5 +1,7 @@
 
 const Board = require("../../app/models/Board");
+const Task = require("../../app/models/Task");
+const Card = require("../../app/models/Card");
 
 const getListByBoardIdService = async (boardId) => {
     const result = await Board.findById(boardId).select('lists');
@@ -41,17 +43,32 @@ const updateListService = async (updateData) => {
 };
 
 const deleteListService = async (boardId, listId) => {
+    const board = await Board.findById(boardId);
+    if (!board) {
+        throw new Error("Board not found");
+    }
+
+    // Tìm list cần xóa
+    const list = board.lists.find(list => list._id.toString() === listId);
+    if (!list) {
+        throw new Error("List not found");
+    }
+
+    // Lấy danh sách cardId trong list
+    const cardIds = list.cards.map(card => card._id);
+
+    // Xóa tất cả tasks liên quan đến cardIds
+    await Task.deleteMany({ cardId: { $in: cardIds } });
+
+    // Xóa list khỏi board
     const updatedBoard = await Board.findByIdAndUpdate(
         boardId,
         { $pull: { lists: { _id: listId } } },
         { new: true }
     );
 
-    if (!updatedBoard) {
-        throw new Error('Board not found');
-    }
-
     return updatedBoard;
 };
+
 
 module.exports = { getListByBoardIdService, createListService, updateListService, deleteListService, };

@@ -8,6 +8,6 @@ const verifyRoles = require('../../middlewares/verifyRoles')
 // router.get('/:_id', ListController.getListByBoardId)
 router.post('/', ListController.createList)
 router.put('/', ListController.updateList)
-// router.delete('/', ListController.deleteList)
+router.delete('/', ListController.deleteList)
 
 module.exports = router

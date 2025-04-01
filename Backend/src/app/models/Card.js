@@ -10,6 +10,9 @@ const cardSchema = new mongoose.Schema({
     description: {
         type: String,
     },
+    label: {
+        type: String,
+    },
     listId: {
         type: mongoose.Schema.Types.ObjectId,
     },

@@ -64,23 +64,24 @@ class ListController {
     }
   }
 
-  // async deleteList(req, res) {
-  //   try {
-  //     if (!req?.query)
-  //       return res.status(400).json({ message: "List information is required" });
-  //     const { boardId, listId } = req.query;
-  //     console.log(boardId, listId)
-  //     const result = await deleteListService(boardId, listId);
-  //     if (!result) return res.status(200).json({ message: "No list be deleted" });
-  //
-  //     res.status(200).json({
-  //       rowsAfterEffected: result,
-  //     });
-  //   } catch (error) {
-  //     console.error(error);
-  //     res.status(500).json({ message: "Internal Server Error" });
-  //   }
-  // }
+  async deleteList(req, res) {
+    try {
+      if (!req?.query)
+        return res.status(400).json({ message: "List information is required" });
+      const { boardId, listId } = req.query;
+      console.log(boardId, listId)
+      const result = await deleteListService(boardId, listId);
+      if (!result) return res.status(200).json({ message: "No list be deleted" });
+
+      res.status(200).json({
+        rowsEffected: result,
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Internal Server Error" });
+    }
+  }
+
 }
 
 module.exports = new ListController();

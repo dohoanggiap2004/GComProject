@@ -51,7 +51,7 @@ export const deleteBoard = createAsyncThunk('boards/deleteBoard', async (payload
     try {
         await instanceAxios8000.delete('/api/boards', {
             params: {
-                _id: payload,
+                _id: payload.boardId,
             }
         });
         return payload;
@@ -74,8 +74,8 @@ export const createList = createAsyncThunk('lists/createList', async (payload, t
 
 export const updateList = createAsyncThunk('lists/updateList', async (payload, thunkAPI) => {
     try {
-        await instanceAxios8000.put('/api/lists', payload);
-        return payload;
+        const response = await instanceAxios8000.put('/api/lists', payload);
+        return response.data.rowsEffected;
     } catch (error) {
         thunkAPI.rejectWithValue(error.response.data);
     }
@@ -85,10 +85,11 @@ export const deleteList = createAsyncThunk('lists/deleteList', async (payload, t
     try {
         await instanceAxios8000.delete('/api/lists', {
             params: {
-                _id: payload,
+                boardId: payload.boardId,
+                listId: payload.listId,
             }
         });
-        return payload;
+        return payload
     } catch (error) {
         thunkAPI.rejectWithValue(error.response.data);
     }

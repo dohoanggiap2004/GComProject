@@ -1,10 +1,15 @@
 import { SortableContext, useSortable, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import { useDroppable } from "@dnd-kit/core";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import SortableCard from "./SortableCard.jsx";
 import { CSS } from "@dnd-kit/utilities";
+import {IoIosMore} from "react-icons/io";
+import {MdDragIndicator} from "react-icons/md";
+import {useDispatch, useSelector} from "react-redux";
+import {deleteList, updateList} from "../../store/actions/boardAction.js";
+import toast from "react-hot-toast";
 
-const SortableList = ({ list, cards, onToggleCheck, onAddCard }) => {
+const SortableList = ({ list, cards, onToggleCheck, onAddCard, boardId }) => {
     const {
         attributes,
         listeners,
@@ -13,22 +18,25 @@ const SortableList = ({ list, cards, onToggleCheck, onAddCard }) => {
         transition,
         isDragging,
     } = useSortable({ id: list._id });
-
+    const { error } = useSelector(state => state.board)
     const { setNodeRef: setDroppableRef } = useDroppable({ id: list._id });
     const [isAddingCard, setIsAddingCard] = useState(false);
     const [newCardContent, setNewCardContent] = useState('');
+    const [isEditingTitle, setIsEditingTitle] = useState(false); // State to toggle title editing
+    const [newTitle, setNewTitle] = useState(list.title); // State to hold the new title
+    const titleInputRef = useRef(null);
+    const dispatch = useDispatch();
 
-    // Hiệu ứng khi kéo: nghiêng góc, mờ đi, và phóng to nhẹ
     const style = {
         transform: transform
             ? `${CSS.Transform.toString(transform)} rotate(${isDragging ? '5deg' : '0deg'}) scale(${isDragging ? 1.05 : 1})`
             : `rotate(0deg) scale(1)`,
         transition: transition || 'transform 200ms ease, opacity 200ms ease, filter 200ms ease',
-        opacity: isDragging ? 0.7 : 1, // Hơi mờ đi khi kéo
-        filter: isDragging ? 'blur(2px)' : 'none', // Làm mờ khi kéo
-        zIndex: isDragging ? 100 : 1, // Đưa list đang kéo lên trên
-        boxShadow: isDragging ? '0 15px 30px rgba(0, 0, 0, 0.2)' : 'none', // Đổ bóng khi kéo
-        willChange: 'transform, opacity, filter', // Tối ưu hiệu suất
+        opacity: isDragging ? 0.7 : 1,
+        filter: isDragging ? 'blur(2px)' : 'none',
+        zIndex: isDragging ? 100 : 1,
+        boxShadow: isDragging ? '0 15px 30px rgba(0, 0, 0, 0.2)' : 'none',
+        willChange: 'transform, opacity, filter',
     };
 
     const handleAddCardClick = () => {
@@ -48,6 +56,84 @@ const SortableList = ({ list, cards, onToggleCheck, onAddCard }) => {
         setIsAddingCard(false);
     };
 
+    const [isOpen, setIsOpen] = useState(false);
+    const menuRef = useRef(null);
+
+    const toggleMenu = () => setIsOpen(!isOpen);
+
+    const handleClickOutside = (event) => {
+        if (menuRef.current && !menuRef.current.contains(event.target)) {
+            setIsOpen(false);
+        }
+    };
+
+    useEffect(() => {
+        if (isOpen) {
+            document.addEventListener("mousedown", handleClickOutside);
+        } else {
+            document.removeEventListener("mousedown", handleClickOutside);
+        }
+        return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, [isOpen]);
+
+    const handleTitleDoubleClick = () => {
+        setIsEditingTitle(true);
+        setNewTitle(list.title); // Reset the input to the current title
+    };
+
+    // Handle title change submission (on Enter or blur)
+    const handleTitleSubmit = () => {
+        if (newTitle.trim()) {
+            const payload = {
+                boardId: boardId,
+                _id: list._id,
+                title: newTitle,
+            }
+            console.log('check new title', payload)
+            dispatch(updateList(payload))
+            setIsEditingTitle(false);
+        }
+    };
+
+    // Handle Enter key to submit the new title
+    const handleTitleKeyDown = (e) => {
+        if (e.key === "Enter") {
+            handleTitleSubmit();
+        }
+    };
+
+    // Handle blur to submit the new title
+    const handleTitleBlur = () => {
+        handleTitleSubmit();
+    };
+
+    // Auto-focus the input field when it appears
+    useEffect(() => {
+        if (isEditingTitle && titleInputRef.current) {
+            titleInputRef.current.focus();
+        }
+    }, [isEditingTitle]);
+
+    useEffect(() => {
+        if (isOpen) {
+            document.addEventListener("mousedown", handleClickOutside);
+        } else {
+            document.removeEventListener("mousedown", handleClickOutside);
+        }
+        return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, [isOpen]);
+
+    const handleDeleteList = () => {
+        const payload = {
+            boardId: boardId,
+            listId: list._id,
+        }
+        dispatch(deleteList(payload))
+        toast.success(!error ? 'Deleted the list' : error, {
+            duration: 3000,
+        })
+    }
+
     return (
         <div
             ref={(node) => {
@@ -55,17 +141,54 @@ const SortableList = ({ list, cards, onToggleCheck, onAddCard }) => {
                 setDroppableRef(node);
             }}
             style={style}
-            {...attributes}
-            className={`bg-gray-100 px-4 py-3 w-72 rounded-lg transition-all duration-200 ease-in-out ${
+            className={`bg-gray-100 px-4 py-3 w-72 rounded-lg transition-all duration-200 ease-in-out relative ${
                 isDragging ? 'shadow-lg' : 'shadow-sm'
             }`}
         >
-            <h3
-                className="text-md font-bold text-gray-700 mb-2 cursor-grab"
-                {...listeners} // Kéo list bằng tiêu đề
-            >
-                {list.title}
-            </h3>
+            <div className="flex justify-between items-center mb-2">
+                {/* Drag handle */}
+                <div
+                    {...listeners}
+                    {...attributes}
+                    className="cursor-grab active:cursor-grabbing p-2 text-gray-500 hover:text-gray-700"
+                >
+                    <MdDragIndicator className="w-5 h-5" />
+                </div>
+
+                {/* Tiêu đề/Input (không kéo thả) */}
+                <div className="flex-1" onMouseDown={(e) => e.stopPropagation()}>
+                    {isEditingTitle ? (
+                        <input
+                            ref={titleInputRef}
+                            type="text"
+                            value={newTitle}
+                            onChange={(e) => setNewTitle(e.target.value)}
+                            onKeyDown={handleTitleKeyDown}
+                            onBlur={handleTitleBlur}
+                            onMouseDown={(e) => e.stopPropagation()}
+                            className="text-md font-bold text-gray-700 w-full p-1 rounded-md border border-gray-300 focus:outline-none focus:border-blue-500"
+                        />
+                    ) : (
+                        <h3
+                            onDoubleClick={handleTitleDoubleClick}
+                            className="text-md font-bold text-gray-700 cursor-pointer"
+                            onMouseDown={(e) => e.stopPropagation()}
+                        >
+                            {list.title}
+                        </h3>
+                    )}
+                </div>
+
+                {/* Nút menu (không kéo thả) */}
+                <button
+                    onClick={toggleMenu}
+                    onMouseDown={(e) => e.stopPropagation()}
+                    className="p-2 rounded-full hover:bg-gray-200 text-gray-600"
+                >
+                    <IoIosMore className="w-5 h-5" />
+                </button>
+            </div>
+
             <SortableContext items={cards.map((card) => card._id)} strategy={verticalListSortingStrategy}>
                 {Array.isArray(cards) && cards.length > 0 && cards.map((card) => (
                     <SortableCard
@@ -106,6 +229,37 @@ const SortableList = ({ list, cards, onToggleCheck, onAddCard }) => {
                 >
                     + Add a card
                 </button>
+            )}
+            {isOpen && (
+                <div
+                    ref={menuRef}
+                    className="absolute right-2 top-10 w-64 bg-white shadow-lg rounded-lg p-3 border border-gray-100 z-50"
+                >
+                    <div className="flex justify-between items-center mb-2">
+                        <div className="text-sm font-semibold text-gray-800">List actions</div>
+                        <button onClick={toggleMenu} className="text-gray-500 hover:text-gray-700">
+                            ✕
+                        </button>
+                    </div>
+                    <ul className="text-gray-700">
+                        <li className="p-2 rounded-md hover:bg-gray-100 cursor-pointer text-sm">Add card</li>
+                        <li className="p-2 rounded-md hover:bg-gray-100 cursor-pointer text-sm">Copy list</li>
+                        <li className="p-2 rounded-md hover:bg-gray-100 cursor-pointer text-sm">Move list</li>
+                        <li className="p-2 rounded-md hover:bg-gray-100 cursor-pointer text-sm">Watch</li>
+                    </ul>
+                    <hr className="my-2 border-gray-200" />
+                    <div className="text-sm font-semibold text-gray-800 mb-2">Change list color</div>
+                    <div className="p-3 bg-gray-50 rounded-md text-sm text-gray-600">
+                        <p className="font-medium">Upgrade to change list colors</p>
+                        <p className="text-xs mt-1">List colors can make your board fun and help organize your board visually.</p>
+                        <button className="mt-2 text-blue-600 underline text-xs">Start free trial</button>
+                    </div>
+                    <hr className="my-2 border-gray-200" />
+                    <hr className="my-2 border-gray-200" />
+                    <button onClick={handleDeleteList} className="p-2 rounded-md text-red-600 hover:bg-gray-100 cursor-pointer text-sm">
+                        Archive this list
+                    </button>
+                </div>
             )}
         </div>
     );

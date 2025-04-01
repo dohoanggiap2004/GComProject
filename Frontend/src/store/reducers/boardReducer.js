@@ -185,14 +185,14 @@ const boardSlice = createSlice({
             })
             .addCase(deleteList.fulfilled, (state, action) => {
                 state.loading = false;
-                const {listId} = action.payload;
+                const { listId } = action.payload;
                 if (state.board && Array.isArray(state.board.lists)) {
                     state.board.lists = state.board.lists.filter(list => list._id !== listId);
                 }
             })
             .addCase(deleteList.rejected, (state, action) => {
                 state.loading = false;
-                state.error = action.payload;
+                state.error = 'Có lỗi khi xóa';
             })
 
             // card reducers

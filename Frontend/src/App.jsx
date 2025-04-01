@@ -11,12 +11,24 @@ import BoardWorkspace from "./pages/BoardWorkspace.jsx";
 import UserProfile from "./pages/UserProfile.jsx";
 import RoleProtectedRoute from "./Utils/verifyRole.jsx";
 import Unauthorized from "./pages/Unauthozired.jsx";
+import { Toaster } from "react-hot-toast";
 
 const App = () => {
     return (
         <Provider store={store}>
             <PersistGate loading={null} persistor={persistor}>
                 <Router>
+                    <Toaster
+                        toastOptions={{
+                            className: "text-xl p-6 w-96",
+                            position: "bottom-left",
+                            style: {
+                                fontSize: "20px",
+                                padding: "16px",
+                                width: "400px",
+                            },
+                        }}
+                    />
                     <Routes>
                         <Route path="/" element={<Home/>}/>
                         <Route path={'/register'} element={<Register/>}/>

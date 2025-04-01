@@ -6,9 +6,6 @@ const taskSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    description: {
-        type: String,
-    },
     isCompleted: {
         type: Boolean,
         default: false,
