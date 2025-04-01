@@ -8,7 +8,7 @@ const Register = () => {
     const navigate = useNavigate();
     const { isRegister, error } = useSelector(state => state.auth);
     const [formData, setFormData] = useState({
-        name: "",
+        fullname: "",
         email: "",
         password: "",
         confirmPassword: "",
@@ -48,8 +48,8 @@ const Register = () => {
                         <label className="block text-gray-700 font-medium mb-2">Full Name</label>
                         <input
                             type="text"
-                            name="name"
-                            value={formData.name}
+                            name="fullname"
+                            value={formData.fullname}
                             onChange={handleChange}
                             className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />

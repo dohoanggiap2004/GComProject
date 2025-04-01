@@ -2,7 +2,7 @@ import {useState} from "react";
 import {useDispatch} from "react-redux";
 import {createWorkspace} from "../../store/actions/workspaceAction.js";
 
-const Modal = ({isOpen, onClose}) => {
+const WorkspaceCreateModal = ({isOpen, onClose}) => {
     const dispatch = useDispatch();
     const [formData, setFormData] = useState({
         name: "",
@@ -22,10 +22,10 @@ const Modal = ({isOpen, onClose}) => {
         e.preventDefault();
         dispatch(createWorkspace(formData))
 
-        onClose(); // Đóng modal sau khi submit
+        onClose();
     };
 
-    if (!isOpen) return null; // Không hiển thị modal nếu `isOpen` là false
+    if (!isOpen) return null;
 
     return (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
@@ -99,4 +99,4 @@ const Modal = ({isOpen, onClose}) => {
     );
 };
 
-export default Modal;
+export default WorkspaceCreateModal;

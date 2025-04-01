@@ -11,7 +11,7 @@ router.post('/register', async (req, res) => {
     const {email, password, ...userInfo} = req.body;
 
     try {
-        console.log('check email', email)
+        console.log('check email', userInfo)
         // Kiểm tra xem người dùng đã tồn tại chưa
         const user = await User.findOne({ email: email });
         console.log(user);
@@ -24,9 +24,9 @@ router.post('/register', async (req, res) => {
 
         // Lưu người dùng mới vào cơ sở dữ liệu
         const newUser = new User({
+            ...userInfo,
             email: email,
             password: hashedPassword,
-            ...userInfo,
         });
 
         await newUser.save();

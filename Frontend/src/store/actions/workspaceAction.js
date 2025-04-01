@@ -30,7 +30,7 @@ export const updateWorkspace = createAsyncThunk('workspaces/updateWorkspace', as
 
 export const deleteWorkspace = createAsyncThunk('workspaces/deleteWorkspace', async (payload, thunkAPI) => {
     try {
-
+        console.log('check payload', payload);
         await instanceAxios8000.delete('/api/workspaces', {
             params: {
                 _id: payload,

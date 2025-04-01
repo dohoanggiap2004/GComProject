@@ -4,6 +4,7 @@ import {useSelector} from "react-redux";
 import {GoPlus} from "react-icons/go";
 import WorkspaceCreateModel from "../Modal/WorkspaceCreateModal.jsx";
 import {FiPlus} from "react-icons/fi";
+import {Link} from "react-router-dom";
 
 const VerticalWorkspace = () => {
     const {workspaces} = useSelector((state) => state.workspace);
@@ -12,10 +13,12 @@ const VerticalWorkspace = () => {
 
     // Hàm toggle trạng thái từng workspace
     const toggleSection = (workspaceId) => {
-        setOpenWorkspaces((prevState) => ({
-            ...prevState,
-            [workspaceId]: !prevState[workspaceId] // Đảo trạng thái của workspace đó
-        }));
+        setOpenWorkspaces((prevState) => (
+            {
+                ...prevState,
+                [workspaceId]: !prevState[workspaceId] // Đảo trạng thái của workspace đó
+            }
+        ));
     };
 
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -55,27 +58,28 @@ const VerticalWorkspace = () => {
                                     <div className="flex items-center">
                                         <FaUserFriends className="mr-2"/> Members
                                     </div>
-                                    <FiPlus />
+                                    <FiPlus/>
                                 </button>
-                                <button
-                                    className="flex items-center w-full p-2 text-gray-700 hover:bg-gray-200 rounded-lg text-sm">
+                                <Link to={'/user-workspace/workspace-setting'}
+                                      state={{workspaceId: workspace._id, workspaceName: workspace.name}}
+                                      className="flex items-center w-full p-2 text-gray-700 hover:bg-gray-200 rounded-lg text-sm">
                                     <FaCog className="mr-2"/> Settings
-                                </button>
+                                </Link>
                             </div>
                         )}
                     </div>
                 ))
             ) : (
-                    <button
-                        className="flex items-center justify-between w-full p-2 text-gray-700 font-semibold hover:bg-gray-200 rounded-lg text-sm border-2 border-gray-900"
-                        onClick={() => setIsModalOpen(true)}
-                    >
+                <button
+                    className="flex items-center justify-between w-full p-2 text-gray-700 font-semibold hover:bg-gray-200 rounded-lg text-sm border-2 border-gray-900"
+                    onClick={() => setIsModalOpen(true)}
+                >
                         <span className="flex items-center">
                             <GoPlus className={'mr-2'}/> Create a Workspace
                         </span>
-                    </button>
+                </button>
             )}
-            <WorkspaceCreateModel isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+            <WorkspaceCreateModel isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}/>
 
         </div>
     );

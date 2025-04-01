@@ -4,9 +4,12 @@ import { useEffect, useState } from "react";
 import { refreshToken } from "../store/actions/tokenAction";
 import { useDispatch } from "react-redux";
 
-export function useUserIdFromToken() {
+export function useUserFromToken() {
     const dispatch = useDispatch();
-    const [userId, setUserId] = useState(null);
+    const [user, setUser] = useState({
+        fullname: '',
+        email: '',
+    });
     const [error, setError] = useState(null);
 
     useEffect(() => {
@@ -17,10 +20,8 @@ export function useUserIdFromToken() {
                 console.log('check acc', accessToken);
 
                 if (!accessToken) {
-                    console.log('Access token not found. Attempting to refresh...');
-                    await dispatch(refreshToken()).unwrap(); // Chờ refresh token hoàn thành
-                    accessToken = Cookies.get('accessToken'); // Lấy lại token sau khi làm mới
-                    console.log('check acc aff', accessToken);
+                    await dispatch(refreshToken()).unwrap();
+                    accessToken = Cookies.get('accessToken');
 
                     if (!accessToken) {
                         throw new Error('Access token not found in cookies even after refresh');
@@ -29,23 +30,25 @@ export function useUserIdFromToken() {
 
                 // Giải mã accessToken
                 const decodedToken = jwtDecode(accessToken);
-                console.log('decodedToken', decodedToken);
                 if (!decodedToken || !decodedToken._id) {
                     throw new Error('Invalid token structure or missing ID');
                 }
 
                 // Trích xuất và đặt userId
-                setUserId(decodedToken._id);
+                setUser({
+                    fullname: decodedToken.fullname,
+                    email: decodedToken.email,
+                });
                 setError(null);
             } catch (err) {
                 console.error('Error decoding token:', err.message);
                 setError(err.message);
-                setUserId(null);
+                setUser(null);
             }
         };
 
         fetchUserId();
     }, []);
 
-    return { userId, error };
+    return { user, error };
 }

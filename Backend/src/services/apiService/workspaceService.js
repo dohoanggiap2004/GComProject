@@ -37,18 +37,31 @@ const updateWorkspaceService = async (workspace) => {
     return Workspace.findByIdAndUpdate(_id, updateFields, {new: true});
 };
 
-
 const deleteWorkspaceService = async (workspaceId) => {
     const session = await mongoose.startSession();
     try {
         session.startTransaction();
 
-        // Lấy tất cả board thuộc workspace này
-        const boards = await Board.find({ workspaceId }).session(session);
-        if (!boards.length) {
+        // Kiểm tra xem Workspace có tồn tại không
+        const workspace = await Workspace.findById(workspaceId).session(session);
+        if (!workspace) {
             await session.abortTransaction();
             session.endSession();
-            return null; // Không tìm thấy board nào
+            throw new Error("Workspace không tồn tại");
+        }
+
+        // Tìm tất cả Boards thuộc Workspace
+        const boards = await Board.find({ workspaceId }).session(session);
+
+        // Nếu không có Boards, xóa Workspace ngay
+        if (!boards.length) {
+            await Workspace.deleteOne({ _id: workspaceId }, { session });
+            await session.commitTransaction();
+            session.endSession();
+            return {
+                error: 0,
+                message: "Workspace đã được xóa thành công (không có Boards)",
+            };
         }
 
         // Lấy tất cả taskId từ các board → list → card → tasks
@@ -58,26 +71,42 @@ const deleteWorkspaceService = async (workspaceId) => {
             )
         );
 
-        // Xóa tất cả task liên quan
+        // Xóa tất cả Tasks liên quan
         if (taskIds.length) {
-            await Task.deleteMany({ _id: { $in: taskIds } }, { session });
+            const taskDeleteResult = await Task.deleteMany(
+                { _id: { $in: taskIds } },
+                { session }
+            );
+            console.log(`Đã xóa ${taskDeleteResult.deletedCount} tasks`);
         }
 
-        // Xóa tất cả board thuộc workspace
-        await Board.deleteMany({ workspaceId }, { session });
+        // Xóa tất cả Boards thuộc Workspace
+        const boardDeleteResult = await Board.deleteMany(
+            { workspaceId },
+            { session }
+        );
+        console.log(`Đã xóa ${boardDeleteResult.deletedCount} boards`);
 
-        // Xóa workspace
+        // Xóa Workspace
         await Workspace.deleteOne({ _id: workspaceId }, { session });
 
+        // Commit transaction
         await session.commitTransaction();
         session.endSession();
-        return { message: "Workspace và tất cả board liên quan đã bị xóa!" };
+        return {
+            error: 0,
+            message: "Workspace và các tài nguyên liên quan đã được xóa thành công",
+        };
     } catch (error) {
+        // Rollback transaction nếu có lỗi
         await session.abortTransaction();
         session.endSession();
-        throw error;
+        console.error("Lỗi khi xóa Workspace:", error.message);
+        throw new Error(`Không thể xóa Workspace: ${error.message}`);
     }
 };
+
+module.exports = deleteWorkspaceService;
 
 module.exports = { getWorkspaceByMemberIdService,
     createWorkspaceService, updateWorkspaceService, deleteWorkspaceService, };

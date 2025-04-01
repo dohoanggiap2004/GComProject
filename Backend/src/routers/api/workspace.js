@@ -5,7 +5,7 @@ const verifyJWT = require('../../middlewares/verifyJWT')
 const verifyRoles = require('../../middlewares/verifyRoles')
 
 // router.get('/', verifyJWT, verifyRoles('user'), WorkspaceController.getWorkspaces)
-router.all('*', verifyJWT)
+// router.all('*', verifyJWT)
 router.get('/member', WorkspaceController.getWorkspaceByMemberId)
 router.post('/', WorkspaceController.createWorkspace)
 router.put('/', WorkspaceController.updateWorkspace)

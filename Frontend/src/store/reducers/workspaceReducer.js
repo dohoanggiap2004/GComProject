@@ -64,11 +64,11 @@ const workspaceSlice = createSlice({
             })
             .addCase(deleteWorkspace.fulfilled, (state, action) => {
                 state.loading = false;
-                state.workspaces = state.workspaces.filter(workspace => workspace._id !== action.payload._id);
+                state.workspaces = state.workspaces.filter(workspace => workspace._id !== action.payload);
             })
-            .addCase(deleteWorkspace.rejected, (state, action) => {
+            .addCase(deleteWorkspace.rejected, (state) => {
                 state.loading = false;
-                state.error = action.payload;
+                state.error = 'Lỗi khi xóa';
             });
     }
 });

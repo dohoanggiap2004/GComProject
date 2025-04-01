@@ -67,15 +67,6 @@ const SortableList = ({ list, cards, onToggleCheck, onAddCard, boardId }) => {
         }
     };
 
-    useEffect(() => {
-        if (isOpen) {
-            document.addEventListener("mousedown", handleClickOutside);
-        } else {
-            document.removeEventListener("mousedown", handleClickOutside);
-        }
-        return () => document.removeEventListener("mousedown", handleClickOutside);
-    }, [isOpen]);
-
     const handleTitleDoubleClick = () => {
         setIsEditingTitle(true);
         setNewTitle(list.title); // Reset the input to the current title
@@ -89,7 +80,6 @@ const SortableList = ({ list, cards, onToggleCheck, onAddCard, boardId }) => {
                 _id: list._id,
                 title: newTitle,
             }
-            console.log('check new title', payload)
             dispatch(updateList(payload))
             setIsEditingTitle(false);
         }

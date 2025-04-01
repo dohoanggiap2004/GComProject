@@ -6,7 +6,7 @@ export const loginUser = createAsyncThunk(
     async (formData, thunkAPI) => {
         try {
             await instanceAxios8000.post("/auth/login", formData);
-            return true; // trả về data nếu có hoặc thông tin người dùng
+            return true;
         } catch (error) {
             return thunkAPI.rejectWithValue(error.response?.data.message || error.message);
         }
@@ -29,7 +29,7 @@ export const registerUser = createAsyncThunk(
     async (formData, thunkAPI) => {
         try {
             const response = await instanceAxios8000.post("/auth/register", formData);
-            return response
+            return response.data
         } catch (error) {
             return thunkAPI.rejectWithValue(error.response?.data.message || error.message);
         }
@@ -41,7 +41,7 @@ export const logoutUser = createAsyncThunk(
     async (_, thunkAPI) => {
         try {
             await instanceAxios8000.post("/auth/logout");
-            return true; // Optional: trả về kết quả xác nhận đã logout nếu muốn xử lý thêm
+            return true;
         } catch (error) {
             return thunkAPI.rejectWithValue(error.response?.data.message || error.message);
         }

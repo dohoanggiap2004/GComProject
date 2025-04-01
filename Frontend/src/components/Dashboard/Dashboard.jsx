@@ -65,9 +65,7 @@ const Dashboard = () => {
                                     {Array.isArray(boards[workspace._id]) && boards[workspace._id].length > 0 ? boards[workspace._id].map((board, index) => (
                                         <Link
                                             to={`/user-workspace/board/${board._id}`}
-                                            state={{ workspaceName: workspace.name, workspaceId: workspace._id }} // ✅
-                                            // Truyền state
-                                            // đúng cách
+                                            state={{ workspaceName: workspace.name, workspaceId: workspace._id }}
                                             key={index}
                                         >
                                             <Board title={board.title} background={board.background}/>

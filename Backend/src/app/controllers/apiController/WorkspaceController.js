@@ -89,10 +89,11 @@ class WorkspaceController {
 
             const id = req.query._id;
             const result = await deleteWorkspaceService(id);
+            console.log('check res', result)
             if (!result) return res.status(200).json({message: "No workspace be deleted"});
 
             res.status(200).json({
-                rowsEffected: result,
+                result: result,
             });
         } catch (error) {
             console.error(error);

@@ -210,7 +210,7 @@ function BoardWorkspace() {
 
             {/* Phần dưới: chia 2 cột (Sidebar trái - Nội dung phải) */}
             <div className="flex flex-1 overflow-hidden">
-                <div className="w-72 flex-shrink-0 bg-gray-100 hidden md:flex">
+                <div className="w-72 flex-shrink-0 border-r-2 border-gray-200 hidden md:flex">
                     <SidebarBoard workspaceName={workspaceName} workspaceId={workspaceId} />
                 </div>
 

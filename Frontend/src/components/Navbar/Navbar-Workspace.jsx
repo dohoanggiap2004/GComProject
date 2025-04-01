@@ -2,6 +2,7 @@ import {FaChevronDown, FaPlus} from 'react-icons/fa';
 import {IoIosSearch, IoIosNotifications, IoIosHelpCircle,} from "react-icons/io";
 import {Link} from "react-router-dom";
 import {BsGrid1X2Fill} from "react-icons/bs";
+import AvatarDropdown from "../Dropdown/AvatarDropdown.jsx";
 
 export default function NavbarWorkspace() {
     return (
@@ -78,9 +79,7 @@ export default function NavbarWorkspace() {
                 <IoIosSearch className="text-gray-500 w-5 h-5 md:hidden"/>
                 <IoIosNotifications className="cursor-pointer text-gray-600 hover:text-black text-2xl"/>
                 <IoIosHelpCircle className="cursor-pointer text-gray-600 hover:text-black text-2xl hidden md:block"/>
-                <div className="w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs">
-                    GH
-                </div>
+                <AvatarDropdown/>
             </div>
         </nav>
     );

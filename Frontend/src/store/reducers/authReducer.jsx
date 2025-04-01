@@ -14,10 +14,12 @@ const authSlice = createSlice({
     name: "login",
     initialState,
     reducers: {
-        loginUserSuccess(state) {
+        loginUserSuccess(state, action) {
+            console.log(action.payload);
             state.loading = false;
             state.isLoginUser = true;
-            state.role = 'user'
+            state.role = 'user';
+            state.user = action.payload;
         },
     },
     extraReducers: (builder) => {
@@ -29,11 +31,10 @@ const authSlice = createSlice({
                 state.isLoginUser = false;
                 state.role = '';
             })
-            .addCase(loginUser.fulfilled, (state, action) => {
+            .addCase(loginUser.fulfilled, (state) => {
                 state.loading = false;
                 state.isLoginUser = true;
                 state.role = 'user';
-                state.user = action.payload;
             })
             .addCase(loginUser.rejected, (state, action) => {
                 state.loading = false;

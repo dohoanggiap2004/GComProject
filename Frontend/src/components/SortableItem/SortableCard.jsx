@@ -1,11 +1,11 @@
-import { useState } from 'react';
-import { useSortable } from "@dnd-kit/sortable";
-import { createPortal } from 'react-dom';
+import {useState} from 'react';
+import {useSortable} from "@dnd-kit/sortable";
+import {createPortal} from 'react-dom';
 import CardModal from '../Modal/CardModal.jsx';
-import {EditSVG} from "../Icon/icons.jsx";
+import {CheckSVG, CompletedSVG, EditSVG} from "../Icon/icons.jsx";
 
-const SortableCard = ({ card, onToggleCheck }) => {
-    const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
+const SortableCard = ({card, onToggleCheck}) => {
+    const {attributes, listeners, setNodeRef, transform, transition, isDragging} = useSortable({
         id: card._id,
     });
 
@@ -44,38 +44,19 @@ const SortableCard = ({ card, onToggleCheck }) => {
                 } flex items-center cursor-pointer`}
                 onClick={handleOpenModal} // Mở modal khi click vào card
             >
-                <span className="mr-2 cursor-pointer z-40" onClick={handleToggleCheck}>
-                    {card.isCompleted ? (
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="h-5 w-5 text-green-500"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                        >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M5 13l4 4L19 7"
-                            />
-                        </svg>
-                    ) : (
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="h-5 w-5 text-gray-400"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                        >
-                            <circle cx="12" cy="12" r="10" strokeWidth="2" />
-                        </svg>
-                    )}
-                </span>
+                <div className={'flex items-center'}>
+                    <div className="mr-2 cursor-pointer z-40" onClick={handleToggleCheck}>
+                        {card.isCompleted ? (
+                            <CheckSVG/>
+                        ) : (
+                            <CompletedSVG/>
+                        )}
+                    </div>
 
-                <span className="flex-1 cursor-grab" {...listeners}>
-                    {card.title}
-                </span>
+                    <div className="cursor-grab" {...listeners}>
+                        {card.title}
+                    </div>
+                </div>
 
                 <div
                     className="absolute right-2 top-1/2 transform -translate-y-1/2 flex space-x-2 opacity-0 group-hover:opacity-100 transition-opacity"
@@ -90,6 +71,7 @@ const SortableCard = ({ card, onToggleCheck }) => {
                     <CardModal
                         card={card}
                         onClose={() => setIsModalOpen(false)}
+                        onToggleCheck={onToggleCheck}
                     />,
                     document.body
                 )}

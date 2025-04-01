@@ -84,7 +84,7 @@ class Authentication {
           maxAge: 15 * 60 * 1000, // Thời gian sống của cookie 15 phut
         });
         res.status(200).json({
-          error: 0
+          error: 0,
         })
 
       } catch (error) {
@@ -130,7 +130,7 @@ class Authentication {
           maxAge: 15 * 60 * 1000, // Thời gian sống của cookie 15 phut
         });
         res.status(200).json({
-          error: 0
+          error: 0,
         })
       } catch (error) {
         console.log(error);
