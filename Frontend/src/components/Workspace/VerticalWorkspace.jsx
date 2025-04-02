@@ -2,7 +2,7 @@ import {useState} from 'react';
 import {FaChevronDown, FaChevronUp, FaRegClipboard, FaRegHeart, FaUserFriends, FaCog} from 'react-icons/fa';
 import {useSelector} from "react-redux";
 import {GoPlus} from "react-icons/go";
-import WorkspaceCreateModel from "../Modal/WorkspaceCreateModal.jsx";
+import WorkspaceCreateModel from "./WorkspaceCreateModal.jsx";
 import {FiPlus} from "react-icons/fi";
 import {Link} from "react-router-dom";
 

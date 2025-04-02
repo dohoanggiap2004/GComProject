@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import {IoMdCheckboxOutline} from "react-icons/io";
-import ProgressBar from "../ProgressBar/ProgressBar.jsx";
+import ProgressBar from "./ProgressBar.jsx";
 import {useDispatch, useSelector} from "react-redux";
 import {createTask, deleteTask,} from "../../store/actions/taskAction.js";
 import Task from "./Task.jsx";
@@ -18,7 +18,6 @@ export default function Checklist() {
         cardId: '',
         title: '',
     });
-
     useEffect(() => {
         setFormData({
             ...formData,
@@ -27,10 +26,6 @@ export default function Checklist() {
             listId: card?.listId || '',
         })
     }, [board, card])
-
-    useEffect(() => {
-        console.log(formData)
-    }, [formData])
 
     const dispatch = useDispatch();
 
@@ -57,6 +52,18 @@ export default function Checklist() {
             toast.success("Task already deleted successfully!");
         }
     }
+
+    useEffect(() => {
+        let cnt = 0
+        if(Array.isArray(card?.tasks) &&  card?.tasks.length > 0) {
+            card.tasks.forEach((task) => {
+                if(task.isCompleted){
+                    cnt++
+                }
+            })
+            setProgress((cnt/card?.tasks.length * 100).toFixed(2))
+        }
+    }, [card?.tasks])
 
     return (
         <div className="p-4 border rounded-lg w-full bg-white">

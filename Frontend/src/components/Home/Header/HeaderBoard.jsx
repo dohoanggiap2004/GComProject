@@ -6,7 +6,7 @@ import { HiDotsHorizontal } from "react-icons/hi";
 import { GoPeople } from "react-icons/go";
 import {useDispatch, useSelector} from "react-redux";
 import { FaInfoCircle, FaList, FaArchive, FaCog, FaPaintRoller, FaBolt, FaRocket, FaStickerMule, FaPlus, FaEye, FaEnvelope, FaCopy, FaShareAlt, FaTimes } from "react-icons/fa";
-import {deleteBoard} from "../../store/actions/boardAction.js";
+import {deleteBoard} from "../../../store/actions/boardAction.js";
 import {useNavigate} from "react-router-dom";
 import toast from "react-hot-toast";
 
@@ -49,7 +49,7 @@ export default function HeaderBoard({workspaceId}) {
                     value={selectedOption}
                     onChange={(e) => setSelectedOption(e.target.value)}
                 >
-                    <option value="Board">Board</option>
+                    <option value="BoardItem">BoardItem</option>
                     <option value="Calendar">Calendar</option>
                     <option value="Dashboard">Dashboard</option>
                 </select>

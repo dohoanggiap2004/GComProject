@@ -1,8 +1,8 @@
 import {useState} from 'react';
 import {useSortable} from "@dnd-kit/sortable";
 import {createPortal} from 'react-dom';
-import CardModal from '../Modal/CardModal.jsx';
-import {CompletedSVG, EditSVG} from "../Icon/icons.jsx";
+import CardModal from '../../Card/CardModal.jsx';
+import {CompletedSVG, EditSVG} from "../../Icon/icons.jsx";
 import {CheckmarkIcon} from "react-hot-toast";
 
 const SortableCard = ({card, onToggleCheck}) => {

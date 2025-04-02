@@ -68,7 +68,7 @@ const updateCardIndexService = async(info) => {
     const {boardId, sourceListId, destListId, sourceCardIndex, destCardIndex } = info;
     const board = await Board.findById(boardId);
     if (!board) {
-        throw new Error("Board not found");
+        throw new Error("BoardItem not found");
     }
 
     // Tìm list nguồn và list đích theo _id
@@ -99,7 +99,7 @@ const updateListIndexService = async(info) => {
     const {boardId, sourceIndex, destIndex } = info;
     const board = await Board.findById(boardId);
     if (!board) {
-        throw new Error("Board not found");
+        throw new Error("BoardItem not found");
     }
     if (
         sourceIndex < 0 ||

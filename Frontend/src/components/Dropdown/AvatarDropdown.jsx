@@ -1,6 +1,6 @@
 import {useEffect, useRef, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import WorkspaceCreateModel from "../Modal/WorkspaceCreateModal.jsx";
+import WorkspaceCreateModel from "../Workspace/WorkspaceCreateModal.jsx";
 import {logoutUser} from "../../store/actions/authAction.jsx";
 import {GoPlus} from "react-icons/go";
 import {useNavigate} from "react-router-dom";

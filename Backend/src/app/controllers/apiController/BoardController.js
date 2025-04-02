@@ -14,7 +14,7 @@ class BoardController {
       const boards = await getBoardsService();
 
       if (!boards) {
-        return res.status(200).json({ message: "Board not found" });
+        return res.status(200).json({ message: "BoardItem not found" });
       }
 
       res.status(200).json({
@@ -29,13 +29,13 @@ class BoardController {
   async getBoardById(req, res) {
     try {
       if (!req?.params?._id)
-        return res.status(400).json({ message: "Board id is required" });
+        return res.status(400).json({ message: "BoardItem id is required" });
 
       const id = req.params._id;
       const board = await getBoardByIdService(id);
 
       if (!board) {
-        return res.status(200).json({ message: "Board not found" });
+        return res.status(200).json({ message: "BoardItem not found" });
       }
 
       res.status(200).json({
@@ -56,7 +56,7 @@ class BoardController {
       const board = await getBoardByWorkspaceIdService(id);
 
       if (!board) {
-        return res.status(200).json({ message: "Board not found" });
+        return res.status(200).json({ message: "BoardItem not found" });
       }
 
       res.status(200).json({
@@ -71,7 +71,7 @@ class BoardController {
   async createBoard(req, res) {
     try {
       if (!req?.body)
-        return res.status(400).json({ message: "Board information is required" });
+        return res.status(400).json({ message: "BoardItem information is required" });
 
       const board = req.body;
       const newBoard = await createBoardService(board);
@@ -89,7 +89,7 @@ class BoardController {
   async updateBoard(req, res) {
     try {
       if (!req?.body)
-       return res.status(400).json({ message: "Board information is required" });
+       return res.status(400).json({ message: "BoardItem information is required" });
 
       const board = req.body;
       const result = await updateBoardService(board);
@@ -108,7 +108,7 @@ class BoardController {
   async deleteBoard(req, res) {
     try {
       if (!req?.query)
-        return res.status(400).json({ message: "Board information is required" });
+        return res.status(400).json({ message: "BoardItem information is required" });
 
       const id = req.query._id;
       const result = await deleteBoardService(id);

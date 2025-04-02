@@ -1,13 +1,13 @@
-import Board from "../Board/Board.jsx";
-import Sidebar from "../Sidebar/Sidebar.jsx";
+import BoardItem from "../Board/BoardItem.jsx";
+import Sidebar from "./Sidebar.jsx";
 import {MdAccessTime,} from "react-icons/md";
-import HorizontalWorkspace from "../Workspace/HorizontalWorkspace.jsx";
+import HorizontalWorkspace from "./HorizontalWorkspace.jsx";
 import {GoPlus} from "react-icons/go";
 import {useDispatch, useSelector} from "react-redux";
-import WorkspaceCreateModel from "../Modal/WorkspaceCreateModal.jsx";
+import WorkspaceCreateModel from "./WorkspaceCreateModal.jsx";
 import {useEffect, useState} from "react";
 import { getBoardByWorkspaceIds} from "../../store/actions/boardAction.js";
-import BoardCreateModel from "../Modal/BoardCreateModal.jsx";
+import BoardCreateModel from "./BoardCreateModal.jsx";
 import {Link} from "react-router-dom";
 
 
@@ -50,7 +50,7 @@ const Dashboard = () => {
                 </h2>
                 <div className="grid md:grid-cols-3 lg:grid-cols-4 grid-cols-2 gap-6 mb-6">
                     {recentBoards.map((board, index) => (
-                        <Board key={index} title={board.title} image={board.image}/>
+                        <BoardItem key={index} title={board.title} image={board.image}/>
                     ))}
                 </div>
 
@@ -68,7 +68,7 @@ const Dashboard = () => {
                                             state={{ workspaceName: workspace.name, workspaceId: workspace._id }}
                                             key={index}
                                         >
-                                            <Board title={board.title} background={board.background}/>
+                                            <BoardItem title={board.title} background={board.background}/>
                                         </Link>
                                     )) : null}
                                     <button

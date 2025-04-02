@@ -5,13 +5,13 @@ class ActivityController {
     async getActivityByCardId(req, res) {
         try {
             if (!req?.params?._id)
-                return res.status(400).json({ message: "Board id is required" });
+                return res.status(400).json({ message: "BoardItem id is required" });
 
             const id = req.params._id;
             const act = await getActivitiesInCardService(id);
 
             if (!act) {
-                return res.status(200).json({ message: "Board not found" });
+                return res.status(200).json({ message: "BoardItem not found" });
             }
 
             res.status(200).json({
@@ -26,7 +26,7 @@ class ActivityController {
     async createActivity(req, res){
         try {
             if (!req?.body)
-                return res.status(400).json({ message: "Board information is required" });
+                return res.status(400).json({ message: "BoardItem information is required" });
 
             const act = req.body;
             const newAct = await createActivityService(act);

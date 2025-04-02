@@ -5,9 +5,9 @@ import {
     SortableContext,
     horizontalListSortingStrategy,
 } from '@dnd-kit/sortable';
-import NavbarWorkspace from "../components/Navbar/Navbar-Workspace.jsx";
-import SidebarBoard from "../components/Sidebar/SidebarBoard.jsx";
-import HeaderBoard from "../components/Header/HeaderBoard.jsx";
+import NavbarWorkspace from "../components/Workspace/Navbar-Workspace.jsx";
+import SidebarBoard from "../components/Board/SidebarBoard.jsx";
+import HeaderBoard from "../components/Home/Header/HeaderBoard.jsx";
 import { useLocation, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -18,7 +18,7 @@ import {
     updateCardIndex,
     updateCard, updateListIndex,
 } from "../store/actions/boardAction.js";
-import SortableList from "../components/SortableItem/SortableList.jsx";
+import SortableList from "../components/Board/SortableItem/SortableList.jsx";
 
 function BoardWorkspace() {
     const location = useLocation();

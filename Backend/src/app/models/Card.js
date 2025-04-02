@@ -19,6 +19,16 @@ const cardSchema = new mongoose.Schema({
     dueDate: {
         type: Date,
     },
+    startDate: {
+        type: Date,
+    },
+    dateReminder: {
+        type: Date,
+    },
+    memberIds: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+    }],
     isCompleted: {
         type: Boolean,
         default: false,

@@ -1,5 +1,5 @@
-import NavbarWorkspace from "../components/Navbar/Navbar-Workspace.jsx";
-import SidebarBoard from "../components/Sidebar/SidebarBoard.jsx";
+import NavbarWorkspace from "../components/Workspace/Navbar-Workspace.jsx";
+import SidebarBoard from "../components/Board/SidebarBoard.jsx";
 import {useEffect, useState} from "react";
 import {useLocation, useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";

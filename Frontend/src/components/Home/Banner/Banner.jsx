@@ -1,9 +1,9 @@
 
-import BannerPng from "../../assets/education.png";
+import BannerPng from "../../../assets/education.png";
 import { TbLayoutBoard } from "react-icons/tb";
 import { IoPeopleOutline } from "react-icons/io5";
 import { MdOutlineTrackChanges } from "react-icons/md";
-import { FadeUp } from "../Hero/Hero";
+import { FadeUp } from "../Hero/Hero.jsx";
 import { motion } from "framer-motion";
 
 const Banner = () => {

@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const activitySchema = new mongoose.Schema({
     cardId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Board.lists.cards', // Tham chiếu đến card nhúng
+        ref: 'BoardItem.lists.cards', // Tham chiếu đến card nhúng
         required: true,
     },
     action: {

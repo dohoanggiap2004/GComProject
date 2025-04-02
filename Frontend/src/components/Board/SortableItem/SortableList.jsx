@@ -6,7 +6,7 @@ import { CSS } from "@dnd-kit/utilities";
 import {IoIosMore} from "react-icons/io";
 import {MdDragIndicator} from "react-icons/md";
 import {useDispatch, useSelector} from "react-redux";
-import {deleteList, updateList} from "../../store/actions/boardAction.js";
+import {deleteList, updateList} from "../../../store/actions/boardAction.js";
 import toast from "react-hot-toast";
 
 const SortableList = ({ list, cards, onToggleCheck, onAddCard, boardId }) => {

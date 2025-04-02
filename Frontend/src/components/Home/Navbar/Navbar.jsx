@@ -1,7 +1,7 @@
 import {IoMdClose, IoMdMenu} from "react-icons/io";
 import {motion} from "framer-motion";
 import {useDispatch, useSelector} from "react-redux";
-import {logoutUser} from "../../store/actions/authAction.jsx";
+import {logoutUser} from "../../../store/actions/authAction.jsx";
 import {Link} from "react-router-dom";
 import {useState} from "react";
 import {FaChevronDown} from "react-icons/fa";

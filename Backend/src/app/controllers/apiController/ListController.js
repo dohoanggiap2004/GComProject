@@ -9,7 +9,7 @@ class ListController {
   // async getListByBoardId(req, res) {
   //   try {
   //     if (!req?.params?._id)
-  //       return res.status(400).json({ message: "Board id is required" });
+  //       return res.status(400).json({ message: "BoardItem id is required" });
   //
   //     const id = req.params._id;
   //     const list= await getListByBoardIdService(id);

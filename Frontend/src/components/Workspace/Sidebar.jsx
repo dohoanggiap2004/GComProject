@@ -1,6 +1,6 @@
 
 import { FaRegClipboard, FaHome,} from "react-icons/fa";
-import VerticalWorkspace from "../Workspace/VerticalWorkspace.jsx";
+import VerticalWorkspace from "./VerticalWorkspace.jsx";
 import {BsGrid1X2Fill} from "react-icons/bs";
 
 const Sidebar = () => {

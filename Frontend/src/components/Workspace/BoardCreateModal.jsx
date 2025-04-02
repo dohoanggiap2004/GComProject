@@ -29,7 +29,7 @@ const CreateBoardModal = ({ isOpen, onClose, workspaceId }) => {
 
     const handleSubmit = () => {
         if (!formData.title.trim()) {
-            alert("Board title is required!");
+            alert("BoardItem title is required!");
             return;
         }
         console.log('check formdata', formData);

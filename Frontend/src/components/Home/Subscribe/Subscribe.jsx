@@ -1,6 +1,6 @@
 
 import { FaBell } from "react-icons/fa";
-import BgImage from "../../assets/bg.png";
+import BgImage from "../../../assets/bg.png";
 import { motion } from "framer-motion";
 
 const bgStyle = {

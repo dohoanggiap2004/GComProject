@@ -19,7 +19,7 @@ const boardSchema = new mongoose.Schema({
     background: {
         type: String,
     },
-    userIds: [{
+    memberIds: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
     }],

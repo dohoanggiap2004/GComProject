@@ -12,7 +12,7 @@ const createListService = async (listData) => {
     const { boardId, ...listFields } = listData;
     const board = await Board.findById(boardId);
     if (!board) {
-        throw new Error('Board not found');
+        throw new Error('BoardItem not found');
     }
 
     board.lists.push(listData);
@@ -36,7 +36,7 @@ const updateListService = async (updateData) => {
     );
 
     if (!updatedBoard) {
-        throw new Error('Board or List not found');
+        throw new Error('BoardItem or List not found');
     }
 
     return updatedBoard.lists.find(list => list._id.toString() === _id);
@@ -45,7 +45,7 @@ const updateListService = async (updateData) => {
 const deleteListService = async (boardId, listId) => {
     const board = await Board.findById(boardId);
     if (!board) {
-        throw new Error("Board not found");
+        throw new Error("BoardItem not found");
     }
 
     // Tìm list cần xóa

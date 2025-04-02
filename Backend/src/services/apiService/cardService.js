@@ -37,7 +37,7 @@ const createCardService = async (cardData) => {
     // Tìm kiếm board dựa trên ID board
     const board = await Board.findById(boardId);
     if (!board) {
-        throw new Error('Board not found');
+        throw new Error('BoardItem not found');
     }
 
     // Tìm kiếm list trong bảng list của board
@@ -87,7 +87,7 @@ const updateCardService = async (updateData) => {
     );
 
     if (!board) {
-        throw new Error('Board, List or Card not found');
+        throw new Error('BoardItem, List or Card not found');
     }
 
     const updatedList = board.lists.id(listId);
@@ -113,7 +113,7 @@ const deleteCardService = async (boardId, listId, cardId) => {
         );
 
         if (!board) {
-            throw new Error('Board or List not found');
+            throw new Error('BoardItem or List not found');
         }
 
         const list = board.lists.id(listId);

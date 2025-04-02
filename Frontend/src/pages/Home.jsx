@@ -1,9 +1,9 @@
-import Services from "../components/Services/Services.jsx";
-import Banner from "../components/Banner/Banner.jsx";
-import Subscribe from "../components/Subscribe/Subscribe.jsx";
-import Banner2 from "../components/Banner/Banner2.jsx";
-import Footer from "../components/Footer/Footer.jsx";
-import Hero from "../components/Hero/Hero.jsx";
+import Services from "../components/Home/Services/Services.jsx";
+import Banner from "../components/Home/Banner/Banner.jsx";
+import Subscribe from "../components/Home/Subscribe/Subscribe.jsx";
+import Banner2 from "../components/Home/Banner/Banner2.jsx";
+import Footer from "../components/Home/Footer/Footer.jsx";
+import Hero from "../components/Home/Hero/Hero.jsx";
 import {useEffect} from "react";
 import Cookies from "js-cookie";
 import {useDispatch, useSelector} from "react-redux";

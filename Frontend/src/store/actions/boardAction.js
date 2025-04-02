@@ -128,7 +128,9 @@ export const deleteCard = createAsyncThunk('cards/deleteCard', async (payload, t
     try {
         await instanceAxios8000.delete('/api/cards', {
             params: {
-                _id: payload,
+                boardId: payload.boardId,
+                listId: payload.listId,
+                cardId: payload.cardId,
             }
         });
         return payload;

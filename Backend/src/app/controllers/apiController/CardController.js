@@ -10,7 +10,7 @@ class CardController {
     async getCardByIdWithTasks(req, res) {
         try {
             if (!req?.query)
-                return res.status(400).json({message: "Board id is required"});
+                return res.status(400).json({message: "BoardItem id is required"});
 
             const {boardId, listId, cardId} = req.query;
             const card = await getCardByIdWithTasksService(boardId, listId, cardId);
@@ -73,7 +73,7 @@ class CardController {
             if (!result) return res.status(200).json({message: "No card be deleted"});
 
             res.status(200).json({
-                rowsAfterEffected: result,
+                rowsEffected: result,
             });
         } catch (error) {
             console.error(error);
