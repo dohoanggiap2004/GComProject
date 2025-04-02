@@ -2,7 +2,8 @@ import {useState} from 'react';
 import {useSortable} from "@dnd-kit/sortable";
 import {createPortal} from 'react-dom';
 import CardModal from '../Modal/CardModal.jsx';
-import {CheckSVG, CompletedSVG, EditSVG} from "../Icon/icons.jsx";
+import {CompletedSVG, EditSVG} from "../Icon/icons.jsx";
+import {CheckmarkIcon} from "react-hot-toast";
 
 const SortableCard = ({card, onToggleCheck}) => {
     const {attributes, listeners, setNodeRef, transform, transition, isDragging} = useSortable({
@@ -47,7 +48,7 @@ const SortableCard = ({card, onToggleCheck}) => {
                 <div className={'flex items-center'}>
                     <div className="mr-2 cursor-pointer z-40" onClick={handleToggleCheck}>
                         {card.isCompleted ? (
-                            <CheckSVG/>
+                            <CheckmarkIcon/>
                         ) : (
                             <CompletedSVG/>
                         )}
@@ -69,7 +70,7 @@ const SortableCard = ({card, onToggleCheck}) => {
             {isModalOpen &&
                 createPortal(
                     <CardModal
-                        card={card}
+                        cardProp={card}
                         onClose={() => setIsModalOpen(false)}
                         onToggleCheck={onToggleCheck}
                     />,

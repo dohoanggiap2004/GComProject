@@ -15,6 +15,9 @@ const taskSchema = new mongoose.Schema({
         ref: 'User',
         default: null,
     }],
+    dueDate: {
+        type: Date,
+    },
     createdAt: {
         type: Date,
         default: Date.now,

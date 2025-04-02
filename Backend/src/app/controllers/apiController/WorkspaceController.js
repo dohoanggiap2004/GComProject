@@ -10,7 +10,7 @@ class WorkspaceController {
     async getWorkspaceByMemberId(req, res) {
         try {
             const memberId = await getUserIdFromToken(req, res);
-            console.log('check memberId', memberId);
+            // console.log('check memberId', memberId);
             const workspace = await getWorkspaceByMemberIdService(memberId);
 
             if (!workspace) {

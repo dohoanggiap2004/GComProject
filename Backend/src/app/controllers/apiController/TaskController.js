@@ -50,7 +50,7 @@ class TaskController {
       if (!req?.body)
        return res.status(400).json({ message: "Task information is required" });
 
-      const task= req.body;
+      const task = req.body;
       const result = await updateTaskService(task);
       console.log(result)
       if (!result) return res.status(200).json({ message: "No taskchanged" });
