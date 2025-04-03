@@ -3,7 +3,7 @@ import {useSortable} from "@dnd-kit/sortable";
 import {createPortal} from 'react-dom';
 import CardModal from '../../Card/CardModal.jsx';
 import {CompletedSVG, EditSVG} from "../../Icon/icons.jsx";
-import {CheckmarkIcon} from "react-hot-toast";
+import { FaCheckCircle } from 'react-icons/fa';
 
 const SortableCard = ({card, onToggleCheck}) => {
     const {attributes, listeners, setNodeRef, transform, transition, isDragging} = useSortable({
@@ -40,7 +40,7 @@ const SortableCard = ({card, onToggleCheck}) => {
                 ref={setNodeRef}
                 style={style}
                 {...attributes}
-                className={`group relative bg-white p-2 mb-2 text-sm rounded-lg shadow-md hover:border-2 hover:border-cyan-500 ${
+                className={`group relative bg-white p-2 mb-2 rounded-lg shadow-md hover:border-2 hover:border-cyan-500 ${
                     isDragging ? 'shadow-lg' : 'shadow-sm'
                 } flex items-center cursor-pointer`}
                 onClick={handleOpenModal} // Mở modal khi click vào card
@@ -48,13 +48,13 @@ const SortableCard = ({card, onToggleCheck}) => {
                 <div className={'flex items-center'}>
                     <div className="mr-2 cursor-pointer z-40" onClick={handleToggleCheck}>
                         {card.isCompleted ? (
-                            <CheckmarkIcon/>
+                            <FaCheckCircle className={'w-4 h-4'} color={'green'}/>
                         ) : (
                             <CompletedSVG/>
                         )}
                     </div>
 
-                    <div className="cursor-grab" {...listeners}>
+                    <div className="cursor-grab text-xs" {...listeners}>
                         {card.title}
                     </div>
                 </div>

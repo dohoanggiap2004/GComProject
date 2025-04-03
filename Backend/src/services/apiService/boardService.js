@@ -3,19 +3,18 @@ const Board = require("../../app/models/Board");
 const mongoose = require('mongoose');
 
 const getBoardsService = async () => {
-    return Board.find();
+    return Board.find().lean();
 };
 
 const getBoardByIdService = async (boardId) => {
-    return Board.findById(boardId);
+    return Board.findById(boardId).lean();
 };
 
 const getBoardByWorkspaceIdService = async (workspaceId) => {
-    return Board.find({ workspaceId });
+    return Board.find({ workspaceId }).lean();
 };
 
 const createBoardService = async (board) => {
-    console.log('checkboard', board);
     const newBoard = new Board(board);
     return await newBoard.save();
 };

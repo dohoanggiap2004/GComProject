@@ -85,23 +85,24 @@ export default function Checklist() {
 
             {isAdding ? (
                 <div className="mt-4">
-                    <textarea
-                        className="w-full border rounded-md p-2 focus:ring-2 focus:ring-blue-500"
+                    <input
+                        className="w-full border rounded-md text-sm py-1.5 px-3 focus:ring-2 focus:ring-blue-500 focus:outline-none"
                         placeholder="Add an item"
+                        type={"text"}
                         value={formData.title}
                         name={'title'}
                         onChange={handleOnChange}
-                    ></textarea>
-                    <div className="flex gap-2 mt-2">
+                    />
+                    <div className="flex gap-2 mt-3">
                         <button
                             onClick={handleAddItem}
-                            className="bg-blue-600 text-white px-3 py-1 rounded-md hover:bg-blue-700"
+                            className="bg-blue-600 text-sm text-white px-3 py-1.5 rounded-md hover:bg-blue-700"
                         >
                             Add
                         </button>
                         <button
                             onClick={() => setIsAdding(false)}
-                            className="text-gray-500 hover:underline"
+                            className="text-gray-500 hover:bg-gray-100 text-sm ms-2 px-3 py-1.5 rounded-md"
                         >
                             Cancel
                         </button>
@@ -110,7 +111,7 @@ export default function Checklist() {
             ) : (
                 <button
                     onClick={() => setIsAdding(true)}
-                    className="mt-4 text-gray-500 text-sm bg-gray-100 px-3 py-1 rounded-md"
+                    className="mt-4 text-gray-500 text-sm bg-gray-100 px-3 py-1.5 rounded-md"
                 >
                     Add an item
                 </button>

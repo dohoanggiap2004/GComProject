@@ -61,7 +61,7 @@ const DatePickModal = ({onChangeDateTime}) => {
         <div className="relative">
             {/* Dates Button */}
             <button
-                className={`w-full flex items-center text-sm p-2 rounded-lg ${
+                className={`w-full flex items-center bg-gray-100 hover:bg-gray-200 text-sm p-2 rounded-lg ${
                     isDateModalOpen
                         ? "bg-blue-500 text-white hover:bg-blue-600"
                         : "text-gray-700 hover:bg-gray-100"

@@ -4,22 +4,20 @@ import {
     FaEye,
     FaUserPlus,
     FaTag,
-    FaCheckSquare,
-    FaCalendar,
     FaPaperclip,
     FaArrowRight,
     FaCopy,
     FaShareAlt,
     FaArchive,
     FaEllipsisH,
-    FaLink
+    FaLink, FaCheckCircle
 } from 'react-icons/fa';
 import {ActivitySVG, CompletedSVG, DescriptionSVG} from "../Icon/icons.jsx";
 import {useDispatch, useSelector} from "react-redux";
 import {deleteCard, updateCard} from "../../store/actions/boardAction.js";
 import {getCardWithTask} from "../../store/actions/cardAction.js";
 import Checklist from "./Checklist.jsx";
-import toast, {CheckmarkIcon} from "react-hot-toast";
+import toast from "react-hot-toast";
 import {useNavigate} from "react-router-dom";
 import DatePickModal from "./DatePickModal.jsx";
 import DateRange from "./DateRange.jsx";
@@ -175,7 +173,7 @@ const CardModal = ({cardProp, onClose, onToggleCheck}) => {
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 overflow-auto">
-            <div className="bg-white rounded-lg w-full max-w-5xl p-6 relative z-50 max-h-[90vh] overflow-y-auto">
+            <div className="bg-white rounded-lg w-full max-w-4xl p-6 relative z-50 max-h-[95vh] overflow-y-auto">
                 {/* Nút đóng modal */}
                 <button
                     onClick={() => {
@@ -190,7 +188,11 @@ const CardModal = ({cardProp, onClose, onToggleCheck}) => {
                 <div className="mb-4">
                     <div className={'flex items-center'}>
                         <div className="mr-2 cursor-pointer z-40" onClick={handleToggleCheck}>
-                            {card?.isCompleted ? <CheckmarkIcon/> : <CompletedSVG/>}
+                            {cardProp.isCompleted ? (
+                                <FaCheckCircle className={'w-4 h-4'} color={'green'}/>
+                            ) : (
+                                <CompletedSVG/>
+                            )}
                         </div>
 
                         {/* Tiêu đề: Hiển thị input khi đang chỉnh sửa, ngược lại hiển thị text */}
@@ -242,7 +244,7 @@ const CardModal = ({cardProp, onClose, onToggleCheck}) => {
 
                         {/* Mô tả */}
                         <div className="mb-4">
-                            <h3 className="text-lg font-semibold flex items-center">
+                            <h3 className="font-semibold flex items-center">
                             <span className="mr-2 h-5 w-5">
                                 <DescriptionSVG/>
                             </span>{' '}
@@ -253,17 +255,17 @@ const CardModal = ({cardProp, onClose, onToggleCheck}) => {
                                 name="description"
                                 onChange={handleChange}
                                 placeholder="Add a more detailed description..."
-                                className="w-full p-2 mt-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                className="w-full p-2 mt-2 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                             />
                         </div>
 
-                        <div className={'mb-4'}>
+                        <div className={'mb-6'}>
                             <Checklist/>
                         </div>
 
                         {/* Đính kèm (Attachments) */}
                         <div className="p-4 border rounded-lg w-full bg-white mb-4">
-                            <h3 className="text-lg font-semibold flex items-center">
+                            <h3 className="font-semibold flex items-center">
                                 <FaPaperclip className="mr-2"/> Attachments
                             </h3>
                             <div className="mt-2">
@@ -307,26 +309,32 @@ const CardModal = ({cardProp, onClose, onToggleCheck}) => {
 
                         {/* Hoạt động (Activity) */}
                         <div>
-                            <h3 className="text-lg font-semibold flex items-center">
-                            <span className="mr-2 h-5 w-5">
-                                <ActivitySVG/>
-                            </span>{' '}
-                                Activity
-                                <button className="ml-4 text-sm text-gray-500 hover:underline">
+                            <div className={'flex items-center justify-between'}>
+                                <div>
+                                    <h3 className="font-semibold flex items-center">
+                                    <span className="mr-2 h-5 w-5">
+                                        <ActivitySVG/>
+                                    </span>{' '}
+                                        Activity
+                                    </h3>
+                                </div>
+
+                                <button className="ml-4 text-sm font-semibold px-2 py-1.5 rounded-sm text-gray-500 bg-gray-100 hover:bg-gray-200">
                                     Hide details
                                 </button>
-                            </h3>
+                            </div>
+
                             <div className="mt-2">
                                 <input
                                     type="text"
                                     value={comment}
                                     onChange={handleAddComment}
                                     placeholder="Write a comment..."
-                                    className="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    className="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
                                 />
                                 <button
                                     onClick={handleSubmitComment}
-                                    className="mt-2 bg-blue-500 text-white px-4 py-1 rounded-lg hover:bg-blue-600"
+                                    className="mt-2 bg-blue-500 text-white px-3 py-1 rounded-lg hover:bg-blue-600 text-sm"
                                 >
                                     Comment
                                 </button>
@@ -383,29 +391,29 @@ const CardModal = ({cardProp, onClose, onToggleCheck}) => {
                     </div>
 
                     {/* Phần sidebar bên phải (các nút hành động) */}
-                    <div className="w-48">
+                    <div className="w-40">
                         <div className="space-y-2">
                             <button
                                 onClick={handleJoinClick}
-                                className="w-full flex items-center text-sm text-gray-700 hover:bg-gray-100 p-2 rounded-lg"
+                                className="w-full flex items-center bg-gray-100 text-sm text-gray-700 hover:bg-gray-200 p-2 rounded-lg"
                             >
                                 <FaUserPlus className="mr-2"/> Join
                             </button>
                             <button
                                 onClick={handleMembersClick}
-                                className="w-full flex items-center text-sm text-gray-700 hover:bg-gray-100 p-2 rounded-lg"
+                                className="w-full flex items-center bg-gray-100 text-sm text-gray-700 hover:bg-gray-200 p-2 rounded-lg"
                             >
                                 <FaUserPlus className="mr-2"/> Members
                             </button>
                             <button
-                                className="w-full flex items-center text-sm text-gray-700 hover:bg-gray-100 p-2 rounded-lg">
+                                className="w-full flex items-center bg-gray-100 text-sm text-gray-700 hover:bg-gray-200 p-2 rounded-lg">
                                 <FaTag className="mr-2"/> Labels
                             </button>
 
                             <DatePickModal onChangeDateTime={handleDueDateChange}/>
 
                             <button
-                                className="w-full flex items-center text-sm text-gray-700 hover:bg-gray-100 p-2 rounded-lg">
+                                className="w-full flex items-center bg-gray-100 text-sm text-gray-700 hover:bg-gray-200 p-2 rounded-lg">
                                 <FaPaperclip className="mr-2"/> Attachment
                             </button>
                         </div>
@@ -415,21 +423,21 @@ const CardModal = ({cardProp, onClose, onToggleCheck}) => {
                             <h4 className="text-sm font-semibold text-gray-700 mb-2">Actions</h4>
                             <div className="space-y-2">
                                 <button
-                                    className="w-full flex items-center text-sm text-gray-700 hover:bg-gray-100 p-2 rounded-lg">
+                                    className="w-full flex items-center bg-gray-100 text-sm text-gray-700 hover:bg-gray-200 p-2 rounded-lg">
                                     <FaArrowRight className="mr-2"/> Move
                                 </button>
                                 <button
-                                    className="w-full flex items-center text-sm text-gray-700 hover:bg-gray-100 p-2 rounded-lg">
+                                    className="w-full flex items-center bg-gray-100 text-sm text-gray-700 hover:bg-gray-200 p-2 rounded-lg">
                                     <FaCopy className="mr-2"/> Copy
                                 </button>
                                 <button
-                                    className="w-full flex items-center text-sm text-gray-700 hover:bg-gray-100 p-2 rounded-lg"
+                                    className="w-full flex items-center bg-gray-100 text-sm text-gray-700 hover:bg-gray-200 p-2 rounded-lg"
                                     onClick={handleDeleteCard}
                                 >
                                     <FaArchive className="mr-2"/> Archive
                                 </button>
                                 <button
-                                    className="w-full flex items-center text-sm text-gray-700 hover:bg-gray-100 p-2 rounded-lg">
+                                    className="w-full flex items-center bg-gray-100 text-sm text-gray-700 hover:bg-gray-200 p-2 rounded-lg">
                                     <FaShareAlt className="mr-2"/> Share
                                 </button>
                             </div>

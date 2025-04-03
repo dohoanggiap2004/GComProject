@@ -32,8 +32,6 @@ const CreateBoardModal = ({ isOpen, onClose, workspaceId }) => {
             alert("BoardItem title is required!");
             return;
         }
-        console.log('check formdata', formData);
-
         dispatch(createBoard(formData))
         onClose();
     };

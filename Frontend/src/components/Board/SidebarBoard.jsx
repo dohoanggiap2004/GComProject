@@ -1,4 +1,4 @@
-import {FaRegClipboard, FaUserFriends, FaCog,} from "react-icons/fa";
+import {FaRegClipboard, FaUserFriends, FaCog, FaCrown,} from "react-icons/fa";
 import {CiViewTable} from "react-icons/ci";
 import {IoCalendarOutline} from "react-icons/io5";
 import {useSelector} from "react-redux";
@@ -7,9 +7,8 @@ import {useState} from "react";
 
 const SidebarBoard = ({workspaceName, workspaceId}) => {
     const {boardTitle} = useSelector((state) => state.board);
-    const [isSelected, setIsSelected] = useState('1')
     return (
-        <div className="w-72 min-h-screen p-4 hidden md:block">
+        <div className="w-64 min-h-screen p-4 hidden md:block">
             <div className="flex items-center">
                 <span className="bg-green-500 text-white px-3 py-2 rounded-md text-xs mr-2">G</span>
                 {/*{workspace.name.length > 15 ? `${workspace.name.slice(0, 15)}...` : workspace.name}*/}
@@ -72,8 +71,9 @@ const SidebarBoard = ({workspaceName, workspaceId}) => {
 
             <div className={'border-t-2 border-gray-400 mt-4'}></div>
 
-            <div className="mt-6 p-4 bg-white rounded-lg text-sm shadow-md">
-                <h3 className="text-gray-800 font-semibold">Try GCom Premium</h3>
+            <div className="mt-6 p-2 bg-gradient-to-r from-indigo-900 to-purple-600 rounded-lg text-sm shadow-md flex items-center">
+                <FaCrown className="text-white mr-2" />
+                <h3 className="text-white font-semibold">Try GCom Premium</h3>
             </div>
         </div>
     );

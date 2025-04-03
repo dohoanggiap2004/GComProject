@@ -1,12 +1,6 @@
 
 const Board = require("../../app/models/Board");
 const Task = require("../../app/models/Task");
-const Card = require("../../app/models/Card");
-
-const getListByBoardIdService = async (boardId) => {
-    const result = await Board.findById(boardId).select('lists');
-    return result ? result.lists : [];
-};
 
 const createListService = async (listData) => {
     const { boardId, ...listFields } = listData;
@@ -15,7 +9,7 @@ const createListService = async (listData) => {
         throw new Error('BoardItem not found');
     }
 
-    board.lists.push(listData);
+    board.lists.push(listFields);
     await board.save();
 
     return board.lists[board.lists.length - 1];
@@ -71,4 +65,4 @@ const deleteListService = async (boardId, listId) => {
 };
 
 
-module.exports = { getListByBoardIdService, createListService, updateListService, deleteListService, };
+module.exports = { createListService, updateListService, deleteListService, };

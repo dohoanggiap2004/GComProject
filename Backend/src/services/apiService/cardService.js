@@ -11,11 +11,11 @@ const getCardByIdWithTasksService = async (boardId, listId, cardId) => {
             "lists._id": listId,
             "lists.cards._id": cardId
         },
-        { "lists.$": 1 } // Chỉ lấy ra đúng list thoả mãn điều kiện
+        {"lists.$": 1} // Chỉ lấy ra đúng list thoả mãn điều kiện
     )
         .populate({
             path: 'lists.cards.tasks', // Đường dẫn đến các task trong card
-        });
+        }).lean();
 
     if (!board || board.lists.length === 0) {
         return null;
@@ -32,7 +32,7 @@ const getCardByIdWithTasksService = async (boardId, listId, cardId) => {
 };
 
 const createCardService = async (cardData) => {
-    const { boardId, listId, ...cardFields } = cardData;
+    const {boardId, listId, ...cardFields} = cardData;
     console.log('cardData', cardData)
     // Tìm kiếm board dựa trên ID board
     const board = await Board.findById(boardId);
@@ -47,7 +47,7 @@ const createCardService = async (cardData) => {
     }
 
     // Thêm trường tham chiếu listId cho card (tiện ích về lâu dài)
-    const newCard = { ...cardFields, listId };
+    const newCard = {...cardFields, listId};
 
     // Thêm card mới vào list đã chỉ định
     list.cards.push(newCard);
@@ -60,7 +60,7 @@ const createCardService = async (cardData) => {
 };
 
 const updateCardService = async (updateData) => {
-    const { boardId, listId, _id, ...updateFields } = updateData;
+    const {boardId, listId, _id, ...updateFields} = updateData;
 
     const board = await Board.findOneAndUpdate(
         {
@@ -80,8 +80,8 @@ const updateCardService = async (updateData) => {
         {
             new: true,
             arrayFilters: [
-                { 'list._id': listId },
-                { 'card._id': _id }
+                {'list._id': listId},
+                {'card._id': _id}
             ]
         }
     );
@@ -108,8 +108,8 @@ const deleteCardService = async (boardId, listId, cardId) => {
                 'lists._id': listId,
                 'lists.cards._id': cardId
             },
-            { 'lists.$': 1 },
-            { session }
+            {'lists.$': 1},
+            {session}
         );
 
         if (!board) {
@@ -126,10 +126,10 @@ const deleteCardService = async (boardId, listId, cardId) => {
         const taskIds = card.tasks;
 
         if (taskIds && taskIds.length > 0) {
-            await Task.deleteMany({ _id: { $in: taskIds } }, { session });
+            await Task.deleteMany({_id: {$in: taskIds}}, {session});
         }
 
-        await Activity.deleteMany({ cardId }, { session });
+        await Activity.deleteMany({cardId}, {session});
 
         const updatedBoard = await Board.findOneAndUpdate(
             {
@@ -137,9 +137,9 @@ const deleteCardService = async (boardId, listId, cardId) => {
                 'lists._id': listId,
             },
             {
-                $pull: { 'lists.$.cards': { _id: cardId } }
+                $pull: {'lists.$.cards': {_id: cardId}}
             },
-            { new: true, session }
+            {new: true, session}
         );
 
         if (!updatedBoard) {
@@ -157,4 +157,4 @@ const deleteCardService = async (boardId, listId, cardId) => {
         throw error;
     }
 };
-module.exports = { getCardByIdWithTasksService, createCardService, updateCardService, deleteCardService, };
+module.exports = {getCardByIdWithTasksService, createCardService, updateCardService, deleteCardService,};

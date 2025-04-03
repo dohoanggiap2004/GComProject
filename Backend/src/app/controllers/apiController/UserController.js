@@ -4,6 +4,7 @@ const {
   createUserService,
   updateUserService,
   deleteUserService,
+  searchUsersService,
 } = require("../../../services/apiService/userService");
 const getUserIdFromToken = require("../../../utils/getUserIdFromToken");
 class UserController {
@@ -35,6 +36,27 @@ class UserController {
 
       res.status(200).json({
         data: user,
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Internal Server Error" });
+    }
+  }
+
+  async searchUserByEmailAndName(req, res) {
+    try {
+      if (!req?.query?.value)
+        return res.status(400).json({ message: "User information is required" });
+
+      const { value } = req.query;
+      const users = await searchUsersService(value);
+
+      if (!users) {
+        return res.status(200).json({ message: "User not found" });
+      }
+
+      res.status(200).json({
+        data: users,
       });
     } catch (error) {
       console.error(error);

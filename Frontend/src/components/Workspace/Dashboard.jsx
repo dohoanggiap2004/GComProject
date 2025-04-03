@@ -12,11 +12,11 @@ import {Link} from "react-router-dom";
 
 
 const recentBoards = [
-    {title: "test", image: ""},
-    {title: "DoHoangGiap", image: ""},
-    {title: "A Lead Management Pipeline by Crmble", image: ""},
-    {title: "Mise-En-Place Personal Productivity System", image: ""},
-    {title: "Mise-En-Place Personal Productivity System", image: ""},
+    {title: "test", image: "http://localhost:8000/img/bg-purple.jpg"},
+    {title: "DoHoangGiap", image: "http://localhost:8000/img/bg-purple.jpg"},
+    {title: "A Lead Management Pipeline by Crmble", image: "http://localhost:8000/img/bg-purple.jpg"},
+    {title: "Mise-En-Place Personal Productivity System", image: "http://localhost:8000/img/bg-purple.jpg"},
+    {title: "Mise-En-Place Personal Productivity System", image: "http://localhost:8000/img/bg-purple.jpg"},
 ];
 
 const Dashboard = () => {
@@ -50,7 +50,7 @@ const Dashboard = () => {
                 </h2>
                 <div className="grid md:grid-cols-3 lg:grid-cols-4 grid-cols-2 gap-6 mb-6">
                     {recentBoards.map((board, index) => (
-                        <BoardItem key={index} title={board.title} image={board.image}/>
+                        <BoardItem key={index} title={board.title} background={board.image}/>
                     ))}
                 </div>
 

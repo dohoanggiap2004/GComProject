@@ -190,7 +190,7 @@ const boardSlice = createSlice({
                     state.board.lists = state.board.lists.filter(list => list._id !== listId);
                 }
             })
-            .addCase(deleteList.rejected, (state, action) => {
+            .addCase(deleteList.rejected, (state) => {
                 state.loading = false;
                 state.error = 'Có lỗi khi xóa';
             })

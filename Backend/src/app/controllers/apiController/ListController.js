@@ -1,5 +1,4 @@
 const {
-  getListByBoardIdService,
   createListService,
   updateListService,
   deleteListService,

@@ -8,6 +8,7 @@ import {MdDragIndicator} from "react-icons/md";
 import {useDispatch, useSelector} from "react-redux";
 import {deleteList, updateList} from "../../../store/actions/boardAction.js";
 import toast from "react-hot-toast";
+import {GoPlus} from "react-icons/go";
 
 const SortableList = ({ list, cards, onToggleCheck, onAddCard, boardId }) => {
     const {
@@ -131,7 +132,7 @@ const SortableList = ({ list, cards, onToggleCheck, onAddCard, boardId }) => {
                 setDroppableRef(node);
             }}
             style={style}
-            className={`bg-gray-100 px-4 py-3 w-72 rounded-lg transition-all duration-200 ease-in-out relative ${
+            className={`bg-gray-100 px-2 py-1 w-64 rounded-lg transition-all duration-200 ease-in-out relative ${
                 isDragging ? 'shadow-lg' : 'shadow-sm'
             }`}
         >
@@ -140,7 +141,7 @@ const SortableList = ({ list, cards, onToggleCheck, onAddCard, boardId }) => {
                 <div
                     {...listeners}
                     {...attributes}
-                    className="cursor-grab active:cursor-grabbing p-2 text-gray-500 hover:text-gray-700"
+                    className="cursor-grab active:cursor-grabbing p-1 text-gray-500 hover:text-gray-700"
                 >
                     <MdDragIndicator className="w-5 h-5" />
                 </div>
@@ -156,12 +157,12 @@ const SortableList = ({ list, cards, onToggleCheck, onAddCard, boardId }) => {
                             onKeyDown={handleTitleKeyDown}
                             onBlur={handleTitleBlur}
                             onMouseDown={(e) => e.stopPropagation()}
-                            className="text-md font-bold text-gray-700 w-full p-1 rounded-md border border-gray-300 focus:outline-none focus:border-blue-500"
+                            className="text-sm font-semibold text-gray-700 w-full p-1 rounded-md border border-gray-300 focus:outline-none focus:border-blue-500"
                         />
                     ) : (
                         <h3
                             onDoubleClick={handleTitleDoubleClick}
-                            className="text-md font-bold text-gray-700 cursor-pointer"
+                            className="text-sm font-semibold text-gray-700 cursor-pointer"
                             onMouseDown={(e) => e.stopPropagation()}
                         >
                             {list.title}
@@ -195,18 +196,18 @@ const SortableList = ({ list, cards, onToggleCheck, onAddCard, boardId }) => {
                         value={newCardContent}
                         onChange={(e) => setNewCardContent(e.target.value)}
                         placeholder="Enter a title or paste a link"
-                        className="w-full p-2 rounded-lg border border-gray-300 focus:outline-none focus:border-blue-500"
+                        className="w-full p-2 text-xs rounded-lg border border-gray-300 focus:outline-none focus:border-blue-500"
                     />
-                    <div className="flex space-x-2 mt-2">
+                    <div className="flex space-x-2 items-center">
                         <button
                             onClick={handleAddCardSubmit}
-                            className="bg-blue-500 text-white px-4 py-1 rounded-lg hover:bg-blue-600"
+                            className="bg-blue-500 text-white text-sm font-semibold px-4 py-1 rounded-lg hover:bg-blue-600 mt-2"
                         >
                             Add card
                         </button>
                         <button
                             onClick={handleCancelAddCard}
-                            className="text-gray-500 hover:text-gray-700"
+                            className="text-gray-500 hover:text-gray-700 mt-2"
                         >
                             ✕
                         </button>
@@ -215,9 +216,11 @@ const SortableList = ({ list, cards, onToggleCheck, onAddCard, boardId }) => {
             ) : (
                 <button
                     onClick={handleAddCardClick}
-                    className="text-gray-700 hover:bg-gray-300 w-full p-1 rounded-md shadow-md text-start mt-2"
+                    className="text-gray-700 text-sm font-semibold hover:bg-gray-300 w-full p-1 py-1.5 rounded-md shadow-md text-start"
                 >
-                    + Add a card
+                    <div className={'flex items-center'}>
+                        <GoPlus className={'mr-2 w-4 h-4'}/> Add a card
+                    </div>
                 </button>
             )}
             {isOpen && (

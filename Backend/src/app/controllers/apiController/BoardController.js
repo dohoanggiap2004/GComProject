@@ -54,7 +54,6 @@ class BoardController {
 
       const id = req.params.workspaceId;
       const board = await getBoardByWorkspaceIdService(id);
-
       if (!board) {
         return res.status(200).json({ message: "BoardItem not found" });
       }

@@ -106,7 +106,5 @@ const deleteWorkspaceService = async (workspaceId) => {
     }
 };
 
-module.exports = deleteWorkspaceService;
-
 module.exports = { getWorkspaceByMemberIdService,
     createWorkspaceService, updateWorkspaceService, deleteWorkspaceService, };

@@ -7,16 +7,18 @@ const Sidebar = () => {
     return (
         <div className="w-72 p-4 hidden md:block">
             <div className="space-y-2">
-                <button className="flex items-center w-full p-2 text-blue-600 bg-blue-100 rounded-lg text-sm">
+                <button className="flex items-center w-full p-2 text-blue-600 bg-blue-100 rounded-lg text-sm font-semibold">
                     <FaRegClipboard className="mr-2" /> Boards
                 </button>
-                <button className="flex items-center w-full p-2 text-gray-700 hover:bg-gray-200 rounded-lg text-sm">
+                <button className="flex items-center w-full p-2 text-gray-700 hover:bg-gray-200 rounded-lg text-sm font-semibold">
                     <BsGrid1X2Fill className="mr-2"/> Templates
                 </button>
-                <button className="flex items-center w-full p-2 text-gray-700 hover:bg-gray-200 rounded-lg text-sm">
+                <button className="flex items-center w-full p-2 text-gray-700 hover:bg-gray-200 rounded-lg text-sm font-semibold">
                     <FaHome className="mr-2" /> Home
                 </button>
             </div>
+
+            <hr className={'text-gray-600'} />
 
             <div className="mt-4">
                 <h3 className="text-gray-500 text-sm font-semibold">Workspaces</h3>
