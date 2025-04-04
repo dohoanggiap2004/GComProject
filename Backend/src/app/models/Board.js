@@ -19,9 +19,18 @@ const boardSchema = new mongoose.Schema({
     background: {
         type: String,
     },
-    memberIds: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
+    members: [{
+        memberId:
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'User',
+                required: true
+            },
+        role: {
+            type: String,
+            enum: ['admin', 'member', 'viewer'],
+            default: 'member'
+        }
     }],
     lists: [listSchema],
     createdAt: {

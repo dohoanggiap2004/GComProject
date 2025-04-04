@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux";
 export function useUserFromToken() {
     const dispatch = useDispatch();
     const [user, setUser] = useState({
+        _id: '',
         fullname: '',
         email: '',
     });
@@ -17,7 +18,6 @@ export function useUserFromToken() {
             try {
                 // Lấy accessToken từ cookies
                 let accessToken = Cookies.get('accessToken');
-                console.log('check acc', accessToken);
 
                 if (!accessToken) {
                     await dispatch(refreshToken()).unwrap();
@@ -36,6 +36,7 @@ export function useUserFromToken() {
 
                 // Trích xuất và đặt userId
                 setUser({
+                    _id: decodedToken._id,
                     fullname: decodedToken.fullname,
                     email: decodedToken.email,
                 });

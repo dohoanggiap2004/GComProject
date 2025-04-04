@@ -3,6 +3,8 @@ const Workspace = require("../../app/models/Workspace");
 const mongoose = require('mongoose');
 const Board = require("../../app/models/Board");
 const Task = require("../../app/models/Task");
+const User = require("../../app/models/User");
+const {getBoardByWorkspaceIdService} = require("./boardService");
 
 const getWorkspaceByMemberIdService = async (memberId) => {
     return Workspace.find({ memberIds: memberId })
@@ -12,9 +14,28 @@ const getWorkspaceByMemberIdService = async (memberId) => {
             workspaces.map(workspace => ({
                 _id: workspace._id,
                 name: workspace.name,
-                memberQuantity: workspace.memberIds.length
+                memberQuantity: workspace.memberIds.length,
+                memberIds: workspace.memberIds
             }))
         );
+};
+
+const getWorkspaceByWorkspaceIdService = async (workspaceId) => {
+    // Lấy workspace theo workspaceId
+    const workspace = await Workspace.findById(workspaceId).lean()
+
+    if (!workspace) {
+        throw new Error('Workspace not found');
+    }
+
+    const memberIds = workspace.memberIds;
+    const user = await User.find({ '_id': { $in: memberIds } }).select('_id fullname email').lean();
+    const board = await getBoardByWorkspaceIdService(workspaceId);
+    return {
+        workspace,
+        user,
+        board
+    };
 };
 
 const createWorkspaceService = async (workspace, memberId) => {
@@ -34,7 +55,14 @@ const createWorkspaceService = async (workspace, memberId) => {
 
 const updateWorkspaceService = async (workspace) => {
     const { _id, ...updateFields } = workspace;
-    return Workspace.findByIdAndUpdate(_id, updateFields, {new: true});
+
+    const updateWorkspace = await Workspace.findByIdAndUpdate(_id, updateFields, {new: true}).lean();
+    const memberIds = updateWorkspace.memberIds;
+    const user = await User.find({ '_id': { $in: memberIds } }).lean();
+    return {
+        workspace: updateWorkspace,
+        user: user,
+    }
 };
 
 const deleteWorkspaceService = async (workspaceId) => {
@@ -106,5 +134,5 @@ const deleteWorkspaceService = async (workspaceId) => {
     }
 };
 
-module.exports = { getWorkspaceByMemberIdService,
+module.exports = { getWorkspaceByMemberIdService, getWorkspaceByWorkspaceIdService,
     createWorkspaceService, updateWorkspaceService, deleteWorkspaceService, };

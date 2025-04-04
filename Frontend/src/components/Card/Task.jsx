@@ -52,14 +52,14 @@ const Task = ({task, handleDeleteTask}) => {
     };
 
     return (
-        <div className="flex items-center justify-between mt-2 p-1 bg-gray-100 rounded-lg shadow-sm hover:bg-gray-200 transition">
+        <div className="flex items-center justify-between mt-2 p-1 bg-gray-100 rounded-lg shadow-xs hover:bg-gray-200 transition">
             <div className="flex items-center">
                 <input
                     type="checkbox"
                     checked={task.isCompleted}
                     value={task.isCompleted}
                     onChange={handleCheckboxChange}
-                    className="mr-2 h-4 w-4 text-blue-500 focus:ring-blue-500 border-gray-300 rounded"
+                    className="mr-2 h-4 w-4 text-blue-500 focus:ring-blue-500 border-gray-300 rounded-sm"
                 />
                 {/* Tiêu đề: Hiển thị input khi đang chỉnh sửa, ngược lại hiển thị text */}
                 {isEditingTitle ? (
@@ -75,7 +75,7 @@ const Task = ({task, handleDeleteTask}) => {
                             }
                         }}
                         autoFocus
-                        className="text-sm border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-full min-w-20 me-4"
+                        className="text-sm border rounded-sm focus:outline-hidden focus:ring-2 focus:ring-blue-500 w-full min-w-20 me-4"
                     />
                 ) : (
                     <div

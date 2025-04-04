@@ -46,13 +46,16 @@ class UserController {
   async searchUserByEmailAndName(req, res) {
     try {
       if (!req?.query?.value)
-        return res.status(400).json({ message: "User information is required" });
+        return res.status(200).json({data: []});
 
       const { value } = req.query;
+
       const users = await searchUsersService(value);
 
       if (!users) {
-        return res.status(200).json({ message: "User not found" });
+        return res.status(200).json({
+          data: []
+        });
       }
 
       res.status(200).json({

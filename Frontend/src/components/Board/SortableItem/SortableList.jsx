@@ -133,7 +133,7 @@ const SortableList = ({ list, cards, onToggleCheck, onAddCard, boardId }) => {
             }}
             style={style}
             className={`bg-gray-100 px-2 py-1 w-64 rounded-lg transition-all duration-200 ease-in-out relative ${
-                isDragging ? 'shadow-lg' : 'shadow-sm'
+                isDragging ? 'shadow-lg' : 'shadow-xs'
             }`}
         >
             <div className="flex justify-between items-center mb-2">
@@ -157,7 +157,7 @@ const SortableList = ({ list, cards, onToggleCheck, onAddCard, boardId }) => {
                             onKeyDown={handleTitleKeyDown}
                             onBlur={handleTitleBlur}
                             onMouseDown={(e) => e.stopPropagation()}
-                            className="text-sm font-semibold text-gray-700 w-full p-1 rounded-md border border-gray-300 focus:outline-none focus:border-blue-500"
+                            className="text-sm font-semibold text-gray-700 w-full p-1 rounded-md border border-gray-300 focus:outline-hidden focus:border-blue-500"
                         />
                     ) : (
                         <h3
@@ -196,18 +196,18 @@ const SortableList = ({ list, cards, onToggleCheck, onAddCard, boardId }) => {
                         value={newCardContent}
                         onChange={(e) => setNewCardContent(e.target.value)}
                         placeholder="Enter a title or paste a link"
-                        className="w-full p-2 text-xs rounded-lg border border-gray-300 focus:outline-none focus:border-blue-500"
+                        className="w-full p-2 text-xs rounded-lg border border-gray-300 focus:outline-hidden focus:border-blue-500"
                     />
                     <div className="flex space-x-2 items-center">
                         <button
                             onClick={handleAddCardSubmit}
-                            className="bg-blue-500 text-white text-sm font-semibold px-4 py-1 rounded-lg hover:bg-blue-600 mt-2"
+                            className="bg-blue-500 text-white text-sm font-semibold px-4 py-1 rounded-lg hover:bg-blue-600 mt-2 mb-2"
                         >
                             Add card
                         </button>
                         <button
                             onClick={handleCancelAddCard}
-                            className="text-gray-500 hover:text-gray-700 mt-2"
+                            className="text-gray-500 hover:text-gray-700 mt-2 mb-2"
                         >
                             ✕
                         </button>
@@ -216,7 +216,7 @@ const SortableList = ({ list, cards, onToggleCheck, onAddCard, boardId }) => {
             ) : (
                 <button
                     onClick={handleAddCardClick}
-                    className="text-gray-700 text-sm font-semibold hover:bg-gray-300 w-full p-1 py-1.5 rounded-md shadow-md text-start"
+                    className="text-gray-700 text-sm font-semibold hover:bg-gray-300 w-full p-1 py-1.5 rounded-md shadow-md text-start mb-2"
                 >
                     <div className={'flex items-center'}>
                         <GoPlus className={'mr-2 w-4 h-4'}/> Add a card

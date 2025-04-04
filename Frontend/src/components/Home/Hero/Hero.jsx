@@ -39,7 +39,7 @@ const Hero = () => {
                             variants={FadeUp(0.6)}
                             initial="initial"
                             animate="animate"
-                            className="text-3xl lg:text-5xl font-bold !leading-snug"
+                            className="text-3xl lg:text-5xl font-bold leading-snug!"
                         >
 
                             <span className="text-secondary">Organize Your Work,{" "}Boost Your Team</span> - Start with Us!
@@ -72,7 +72,7 @@ const Hero = () => {
                         transition={{duration: 0.6, delay: 0.4, ease: "easeInOut"}}
                         src={HeroPng}
                         alt=""
-                        className="w-[400px] xl:w-[600px] relative z-10 drop-shadow"
+                        className="w-[400px] xl:w-[600px] relative z-10 drop-shadow-sm"
                     />
                     <motion.img
                         initial={{x: -50, opacity: 0}}
@@ -80,7 +80,7 @@ const Hero = () => {
                         transition={{duration: 0.6, delay: 0.2, ease: "easeInOut"}}
                         src={Blob}
                         alt=""
-                        className="absolute -bottom-32 w-[800px] md:w-[1500px] z-[1] hidden md:block"
+                        className="absolute -bottom-32 w-[800px] md:w-[1500px] z-1 hidden md:block"
                     />
                 </div>
             </div>

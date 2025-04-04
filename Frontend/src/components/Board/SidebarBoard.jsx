@@ -3,16 +3,14 @@ import {CiViewTable} from "react-icons/ci";
 import {IoCalendarOutline} from "react-icons/io5";
 import {useSelector} from "react-redux";
 import {Link} from "react-router-dom";
-import {useState} from "react";
 
-const SidebarBoard = ({workspaceName, workspaceId}) => {
-    const {boardTitle} = useSelector((state) => state.board);
+const SidebarBoard = () => {
+    const {board, workspace} = useSelector((state) => state.workspace);
     return (
         <div className="w-64 min-h-screen p-4 hidden md:block">
             <div className="flex items-center">
                 <span className="bg-green-500 text-white px-3 py-2 rounded-md text-xs mr-2">G</span>
-                {/*{workspace.name.length > 15 ? `${workspace.name.slice(0, 15)}...` : workspace.name}*/}
-                {workspaceName.length > 15 ? `${workspaceName.slice(0, 15)}...` : workspaceName}
+                {workspace?.name?.length > 15 ? `${workspace?.name?.slice(0, 15)}...` : workspace?.name}
             </div>
 
             <div className={'border-b-2 border-gray-400 m-4'}></div>
@@ -49,12 +47,12 @@ const SidebarBoard = ({workspaceName, workspaceId}) => {
             <div className="mt-4">
                 <h3 className="text-gray-500 text-sm font-semibold">Your boards</h3>
                 <div className="ml-1 space-y-2 mt-2">
-                    {Array.isArray(boardTitle) && boardTitle.length > 0 ? (
-                        boardTitle.map((board) => (
+                    {Array.isArray(board) && board.length > 0 ? (
+                        board.map((board) => (
                             <button key={board._id}
                                 className="flex items-center w-full p-1 text-gray-700 hover:bg-gray-200 rounded-lg text-sm">
                                 <Link to={`/user-workspace/board/${board._id}`} className="flex items-center"
-                                      state={{ workspaceName: workspaceName, workspaceId: workspaceId }}>
+                                      state={{ workspaceName: workspace.name, workspaceId: workspace._id }}>
                                     <img src={board.background} alt={board.title} className="w-5 h-5 object-cover mr-2 " />
                                     <div>
                                         {board.title}
@@ -71,7 +69,7 @@ const SidebarBoard = ({workspaceName, workspaceId}) => {
 
             <div className={'border-t-2 border-gray-400 mt-4'}></div>
 
-            <div className="mt-6 p-2 bg-gradient-to-r from-indigo-900 to-purple-600 rounded-lg text-sm shadow-md flex items-center">
+            <div className="mt-6 p-2 bg-linear-to-r from-indigo-900 to-purple-600 rounded-lg text-sm shadow-md flex items-center">
                 <FaCrown className="text-white mr-2" />
                 <h3 className="text-white font-semibold">Try GCom Premium</h3>
             </div>

@@ -7,22 +7,21 @@ import {
 } from '@dnd-kit/sortable';
 import NavbarWorkspace from "../components/Workspace/Navbar-Workspace.jsx";
 import SidebarBoard from "../components/Board/SidebarBoard.jsx";
-import HeaderBoard from "../components/Home/Header/HeaderBoard.jsx";
+import HeaderBoard from "../components/Board/HeaderBoard.jsx";
 import { useLocation, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
     createCard,
     createList,
     getBoardByBoardId,
-    getBoardByWorkspaceId,
     updateCardIndex,
     updateCard, updateListIndex,
 } from "../store/actions/boardAction.js";
 import SortableList from "../components/Board/SortableItem/SortableList.jsx";
+import {getWorkspaceByWorkspaceId} from "../store/actions/workspaceAction.js";
 
 function BoardWorkspace() {
     const location = useLocation();
-    const workspaceName = location.state?.workspaceName || "Default Title";
     const workspaceId = location.state?.workspaceId || "Default Title";
     const { boardId } = useParams();
     const dispatch = useDispatch();
@@ -34,7 +33,7 @@ function BoardWorkspace() {
     const [reListInfo, setReListInfo] = useState(null);
 
     useEffect(() => {
-        dispatch(getBoardByWorkspaceId(workspaceId));
+        dispatch(getWorkspaceByWorkspaceId(workspaceId))
     }, [workspaceId, dispatch]);
 
     useEffect(() => {
@@ -204,14 +203,14 @@ function BoardWorkspace() {
     return (
         <div className="flex flex-col h-screen">
             {/* Navbar cố định trên cùng */}
-            <div className="flex-shrink-0 bg-gray-200">
+            <div className="shrink-0 bg-gray-200">
                 <NavbarWorkspace />
             </div>
 
             {/* Phần dưới: chia 2 cột (Sidebar trái - Nội dung phải) */}
             <div className="flex flex-1 overflow-hidden">
-                <div className="w-64 flex-shrink-0 border-r-2 border-gray-200 hidden md:flex">
-                    <SidebarBoard workspaceName={workspaceName} workspaceId={workspaceId} />
+                <div className="w-64 shrink-0 border-r-2 border-gray-200 hidden md:flex">
+                    <SidebarBoard/>
                 </div>
 
                 {/* Nội dung bên phải */}
@@ -219,12 +218,12 @@ function BoardWorkspace() {
                     className="flex-1 flex flex-col overflow-hidden bg-cover bg-center"
                     style={{ backgroundImage: `url(${board?.background})` }}
                 >                    {/* HeaderBoard cố định ở đầu nội dung */}
-                    <div className="flex-shrink-0">
+                    <div className="shrink-0">
                         <HeaderBoard workspaceId={workspaceId || 'default'} />
                     </div>
 
                     {/* Vùng board (màu hồng) chiếm toàn bộ không gian còn lại, cuộn ngang */}
-                    <div className="flex-1 overflow-x-auto overflow-y-hidden p-4">
+                    <div className="flex-1 overflow-x-auto overflow-y-auto p-4">
                         <DndContext
                             collisionDetection={closestCenter}
                             onDragOver={handleDragOver}
@@ -247,24 +246,24 @@ function BoardWorkspace() {
                                                 onAddCard={handleAddCard}
                                                 boardId={boardId}
                                                 // Mỗi list có chiều rộng cố định, để khi nhiều list thì cuộn ngang
-                                                className="w-64 flex-shrink-0"
+                                                className="w-64 shrink-0"
                                             />
                                         ))}
 
                                     {/* Form / button thêm list mới */}
                                     {isAddingList ? (
-                                        <div className="bg-pink-400 p-2 rounded-lg hover:bg-pink-500 h-fit w-72 flex-shrink-0">
+                                        <div className="bg-gray-200 p-2 rounded-lg h-fit w-64 shrink-0">
                                             <input
                                                 type="text"
                                                 value={listTitle}
                                                 onChange={(e) => setListTitle(e.target.value)}
                                                 placeholder="Enter a list name"
-                                                className="w-full p-2 rounded-lg border border-gray-300 focus:outline-none focus:border-blue-500"
+                                                className="w-full p-1 text-sm rounded-lg border border-gray-300 focus:outline-hidden focus:border-blue-500"
                                             />
                                             <div className="flex space-x-2 mt-2">
                                                 <button
                                                     onClick={handleAddList}
-                                                    className="bg-blue-500 text-white px-4 py-1 rounded-lg hover:bg-blue-600"
+                                                    className="bg-blue-500 text-white px-4 py-1 rounded-lg hover:bg-blue-600 text-sm font-semibold"
                                                 >
                                                     Add list
                                                 </button>
@@ -273,7 +272,7 @@ function BoardWorkspace() {
                                                         setIsAddingList(false);
                                                         setListTitle('');
                                                     }}
-                                                    className="text-gray-500 hover:text-gray-700 "
+                                                    className="text-gray-500 hover:bg-gray-300 p-1 px-2 rounded-md"
                                                 >
                                                     ✕
                                                 </button>
@@ -281,7 +280,7 @@ function BoardWorkspace() {
                                         </div>
                                     ) : (
                                         <button
-                                            className="p-2 text-gray-700 rounded-lg hover:bg-gray-400 h-fit w-64 flex-shrink-0 text-start text-sm font-semibold"
+                                            className="p-2 text-gray-700 rounded-lg hover:bg-gray-400 h-fit w-64 shrink-0 text-start text-sm font-semibold"
                                             onClick={() => setIsAddingList(true)}
                                         >
                                             + Add another list

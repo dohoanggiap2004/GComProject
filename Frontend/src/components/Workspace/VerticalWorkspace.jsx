@@ -8,9 +8,8 @@ import {Link} from "react-router-dom";
 
 const VerticalWorkspace = () => {
     const {workspaces} = useSelector((state) => state.workspace);
-
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const [openWorkspaces, setOpenWorkspaces] = useState({});
-
     // Hàm toggle trạng thái từng workspace
     const toggleSection = (workspaceId) => {
         setOpenWorkspaces((prevState) => (
@@ -20,8 +19,6 @@ const VerticalWorkspace = () => {
             }
         ));
     };
-
-    const [isModalOpen, setIsModalOpen] = useState(false);
 
     return (
         <div className="mt-2">
@@ -53,15 +50,16 @@ const VerticalWorkspace = () => {
                                     className="flex items-center w-full p-2 text-gray-700 hover:bg-gray-200 rounded-lg text-sm">
                                     <FaRegHeart className="mr-2"/> Hightlights
                                 </button>
-                                <button
-                                    className="flex justify-between items-center w-full p-2 text-gray-700 hover:bg-gray-200 rounded-lg text-sm">
+                                <Link to={`/user-workspace/member/${workspace._id}`}
+                                    className="flex justify-between items-center w-full p-2 text-gray-700 hover:bg-gray-200 rounded-lg text-sm"
+                                >
                                     <div className="flex items-center">
                                         <FaUserFriends className="mr-2"/> Members
                                     </div>
                                     <FiPlus/>
-                                </button>
+                                </Link>
                                 <Link to={'/user-workspace/workspace-setting'}
-                                      state={{workspaceId: workspace._id, workspaceName: workspace.name}}
+                                      state={{workspaceId: workspace._id}}
                                       className="flex items-center w-full p-2 text-gray-700 hover:bg-gray-200 rounded-lg text-sm">
                                     <FaCog className="mr-2"/> Settings
                                 </Link>

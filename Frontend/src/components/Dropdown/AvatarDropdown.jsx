@@ -70,10 +70,10 @@ const AvatarDropdown = () => {
                             </div>
                         </div>
                         <div className="mt-2 space-y-1">
-                            <button className="w-full text-left text-sm text-gray-700 hover:bg-gray-100 p-1 rounded">
+                            <button className="w-full text-left text-sm text-gray-700 hover:bg-gray-100 p-1 rounded-sm">
                                 Switch accounts
                             </button>
-                            <button className="w-full text-left text-sm text-gray-700 hover:bg-gray-100 p-1 rounded">
+                            <button className="w-full text-left text-sm text-gray-700 hover:bg-gray-100 p-1 rounded-sm">
                                 Manage account
                             </button>
                         </div>
@@ -83,13 +83,13 @@ const AvatarDropdown = () => {
                     <div className="p-4 border-b border-gray-200">
                         <h3 className="text-xs font-semibold text-gray-500 uppercase">GCom</h3>
                         <div className="mt-2 space-y-1">
-                            <button className="w-full text-left text-sm text-gray-700 hover:bg-gray-100 p-1 rounded">
+                            <button className="w-full text-left text-sm text-gray-700 hover:bg-gray-100 p-1 rounded-sm">
                                 Profile and visibility
                             </button>
-                            <button className="w-full text-left text-sm text-gray-700 hover:bg-gray-100 p-1 rounded">
+                            <button className="w-full text-left text-sm text-gray-700 hover:bg-gray-100 p-1 rounded-sm">
                                 Activity
                             </button>
-                            <button className="w-full text-left text-sm text-gray-700 hover:bg-gray-100 p-1 rounded">
+                            <button className="w-full text-left text-sm text-gray-700 hover:bg-gray-100 p-1 rounded-sm">
                                 Cards
                             </button>
                         </div>
@@ -98,7 +98,7 @@ const AvatarDropdown = () => {
                     {/* Create Workspace */}
                     <div className="p-4 border-b border-gray-200">
                         <button
-                            className="w-full text-left text-sm text-gray-700 hover:bg-gray-100 p-1 rounded flex items-center space-x-2"
+                            className="w-full text-left text-sm text-gray-700 hover:bg-gray-100 p-1 rounded-sm flex items-center space-x-2"
                             onClick={() => setIsWorkspaceOpen(true)}>
                             <span className="flex items-center">
                                 <GoPlus className={'mr-2'}/> Create a Workspace
@@ -111,10 +111,10 @@ const AvatarDropdown = () => {
                     {/* Help, Shortcuts, Log out */}
                     <div className="p-4">
                         <div className="space-y-1">
-                            <button className="w-full text-left text-sm text-gray-700 hover:bg-gray-100 p-1 rounded">
+                            <button className="w-full text-left text-sm text-gray-700 hover:bg-gray-100 p-1 rounded-sm">
                                 Help
                             </button>
-                            <button className="w-full text-left text-sm text-red-600 hover:bg-gray-100 p-1 rounded"
+                            <button className="w-full text-left text-sm text-red-600 hover:bg-gray-100 p-1 rounded-sm"
                                     onClick={handleLogout}
                             >
                                 Log out

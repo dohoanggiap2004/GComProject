@@ -40,8 +40,8 @@ export const createBoard = createAsyncThunk('boards/createBoard', async (payload
 
 export const updateBoard = createAsyncThunk('boards/updateBoard', async (payload, thunkAPI) => {
     try {
-        await instanceAxios8000.put('/api/boards', payload);
-        return payload;
+        const response = await instanceAxios8000.put('/api/boards', payload);
+        return response.data.rowsEffected;
     } catch (error) {
         thunkAPI.rejectWithValue(error.response.data);
     }

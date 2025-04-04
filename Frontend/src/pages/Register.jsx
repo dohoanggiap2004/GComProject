@@ -51,7 +51,7 @@ const Register = () => {
                             name="fullname"
                             value={formData.fullname}
                             onChange={handleChange}
-                            className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="w-full px-4 py-3 border rounded-lg focus:outline-hidden focus:ring-2 focus:ring-blue-500"
                         />
                     </div>
                     <div className="mb-5">
@@ -61,7 +61,7 @@ const Register = () => {
                             name="email"
                             value={formData.email}
                             onChange={handleChange}
-                            className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="w-full px-4 py-3 border rounded-lg focus:outline-hidden focus:ring-2 focus:ring-blue-500"
                         />
                     </div>
                     <div className="mb-5">
@@ -71,7 +71,7 @@ const Register = () => {
                             name="password"
                             value={formData.password}
                             onChange={handleChange}
-                            className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="w-full px-4 py-3 border rounded-lg focus:outline-hidden focus:ring-2 focus:ring-blue-500"
                         />
                     </div>
                     <div className="mb-5">
@@ -81,7 +81,7 @@ const Register = () => {
                             name="confirmPassword"
                             value={formData.confirmPassword}
                             onChange={handleChange}
-                            className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="w-full px-4 py-3 border rounded-lg focus:outline-hidden focus:ring-2 focus:ring-blue-500"
                         />
                     </div>
                     {error && (

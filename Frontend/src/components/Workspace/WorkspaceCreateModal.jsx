@@ -28,8 +28,9 @@ const WorkspaceCreateModal = ({isOpen, onClose}) => {
     if (!isOpen) return null;
 
     return (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-            <div className="bg-white p-6 rounded-lg shadow-lg w-2/3 max-w-2xl">
+        <div className="fixed inset-0 flex items-center justify-center z-50">
+            <div className="absolute inset-0 bg-black opacity-50"></div>
+            <div className="bg-white p-6 rounded-lg shadow-lg w-2/3 max-w-2xl z-50">
                 {/* Header */}
                 <div className="flex justify-between items-center">
                     <h2 className="text-xl font-bold">Let's build a Workspace</h2>
@@ -44,7 +45,7 @@ const WorkspaceCreateModal = ({isOpen, onClose}) => {
                     <label className="block text-sm font-medium text-gray-700">Workspace name</label>
                     <input
                         type="text"
-                        className="w-full p-2 border rounded"
+                        className="w-full p-2 border rounded-sm"
                         name='name'
                         value={formData.name}
                         onChange={handleChange}
@@ -54,7 +55,7 @@ const WorkspaceCreateModal = ({isOpen, onClose}) => {
                 <div className="mb-4">
                     <label className="block text-sm font-medium text-gray-700">Workspace type</label>
                     <select
-                        className="w-full p-2 border rounded"
+                        className="w-full p-2 border rounded-sm"
                         name='type'
                         value={formData.type}
                         onChange={handleChange}
@@ -74,7 +75,7 @@ const WorkspaceCreateModal = ({isOpen, onClose}) => {
                 <div className="mb-4">
                     <label className="block text-sm font-medium text-gray-700">Workspace description (Optional)</label>
                     <textarea
-                        className="w-full p-2 border rounded"
+                        className="w-full p-2 border rounded-sm"
                         name='description'
                         rows={3}
                         value={formData.description}

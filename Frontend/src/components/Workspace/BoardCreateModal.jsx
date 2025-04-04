@@ -44,8 +44,9 @@ const CreateBoardModal = ({ isOpen, onClose, workspaceId }) => {
     }, [workspaceId]);
 
     return isOpen ? (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-            <div className="bg-white w-96 p-6 rounded-lg shadow-lg">
+        <div className="fixed inset-0 flex items-center justify-center">
+            <div className="absolute inset-0 bg-black opacity-50"></div>
+            <div className="bg-white w-96 p-6 rounded-lg shadow-lg z-50">
                 <h2 className="text-xl font-semibold mb-4">Create board</h2>
 
                 {/* Chọn Background */}
@@ -67,7 +68,7 @@ const CreateBoardModal = ({ isOpen, onClose, workspaceId }) => {
                 <label className="block text-sm font-medium text-gray-700">Board title *</label>
                 <input
                     type="text"
-                    className="w-full border p-2 rounded mt-1 focus:outline-blue-500"
+                    className="w-full border p-2 rounded-sm mt-1 focus:outline-blue-500"
                     placeholder="Enter board title"
                     name="title"
                     value={formData.title}
@@ -78,7 +79,7 @@ const CreateBoardModal = ({ isOpen, onClose, workspaceId }) => {
                 {/* Chọn Visibility */}
                 <label className="block text-sm font-medium text-gray-700 mt-3">Visibility</label>
                 <select
-                    className="w-full border p-2 rounded mt-1 focus:outline-blue-500"
+                    className="w-full border p-2 rounded-sm mt-1 focus:outline-blue-500"
                     name="visibility"
                     value={formData.visibility}
                     onChange={handleChange}
@@ -90,7 +91,7 @@ const CreateBoardModal = ({ isOpen, onClose, workspaceId }) => {
 
                 {/* Actions */}
                 <div className="mt-4 flex justify-end gap-2">
-                    <button onClick={onClose} className="px-4 py-2 bg-gray-300 rounded">Cancel</button>
+                    <button onClick={onClose} className="px-4 py-2 bg-gray-300 rounded-sm">Cancel</button>
                     <button
                         onClick={handleSubmit}
                         className={`px-4 py-2 rounded ${

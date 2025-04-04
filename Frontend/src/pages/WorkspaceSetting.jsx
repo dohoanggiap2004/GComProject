@@ -34,13 +34,13 @@ const WorkspaceSetting = () => {
     return (
         <div className="flex flex-col h-screen">
             {/* Navbar cố định trên cùng */}
-            <div className="flex-shrink-0 bg-gray-200">
+            <div className="shrink-0 bg-gray-200">
                 <NavbarWorkspace/>
             </div>
 
             {/* Phần dưới: chia 2 cột (Sidebar trái - Nội dung phải) */}
             <div className="flex">
-                <div className="w-72 flex-shrink-0 hidden md:flex border-r-2 border-gray-200">
+                <div className="w-72 shrink-0 hidden md:flex border-r-2 border-gray-200">
                     <SidebarBoard workspaceId={workspaceId} workspaceName={workspaceName}/>
                 </div>
                 <div className="flex flex-col items-center w-full m-4">
@@ -49,7 +49,7 @@ const WorkspaceSetting = () => {
                         <div className="block md:flex justify-between mb-6">
                             <div className="flex items-center space-x-2">
                                 <div
-                                    className="w-12 h-12 bg-teal-500 text-white flex items-center justify-center rounded">
+                                    className="w-12 h-12 bg-teal-500 text-white flex items-center justify-center rounded-sm">
                                     {workspaceName.slice(0, 1)}
                                 </div>
                                 <div className={' items-center space-x-2'}>
@@ -59,7 +59,7 @@ const WorkspaceSetting = () => {
 
                             </div>
                             <button
-                                className="bg-blue-600 text-white px-4 py-1 rounded flex items-center space-x-2 mt-4 md:mt-0">
+                                className="bg-blue-600 text-white px-4 py-1 rounded-sm flex items-center space-x-2 mt-4 md:mt-0">
                                 <GoPlus/>
                                 <span>Invite Workspace members</span>
                             </button>
@@ -76,7 +76,7 @@ const WorkspaceSetting = () => {
                                 <h3 className="text-lg font-semibold mb-2">Workspace visibility</h3>
                                 <hr className={'border-r-2 border-gray-300'}/>
                                 <div
-                                    className="block md:flex md:justify-between md:items-center bg-white p-4 rounded-lg shadow-sm">
+                                    className="block md:flex md:justify-between md:items-center bg-white p-4 rounded-lg shadow-xs">
                                     <div className="flex items-center space-x-2">
                                         <p className="text-sm text-gray-600">
                                             <span className="font-semibold">Private</span> - This Workspace is private.
@@ -84,7 +84,7 @@ const WorkspaceSetting = () => {
                                         </p>
                                     </div>
                                     <button
-                                        className="text-gray-500 border border-gray-300 px-3 py-1 rounded hover:bg-gray-100 mt-4 md:mt-0 md:ms-6">
+                                        className="text-gray-500 border border-gray-300 px-3 py-1 rounded-sm hover:bg-gray-100 mt-4 md:mt-0 md:ms-6">
                                         Change
                                     </button>
                                 </div>
@@ -95,7 +95,7 @@ const WorkspaceSetting = () => {
                                 <h3 className="text-lg font-semibold mb-2">Sharing boards with guests</h3>
                                 <hr className={'border-r-2 border-gray-300'}/>
                                 <div
-                                    className="block md:flex md:justify-between md:items-center bg-white p-4 rounded-lg shadow-sm">
+                                    className="block md:flex md:justify-between md:items-center bg-white p-4 rounded-lg shadow-xs">
                                     <div className="flex items-center space-x-2">
                                         <p className="text-sm text-gray-600">
                                             Anybody can send and receive invitations
@@ -103,7 +103,7 @@ const WorkspaceSetting = () => {
                                         </p>
                                     </div>
                                     <button
-                                        className="text-gray-500 border border-gray-300 px-3 py-1 rounded hover:bg-gray-100 mt-4 md:mt-0 md:ms-6">
+                                        className="text-gray-500 border border-gray-300 px-3 py-1 rounded-sm hover:bg-gray-100 mt-4 md:mt-0 md:ms-6">
                                         Change
                                     </button>
                                 </div>
@@ -121,7 +121,7 @@ const WorkspaceSetting = () => {
                                 {/* Modal Xóa Workspace */}
                                 {isDeleteModalOpen && (
                                     <div
-                                        className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+                                        className="fixed inset-0 flex items-center justify-center bg-opacity-50 z-50">
                                         <div className="bg-white p-6 rounded-lg shadow-lg w-96 relative">
                                             {/* Nút đóng modal */}
                                             <button
@@ -173,7 +173,7 @@ const WorkspaceSetting = () => {
                                                 value={workspaceInput}
                                                 onChange={(e) => setWorkspaceInput(e.target.value)}
                                                 placeholder="Enter Workspace name"
-                                                className="w-full p-2 border border-gray-300 rounded mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                                className="w-full p-2 border border-gray-300 rounded-sm mb-4 focus:outline-hidden focus:ring-2 focus:ring-blue-500"
                                             />
 
                                             {/* Nút xóa */}

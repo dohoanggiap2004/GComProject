@@ -41,7 +41,7 @@ const SortableCard = ({card, onToggleCheck}) => {
                 style={style}
                 {...attributes}
                 className={`group relative bg-white p-2 mb-2 rounded-lg shadow-md hover:border-2 hover:border-cyan-500 ${
-                    isDragging ? 'shadow-lg' : 'shadow-sm'
+                    isDragging ? 'shadow-lg' : 'shadow-xs'
                 } flex items-center cursor-pointer`}
                 onClick={handleOpenModal} // Mở modal khi click vào card
             >

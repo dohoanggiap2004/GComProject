@@ -11,20 +11,15 @@ import {
     FaArchive,
     FaCog,
     FaPaintRoller,
-    FaBolt,
-    FaRocket,
-    FaStickerMule,
     FaPlus,
     FaEye,
-    FaEnvelope,
     FaCopy,
     FaShareAlt,
     FaTimes
 } from "react-icons/fa";
-import {deleteBoard} from "../../../store/actions/boardAction.js";
+import {deleteBoard} from "../../store/actions/boardAction.js";
 import {useNavigate} from "react-router-dom";
 import toast from "react-hot-toast";
-
 
 export default function HeaderBoard({workspaceId}) {
     const [selectedOption, setSelectedOption] = useState("Bảng");
@@ -87,7 +82,7 @@ export default function HeaderBoard({workspaceId}) {
                         <GoPeople/>
                     </span>
                 </div>
-                <button className="bg-gray-400 text-white font-semibold px-3 py-1 rounded flex items-center">
+                <button className="bg-gray-400 text-white font-semibold px-3 py-1 rounded-sm flex items-center">
                     <GoPeople className={'mr-2'}/> Share
                 </button>
                 <div className="relative">
@@ -108,68 +103,48 @@ export default function HeaderBoard({workspaceId}) {
 
                             {/* Nội dung menu */}
                             <div className="p-2">
-                                <button className="w-full flex items-center text-sm p-2 hover:bg-gray-100 rounded">
+                                <button className="w-full flex items-center text-sm p-2 hover:bg-gray-100 rounded-sm">
                                     <FaInfoCircle className="mr-2 text-gray-500"/>
                                     About this board
                                     <span className="ml-1 text-xs text-gray-500">Add a description to your board</span>
                                 </button>
-                                <button className="w-full flex items-center text-sm p-2 hover:bg-gray-100 rounded">
+                                <button className="w-full flex items-center text-sm p-2 hover:bg-gray-100 rounded-sm">
                                     <FaList className="mr-2 text-gray-500"/>
                                     Activity
                                 </button>
-                                <button className="w-full flex items-center text-sm p-2 hover:bg-gray-100 rounded">
+                                <button className="w-full flex items-center text-sm p-2 hover:bg-gray-100 rounded-sm">
                                     <FaArchive className="mr-2 text-gray-500"/>
                                     Archived items
                                 </button>
                                 <div className="border-t my-2"></div>
-                                <button className="w-full flex items-center text-sm p-2 hover:bg-gray-100 rounded">
+                                <button className="w-full flex items-center text-sm p-2 hover:bg-gray-100 rounded-sm">
                                     <FaCog className="mr-2 text-gray-500"/>
                                     Settings
                                 </button>
-                                <button className="w-full flex items-center text-sm p-2 hover:bg-gray-100 rounded">
+                                <button className="w-full flex items-center text-sm p-2 hover:bg-gray-100 rounded-sm">
                                     <FaPaintRoller className="mr-2 text-gray-500"/>
                                     Change background
                                 </button>
-                                <button className="w-full flex items-center text-sm p-2 hover:bg-gray-100 rounded">
-                                    <FaCog className="mr-2 text-gray-500"/>
-                                    Custom Fields
-                                </button>
-                                <button className="w-full flex items-center text-sm p-2 hover:bg-gray-100 rounded">
-                                    <FaBolt className="mr-2 text-gray-500"/>
-                                    Automation
-                                </button>
-                                <button className="w-full flex items-center text-sm p-2 hover:bg-gray-100 rounded">
-                                    <FaRocket className="mr-2 text-gray-500"/>
-                                    Power-Ups
-                                </button>
-                                <button className="w-full flex items-center text-sm p-2 hover:bg-gray-100 rounded">
-                                    <FaStickerMule className="mr-2 text-gray-500"/>
-                                    Stickers
-                                </button>
-                                <button className="w-full flex items-center text-sm p-2 hover:bg-gray-100 rounded">
+                                <button className="w-full flex items-center text-sm p-2 hover:bg-gray-100 rounded-sm">
                                     <FaPlus className="mr-2 text-gray-500"/>
                                     Make template
                                     <span className="ml-auto text-xs text-purple-500">Upgrade</span>
                                 </button>
-                                <button className="w-full flex items-center text-sm p-2 hover:bg-gray-100 rounded">
+                                <button className="w-full flex items-center text-sm p-2 hover:bg-gray-100 rounded-sm">
                                     <FaEye className="mr-2 text-gray-500"/>
                                     Watch
                                 </button>
-                                <button className="w-full flex items-center text-sm p-2 hover:bg-gray-100 rounded">
-                                    <FaEnvelope className="mr-2 text-gray-500"/>
-                                    Email-to-board
-                                </button>
-                                <button className="w-full flex items-center text-sm p-2 hover:bg-gray-100 rounded">
+                                <button className="w-full flex items-center text-sm p-2 hover:bg-gray-100 rounded-sm">
                                     <FaCopy className="mr-2 text-gray-500"/>
                                     Copy board
                                 </button>
-                                <button className="w-full flex items-center text-sm p-2 hover:bg-gray-100 rounded">
+                                <button className="w-full flex items-center text-sm p-2 hover:bg-gray-100 rounded-sm">
                                     <FaShareAlt className="mr-2 text-gray-500"/>
                                     Print, export, and share
                                 </button>
                                 <div className="border-t my-2"></div>
                                 <button
-                                    className="w-full flex items-center text-sm p-2 hover:bg-gray-100 rounded text-red-500"
+                                    className="w-full flex items-center text-sm p-2 hover:bg-gray-100 rounded-sm text-red-500"
                                     onClick={() => setIsOpenDelete(true)}
                                 >
                                     <FaTimes className="mr-2"/>
@@ -178,7 +153,8 @@ export default function HeaderBoard({workspaceId}) {
 
                                 {isOpenDelete && (
                                     <div
-                                        className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+                                        className="fixed inset-0 flex items-center justify-center z-50 ">
+                                        <div className="absolute inset-0 bg-black opacity-50"></div>
                                         <div className="bg-white rounded-lg shadow-lg p-6 w-96 relative">
                                             {/* Close button */}
                                             <button
@@ -197,7 +173,7 @@ export default function HeaderBoard({workspaceId}) {
 
                                             {/* Delete button */}
                                             <button
-                                                className="w-full bg-red-500 text-white py-2 rounded hover:bg-red-600 transition-colors"
+                                                className="w-full bg-red-500 text-white py-2 rounded-sm hover:bg-red-600 transition-colors"
                                                 onClick={handleDeleteBoard}
                                             >
                                                 Delete

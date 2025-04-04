@@ -13,6 +13,7 @@ import RoleProtectedRoute from "./Utils/verifyRole.jsx";
 import Unauthorized from "./pages/Unauthozired.jsx";
 import { Toaster } from "react-hot-toast";
 import WorkspaceSetting from "./pages/WorkspaceSetting.jsx";
+import MemberManagement from "./pages/MemberManagement.jsx";
 
 const App = () => {
     return (
@@ -43,6 +44,10 @@ const App = () => {
                         <Route path={'/user-workspace/board/:boardId'}
                                element={<RoleProtectedRoute requiredRole={'user'}>
                                    <BoardWorkspace/>
+                               </RoleProtectedRoute>}/>
+                        <Route path={'/user-workspace/member/:workspaceId'}
+                               element={<RoleProtectedRoute requiredRole={'user'}>
+                                   <MemberManagement/>
                                </RoleProtectedRoute>}/>
                         <Route path={'/user-profile'} element={
                             <RoleProtectedRoute requiredRole={'user'}>

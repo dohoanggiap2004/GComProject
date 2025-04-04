@@ -86,7 +86,7 @@ export default function Checklist() {
             {isAdding ? (
                 <div className="mt-4">
                     <input
-                        className="w-full border rounded-md text-sm py-1.5 px-3 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                        className="w-full border rounded-md text-sm py-1.5 px-3 focus:ring-2 focus:ring-blue-500 focus:outline-hidden"
                         placeholder="Add an item"
                         type={"text"}
                         value={formData.title}

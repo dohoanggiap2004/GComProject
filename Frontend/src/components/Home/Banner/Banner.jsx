@@ -19,7 +19,7 @@ const Banner = () => {
             transition={{ duration: 0.5, ease: "easeInOut" }}
             src={BannerPng}
             alt=""
-            className="w-[350px] md:max-w-[450px] object-cover drop-shadow"
+            className="w-[350px] md:max-w-[450px] object-cover drop-shadow-sm"
           />
         </div>
         {/* Banner Text */}
@@ -30,7 +30,7 @@ const Banner = () => {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5 }}
-              className="text-3xl md:text-4xl font-bold !leading-snug"
+              className="text-3xl md:text-4xl font-bold leading-snug!"
             >
               Your Ultimate Project Management Tool!
             </motion.h1>

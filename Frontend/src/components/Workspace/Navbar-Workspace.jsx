@@ -73,7 +73,7 @@ export default function NavbarWorkspace() {
                     <input
                         type="text"
                         placeholder="Search"
-                        className="pl-8 pr-3 py-1.5 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300 text-sm"
+                        className="pl-8 pr-3 py-1.5 border rounded-md focus:outline-hidden focus:ring-2 focus:ring-blue-300 text-sm"
                     />
                 </div>
                 <IoIosSearch className="text-gray-500 w-5 h-5 md:hidden"/>

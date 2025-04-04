@@ -92,7 +92,7 @@ const DatePickModal = ({onChangeDateTime}) => {
                             min={today} // Chỉ cho phép chọn từ ngày hôm nay trở đi
                             disabled={!isStartDateEnabled}
                             onChange={handleStartDateChange}
-                            className={`w-full p-2 border rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                            className={`w-full p-2 border rounded text-sm focus:outline-hidden focus:ring-2 focus:ring-blue-500 ${
                                 !isStartDateEnabled ? "bg-gray-100 text-gray-400" : ""
                             }`}
                         />
@@ -118,7 +118,7 @@ const DatePickModal = ({onChangeDateTime}) => {
                                     min={`${startDate}T00:00`} // Chỉ cho phép chọn >= startDate
                                     disabled={!isDueDateEnabled}
                                     onChange={handleDueDateChange}
-                                    className={`w-full p-2 border rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                                    className={`w-full p-2 border rounded text-sm focus:outline-hidden focus:ring-2 focus:ring-blue-500 ${
                                         !isDueDateEnabled ? "bg-gray-100 text-gray-400" : ""
                                     }`}
                                 />
@@ -131,7 +131,7 @@ const DatePickModal = ({onChangeDateTime}) => {
                         <label className="block text-xs text-gray-600 mb-1">Set due date reminder</label>
                         <select
                             onChange={handleReminderChange}
-                            className="w-full p-2 border rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="w-full p-2 border rounded-sm text-sm focus:outline-hidden focus:ring-2 focus:ring-blue-500"
                         >
                             <option value="1">1 Day before</option>
                             <option value="2">2 Days before</option>
@@ -146,7 +146,7 @@ const DatePickModal = ({onChangeDateTime}) => {
                     <div className="flex space-x-2">
                         <button
                             onClick={handleSave}
-                            className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
+                            className="w-full bg-blue-500 text-white p-2 rounded-sm hover:bg-blue-600"
                         >
                             Save
                         </button>
@@ -154,7 +154,7 @@ const DatePickModal = ({onChangeDateTime}) => {
                             onClick={() => {
                                 setIsDateModalOpen(false)
                             }}
-                            className="w-full bg-gray-200 text-gray-700 p-2 rounded hover:bg-gray-300"
+                            className="w-full bg-gray-200 text-gray-700 p-2 rounded-sm hover:bg-gray-300"
                         >
                             Cancel
                         </button>

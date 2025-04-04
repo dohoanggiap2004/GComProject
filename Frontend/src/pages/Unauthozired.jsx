@@ -10,7 +10,7 @@ const Unauthorized = () => {
                     </h2>
                     <p className="text-2xl md:text-3xl dark:text-gray-300">Bạn không có quyền truy cập.</p>
                     <Link to={"/"}
-                       className="px-8 py-4 text-xl font-semibold rounded bg-purple-600 text-gray-50 hover:text-gray-2">
+                       className="px-8 py-4 text-xl font-semibold rounded-sm bg-purple-600 text-gray-50 hover:text-gray-2">
                         Quay lại trang chủ
                     </Link>
                 </div>

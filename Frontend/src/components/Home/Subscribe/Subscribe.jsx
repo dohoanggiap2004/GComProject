@@ -26,7 +26,7 @@ const Subscribe = () => {
           className="flex flex-col justify-center"
         >
           <div className="text-center space-y-4 lg:max-w-[430px] mx-auto">
-            <h1 className="text-4xl font-bold !leading-snug">
+            <h1 className="text-4xl font-bold leading-snug!">
               450K+ users are organizing their work with us
             </h1>
             <p>
@@ -34,7 +34,7 @@ const Subscribe = () => {
             </p>
             <a
               href=""
-              className="primary-btn !mt-8 inline-flex items-center gap-4 group"
+              className="primary-btn mt-8! inline-flex items-center gap-4 group"
             >
               Get Start Now
               <FaBell className="group-hover:animate-bounce group-hover:text-lg duration-200" />

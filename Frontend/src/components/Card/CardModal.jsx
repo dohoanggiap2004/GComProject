@@ -172,7 +172,8 @@ const CardModal = ({cardProp, onClose, onToggleCheck}) => {
     }, [card]);
 
     return (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 overflow-auto">
+        <div className="fixed inset-0 flex items-center justify-center z-50 overflow-auto">
+            <div className="absolute inset-0 bg-black opacity-50"></div>
             <div className="bg-white rounded-lg w-full max-w-4xl p-6 relative z-50 max-h-[95vh] overflow-y-auto">
                 {/* Nút đóng modal */}
                 <button
@@ -209,7 +210,7 @@ const CardModal = ({cardProp, onClose, onToggleCheck}) => {
                                     }
                                 }}
                                 autoFocus
-                                className="text-lg font-semibold border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-full me-4"
+                                className="text-lg font-semibold border rounded-sm focus:outline-hidden focus:ring-2 focus:ring-blue-500 w-full me-4"
                             />
                         ) : (
                             <div
@@ -255,7 +256,7 @@ const CardModal = ({cardProp, onClose, onToggleCheck}) => {
                                 name="description"
                                 onChange={handleChange}
                                 placeholder="Add a more detailed description..."
-                                className="w-full p-2 mt-2 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                className="w-full p-2 mt-2 text-sm border rounded-lg focus:outline-hidden focus:ring-2 focus:ring-blue-500"
                             />
                         </div>
 
@@ -276,7 +277,7 @@ const CardModal = ({cardProp, onClose, onToggleCheck}) => {
                                     >
                                         <div className="flex items-center">
                                         <span
-                                            className="bg-blue-500 text-white text-xs font-semibold px-2 py-1 rounded mr-2">
+                                            className="bg-blue-500 text-white text-xs font-semibold px-2 py-1 rounded-sm mr-2">
                                             {attachment.type}
                                         </span>
                                             <div>
@@ -319,7 +320,7 @@ const CardModal = ({cardProp, onClose, onToggleCheck}) => {
                                     </h3>
                                 </div>
 
-                                <button className="ml-4 text-sm font-semibold px-2 py-1.5 rounded-sm text-gray-500 bg-gray-100 hover:bg-gray-200">
+                                <button className="ml-4 text-sm font-semibold px-2 py-1.5 rounded-xs text-gray-500 bg-gray-100 hover:bg-gray-200">
                                     Hide details
                                 </button>
                             </div>
@@ -330,7 +331,7 @@ const CardModal = ({cardProp, onClose, onToggleCheck}) => {
                                     value={comment}
                                     onChange={handleAddComment}
                                     placeholder="Write a comment..."
-                                    className="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                                    className="w-full p-2 border rounded-lg focus:outline-hidden focus:ring-2 focus:ring-blue-500 text-sm"
                                 />
                                 <button
                                     onClick={handleSubmitComment}

@@ -1,10 +1,13 @@
 // reducers/productSlice.js
 import {createSlice} from '@reduxjs/toolkit';
-import {getWorkspaceByMemberId, createWorkspace, updateWorkspace, deleteWorkspace} from "../actions/workspaceAction";
+import {getWorkspaceByMemberId, createWorkspace, updateWorkspace, deleteWorkspace, getWorkspaceByWorkspaceId} from "../actions/workspaceAction";
 
 const workspaceSlice = createSlice({
     initialState: {
         workspaces: [],
+        workspace: null,
+        member: [],
+        board: null,
         loading: false,
         error: null,
     },
@@ -22,6 +25,22 @@ const workspaceSlice = createSlice({
                 state.workspaces = action.payload;
             })
             .addCase(getWorkspaceByMemberId.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            })
+
+            // get workspace by memberId
+            .addCase(getWorkspaceByWorkspaceId.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(getWorkspaceByWorkspaceId.fulfilled, (state, action) => {
+                state.loading = false;
+                state.workspace = action.payload.workspace;
+                state.member = action.payload.user;
+                state.board = action.payload.board;
+            })
+            .addCase(getWorkspaceByWorkspaceId.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
             })
@@ -47,9 +66,13 @@ const workspaceSlice = createSlice({
             })
             .addCase(updateWorkspace.fulfilled, (state, action) => {
                 state.loading = false;
-                const index = state.workspaces.findIndex(workspace => workspace._id === action.payload._id);
+                const index = state.workspaces.findIndex(workspace => workspace._id === action.payload.workspace._id);
                 if (index > -1) {
-                    state.workspaces[index] = action.payload;
+                    state.workspaces[index] = action.payload.workspace;
+                }
+                if (state.workspace._id === action.payload.workspace._id){
+                    state.workspace = action.payload.workspace
+                    state.member = action.payload.user
                 }
             })
             .addCase(updateWorkspace.rejected, (state, action) => {

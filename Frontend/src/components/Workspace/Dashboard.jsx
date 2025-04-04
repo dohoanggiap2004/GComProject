@@ -65,14 +65,14 @@ const Dashboard = () => {
                                     {Array.isArray(boards[workspace._id]) && boards[workspace._id].length > 0 ? boards[workspace._id].map((board, index) => (
                                         <Link
                                             to={`/user-workspace/board/${board._id}`}
-                                            state={{ workspaceName: workspace.name, workspaceId: workspace._id }}
+                                            state={{workspaceId: workspace._id }}
                                             key={index}
                                         >
                                             <BoardItem title={board.title} background={board.background}/>
                                         </Link>
                                     )) : null}
                                     <button
-                                        className="w-40 h-32 md:w-48 md:h-32 bg-gray-200 rounded-lg overflow-hidden shadow-md relative"
+                                        className="w-40 h-24 md:w-48 bg-gray-200 rounded-lg overflow-hidden shadow-md relative"
                                         onClick={() => {setWorkspaceId(workspace._id); setIsBoardOpen(true); }}
                                     >
                                         <div className="absolute inset-0 flex items-center justify-center">
