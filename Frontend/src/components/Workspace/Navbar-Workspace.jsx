@@ -3,16 +3,22 @@ import {IoIosSearch, IoIosNotifications, IoIosHelpCircle,} from "react-icons/io"
 import {Link} from "react-router-dom";
 import {BsGrid1X2Fill} from "react-icons/bs";
 import AvatarDropdown from "../Dropdown/AvatarDropdown.jsx";
+import {useState} from "react";
+import BoardCreateModel from "./BoardCreateModal.jsx";
+import { createPortal } from "react-dom";
 
 export default function NavbarWorkspace() {
+    const [isModalOpen, setIsModalOpen] = useState(false);
     return (
+
         <nav className="flex items-center justify-between bg-white p-1.5 shadow-md w-full">
             {/* Left Section */}
             <div className="flex items-center gap-4">
                 <div className="font-bold text-lg flex items-center gap-2">
                     {/*dot svg*/}
                     <Link to={'/'}>
-                        <svg viewBox="0 0 24 24" className={'h-6 w-6'} version="1.1" xmlns="http://www.w3.org/2000/svg"
+                        <svg viewBox="0 0 24 24" className={'h-6 w-6'} version="1.1"
+                             xmlns="http://www.w3.org/2000/svg"
                              fill="#000000">
                             <g id="SVGRepo_bgCarrier"></g>
                             <g id="SVGRepo_tracerCarrier"></g>
@@ -39,22 +45,25 @@ export default function NavbarWorkspace() {
                     </Link>
                 </div>
                 <div className="hidden md:flex gap-4 text-sm text-gray-600">
-          <span className="cursor-pointer hover:text-black flex items-center gap-2 text-gray-600 font-semibold text-md">
-            Workspaces <FaChevronDown/>
-          </span>
+                      <span
+                          className="cursor-pointer hover:text-black flex items-center gap-2 text-gray-600 font-semibold text-md">
+                          Workspaces <FaChevronDown/>
+                      </span>
                     <span
                         className="cursor-pointer hover:text-black flex items-center gap-2 text-gray-600 font-semibold text-md">
-            Recent <FaChevronDown/>
-          </span>
+                           Recent <FaChevronDown/>
+                      </span>
                     <span
                         className="cursor-pointer hover:text-black flex items-center gap-2 text-gray-600 font-semibold text-md">
-            Starred <FaChevronDown/>
-          </span>
+                           Starred <FaChevronDown/>
+                     </span>
                     <span
                         className="cursor-pointer hover:text-black flex items-center gap-2 text-gray-600 font-semibold text-md">
-            Templates <FaChevronDown/>
-          </span>
-                    <button className="bg-blue-600 text-white px-4 py-2 rounded-md">Create</button>
+                        Templates <FaChevronDown/>
+                    </span>
+                    <button onClick={() => setIsModalOpen(true)}
+                            className="bg-blue-600 text-white px-4 py-2 rounded-md">Create
+                    </button>
                 </div>
                 <div className={'md:hidden'}>
                     <button
@@ -78,9 +87,14 @@ export default function NavbarWorkspace() {
                 </div>
                 <IoIosSearch className="text-gray-500 w-5 h-5 md:hidden"/>
                 <IoIosNotifications className="cursor-pointer text-gray-600 hover:text-black text-2xl"/>
-                <IoIosHelpCircle className="cursor-pointer text-gray-600 hover:text-black text-2xl hidden md:block"/>
+                <IoIosHelpCircle
+                    className="cursor-pointer text-gray-600 hover:text-black text-2xl hidden md:block"/>
                 <AvatarDropdown/>
             </div>
+            {createPortal(
+              <BoardCreateModel isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}/>,
+            document.body
+            )}
         </nav>
     );
 }

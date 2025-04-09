@@ -3,23 +3,23 @@ import SidebarBoard from "../components/Board/SidebarBoard.jsx";
 import {useEffect, useState} from "react";
 import {useLocation, useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {getBoardByWorkspaceId} from "../store/actions/boardAction.js";
 import {GoPlus} from "react-icons/go";
-import {deleteWorkspace} from "../store/actions/workspaceAction.js";
+import {deleteWorkspace, getWorkspaceByWorkspaceId} from "../store/actions/workspaceAction.js";
 import toast from "react-hot-toast";
+import AddMemberModal from "../components/Member/AddMemberModal.jsx";
 
 const WorkspaceSetting = () => {
     const location = useLocation();
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-    const { error } = useSelector(state => state.workspace)
+    const [isMemberModalOpen, setIsMemberModalOpen] = useState(false);
+    const { error, workspace } = useSelector(state => state.workspace)
     const [workspaceInput, setWorkspaceInput] = useState('');
-    const workspaceName = location.state?.workspaceName || "Default Title";
     const workspaceId = location.state?.workspaceId || "Default Title";
     useEffect(() => {
-        dispatch(getBoardByWorkspaceId(workspaceId));
-    }, [workspaceId]);
+        dispatch(getWorkspaceByWorkspaceId(workspaceId))
+    }, [workspaceId])
 
     const handleDeleteWorkspace = () => {
         dispatch(deleteWorkspace(workspaceId));
@@ -41,7 +41,7 @@ const WorkspaceSetting = () => {
             {/* Phần dưới: chia 2 cột (Sidebar trái - Nội dung phải) */}
             <div className="flex">
                 <div className="w-72 shrink-0 hidden md:flex border-r-2 border-gray-200">
-                    <SidebarBoard workspaceId={workspaceId} workspaceName={workspaceName}/>
+                    <SidebarBoard/>
                 </div>
                 <div className="flex flex-col items-center w-full m-4">
                     {/* Header */}
@@ -50,16 +50,18 @@ const WorkspaceSetting = () => {
                             <div className="flex items-center space-x-2">
                                 <div
                                     className="w-12 h-12 bg-teal-500 text-white flex items-center justify-center rounded-sm">
-                                    {workspaceName.slice(0, 1)}
+                                    {workspace?.name?.slice(0, 1)}
                                 </div>
                                 <div className={' items-center space-x-2'}>
-                                    <div className="text-lg font-semibold">{workspaceName}</div>
+                                    <div className="text-lg font-semibold">{workspace?.name}</div>
                                     <div className="text-xs text-gray-500">Private</div>
                                 </div>
 
                             </div>
                             <button
-                                className="bg-blue-600 text-white px-4 py-1 rounded-sm flex items-center space-x-2 mt-4 md:mt-0">
+                                className="bg-blue-600 text-white px-4 py-1 rounded-sm flex items-center space-x-2 mt-4 md:mt-0"
+                                onClick={() => setIsMemberModalOpen(true)}
+                            >
                                 <GoPlus/>
                                 <span>Invite Workspace members</span>
                             </button>
@@ -150,7 +152,7 @@ const WorkspaceSetting = () => {
                                             {/* Thông tin yêu cầu nhập tên Workspace */}
                                             <p className="text-sm text-gray-600 mb-2">
                                                 Enter the Workspace name <span
-                                                className="font-semibold">"{workspaceName}"</span> to delete
+                                                className="font-semibold">"{workspace?.name}"</span> to delete
                                             </p>
 
                                             {/* Danh sách cảnh báo */}
@@ -178,9 +180,9 @@ const WorkspaceSetting = () => {
 
                                             {/* Nút xóa */}
                                             <button
-                                                disabled={workspaceInput !== workspaceName}
+                                                disabled={workspaceInput !== workspace?.name}
                                                 className={`w-full py-2 rounded text-white ${
-                                                    workspaceInput === workspaceName
+                                                    workspaceInput === workspace?.name
                                                         ? "bg-red-600 hover:bg-red-700"
                                                         : "bg-gray-300 cursor-not-allowed"
                                                 }`}
@@ -192,6 +194,7 @@ const WorkspaceSetting = () => {
                                     </div>
                                 )}
                             </div>
+                            <AddMemberModal isOpen={isMemberModalOpen} onClose={() => setIsMemberModalOpen(false)}/>
                         </div>
                     </div>
                 </div>

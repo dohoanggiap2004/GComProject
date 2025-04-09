@@ -20,14 +20,14 @@ const SidebarBoard = () => {
                     className="flex items-center w-full p-1 text-gray-700 hover:bg-gray-200 rounded-lg text-sm">
                     <FaRegClipboard className="mr-2"/> Boards
                 </button>
-                <button
+                <Link to={`/user-workspace/member/${workspace?._id}`}
                     className="flex items-center w-full p-1 text-gray-700 hover:bg-gray-200 rounded-lg text-sm">
                     <FaUserFriends className="mr-2"/> Members
-                </button>
-                <button
+                </Link>
+                <Link to={`/user-workspace/workspace-setting`}
                     className="flex items-center w-full p-1 text-gray-700 hover:bg-gray-200 rounded-lg text-sm">
                     <FaCog className="mr-2"/> Settings
-                </button>
+                </Link>
             </div>
 
             <div className="mt-4">

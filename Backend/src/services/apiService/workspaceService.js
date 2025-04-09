@@ -38,6 +38,36 @@ const getWorkspaceByWorkspaceIdService = async (workspaceId) => {
     };
 };
 
+const getMemberInBoardsByWorkspaceIdService = async (workspaceId) => {
+    console.log('workspaceId', workspaceId);
+    const workspace = await Workspace.findById(workspaceId).lean();
+    if (!workspace) {
+        throw new Error('Workspace not found');
+    }
+
+    // Lấy tất cả board theo workspaceId
+    const boards = await Board.find({ workspaceId })
+        .populate('members.memberId') // Lấy thông tin user
+        .lean();
+    console.log('check board', boards)
+    // Gộp danh sách user và thông tin role + boardId
+    const users = [];
+
+    boards.forEach(board => {
+        board.members.forEach(member => {
+            users.push({
+                user: member.memberId,
+                role: member.role
+            });
+        });
+    });
+
+    return {
+        users
+    };
+};
+
+
 const createWorkspaceService = async (workspace, memberId) => {
     const newWorkspace = new Workspace({
         ...workspace,
@@ -134,5 +164,5 @@ const deleteWorkspaceService = async (workspaceId) => {
     }
 };
 
-module.exports = { getWorkspaceByMemberIdService, getWorkspaceByWorkspaceIdService,
+module.exports = { getWorkspaceByMemberIdService, getWorkspaceByWorkspaceIdService, getMemberInBoardsByWorkspaceIdService,
     createWorkspaceService, updateWorkspaceService, deleteWorkspaceService, };

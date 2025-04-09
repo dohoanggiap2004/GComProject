@@ -2,10 +2,11 @@ import {useEffect, useState, useRef} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {searchUser} from "../../store/actions/userAction.js";
 import {updateWorkspace} from "../../store/actions/workspaceAction.js";
+import toast from "react-hot-toast";
 
 const AddMemberModal = ({isOpen, onClose}) => {
     const dispatch = useDispatch();
-    const {workspace} = useSelector((state) => state.workspace);
+    const {workspace, error} = useSelector((state) => state.workspace);
     const {usersSearch} = useSelector((state) => state.user);
     const [selectedUsers, setSelectedUsers] = useState([]);
     const [memberIds, setMemberIds] = useState([]);
@@ -20,6 +21,9 @@ const AddMemberModal = ({isOpen, onClose}) => {
                 memberIds: memberIds,
             }));
             onClose();
+            if(!error){
+                toast.success('Add member successfully.');
+            }
         }
     };
 
@@ -80,9 +84,9 @@ const AddMemberModal = ({isOpen, onClose}) => {
         }
     }, [workspace?.memberIds]);
 
-    useEffect(() => {
-        console.log('memberid', memberIds);
-    }, [memberIds]);
+    // useEffect(() => {
+    //     console.log('memberid', memberIds);
+    // }, [memberIds]);
 
     // Đóng danh sách tìm kiếm khi nhấp ra ngoài
     useEffect(() => {
@@ -154,19 +158,24 @@ const AddMemberModal = ({isOpen, onClose}) => {
                         <div className="bg-white p-4 absolute w-full top-16 mt-1 z-10" ref={inputRef}>
                             {usersSearch.map((user) => (
                                 <div
-                                    key={user?._id}
-                                    className="flex items-center space-x-2 mb-3 cursor-pointer"
-                                    onClick={() => handleSelectUser(user)}
-                                >
-                                    <div
-                                        className="w-8 h-8 rounded-full bg-red-500 flex items-center justify-center text-white font-bold">
-                                        {user?.fullname?.slice(0, 2)}
-                                    </div>
-                                    <div>
-                                        <p className="text-sm font-medium text-gray-800">{user?.fullname}</p>
-                                        <p className="text-xs text-gray-500">{user?.email}</p>
-                                    </div>
+                                key={user?._id}
+                                className={`flex items-center space-x-2 mb-3 cursor-pointer ${
+                                  memberIds.some(id => id === user._id) ? 'opacity-50 cursor-not-allowed' : ''
+                                }`}
+                                onClick={() => {
+                                  if (!memberIds.some(id => id === user._id)) {
+                                    handleSelectUser(user);
+                                  }
+                                }}
+                              >
+                                <div className="w-8 h-8 rounded-full bg-red-500 flex items-center justify-center text-white font-bold">
+                                  {user?.fullname?.slice(0, 2)}
                                 </div>
+                                <div>
+                                  <p className="text-sm font-medium text-gray-800">{user?.fullname}</p>
+                                  <p className="text-xs text-gray-500">{user?.email}</p>
+                                </div>
+                              </div>
                             ))}
                         </div>
                     )}

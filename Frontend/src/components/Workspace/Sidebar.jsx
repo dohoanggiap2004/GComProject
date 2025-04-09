@@ -1,5 +1,5 @@
 
-import { FaRegClipboard, FaHome,} from "react-icons/fa";
+import { FaRegClipboard,} from "react-icons/fa";
 import VerticalWorkspace from "./VerticalWorkspace.jsx";
 import {BsGrid1X2Fill} from "react-icons/bs";
 
@@ -12,9 +12,6 @@ const Sidebar = () => {
                 </button>
                 <button className="flex items-center w-full p-2 text-gray-700 hover:bg-gray-200 rounded-lg text-sm font-semibold">
                     <BsGrid1X2Fill className="mr-2"/> Templates
-                </button>
-                <button className="flex items-center w-full p-2 text-gray-700 hover:bg-gray-200 rounded-lg text-sm font-semibold">
-                    <FaHome className="mr-2" /> Home
                 </button>
             </div>
 

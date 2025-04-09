@@ -1,7 +1,10 @@
 const {
-    getWorkspaceByMemberIdService, createWorkspaceService,
+    getWorkspaceByMemberIdService,
+    createWorkspaceService,
     updateWorkspaceService,
-    deleteWorkspaceService, getWorkspaceByWorkspaceIdService
+    deleteWorkspaceService,
+    getWorkspaceByWorkspaceIdService,
+    getMemberInBoardsByWorkspaceIdService
 } = require("../../../services/apiService/workspaceService");
 const getUserIdFromToken = require("../../../utils/getUserIdFromToken");
 
@@ -32,6 +35,26 @@ class WorkspaceController {
                 return res.status(400).json({message: "Workspace information is required"});
             const workspaceId = req.params.workspaceId;
             const result = await getWorkspaceByWorkspaceIdService(workspaceId);
+
+            if (!result) {
+                return res.status(200).json({message: "Workspace not found"});
+            }
+
+            res.status(200).json({
+                data: result,
+            });
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({message: "Internal Server Error"});
+        }
+    }
+
+    async getMemberInBoardsByWorkspaceId(req, res) {
+        try {
+            if (!req?.params?.workspaceId)
+                return res.status(400).json({message: "Workspace information is required"});
+            const workspaceId = req.params.workspaceId;
+            const result = await getMemberInBoardsByWorkspaceIdService(workspaceId);
 
             if (!result) {
                 return res.status(200).json({message: "Workspace not found"});

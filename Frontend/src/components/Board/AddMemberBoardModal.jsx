@@ -1,12 +1,13 @@
 import {useEffect, useState, useRef} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {searchUser} from "../../store/actions/userAction.js";
-import {updateWorkspace} from "../../store/actions/workspaceAction.js";
 import toast from "react-hot-toast";
+import { updateBoard } from "../../store/actions/boardAction.js";
+import { use } from "react";
 
 const AddMemberBoardModal = ({isOpen, onClose}) => {
     const dispatch = useDispatch();
-    const {workspace, error} = useSelector((state) => state.workspace);
+    const {board, error} = useSelector((state) => state.board)
     const {usersSearch} = useSelector((state) => state.user);
     const [selectedUsers, setSelectedUsers] = useState([]);
     const [memberIds, setMemberIds] = useState([]);
@@ -15,10 +16,16 @@ const AddMemberBoardModal = ({isOpen, onClose}) => {
     // Xử lý submit form
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (workspace?._id) {
-            dispatch(updateWorkspace({
-                _id: workspace._id,
-                memberIds: memberIds,
+        if (board?._id) {
+            const members = memberIds.map(memberId  => (
+                {
+                    memberId: memberId,
+                    role: 'member'
+                }
+            ))
+            dispatch(updateBoard({
+                _id: board._id,
+                members: members,
             }));
             onClose();
             if(!error){
@@ -76,13 +83,16 @@ const AddMemberBoardModal = ({isOpen, onClose}) => {
             setShowSearchList(false);
             dispatch(searchUser(''));
         }
-    }, [isOpen, workspace]);
+    }, [isOpen, board]);
 
     useEffect(() => {
-        if (workspace?.memberIds) {
-            setMemberIds(workspace.memberIds);
+        if (board?.members) {
+            const idMemberFormBoard = board?.members.map(member => member.memberId);
+            setMemberIds(idMemberFormBoard);
         }
-    }, [workspace?.memberIds]);
+    }, [board]);
+
+    
 
     // useEffect(() => {
     //     console.log('memberid', memberIds);
@@ -100,6 +110,11 @@ const AddMemberBoardModal = ({isOpen, onClose}) => {
             document.removeEventListener("mousedown", handleClickOutside);
         };
     }, []);
+
+    useEffect(() => {
+        console.log('memberId', memberIds)
+    }, [memberIds])
+
 
     if (!isOpen) return null;
 
@@ -157,20 +172,25 @@ const AddMemberBoardModal = ({isOpen, onClose}) => {
                     {showSearchList && Array.isArray(usersSearch) && usersSearch.length > 0 && (
                         <div className="bg-white p-4 absolute w-full top-16 mt-1 z-10" ref={inputRef}>
                             {usersSearch.map((user) => (
-                                <div
-                                    key={user?._id}
-                                    className="flex items-center space-x-2 mb-3 cursor-pointer"
-                                    onClick={() => handleSelectUser(user)}
-                                >
-                                    <div
-                                        className="w-8 h-8 rounded-full bg-red-500 flex items-center justify-center text-white font-bold">
-                                        {user?.fullname?.slice(0, 2)}
-                                    </div>
-                                    <div>
-                                        <p className="text-sm font-medium text-gray-800">{user?.fullname}</p>
-                                        <p className="text-xs text-gray-500">{user?.email}</p>
-                                    </div>
-                                </div>
+                               <div
+                               key={user?._id}
+                               className={`flex items-center space-x-2 mb-3 cursor-pointer ${
+                                 memberIds.some(id => id === user._id) ? 'opacity-50 cursor-not-allowed' : ''
+                               }`}
+                               onClick={() => {
+                                 if (!memberIds.some(id => id === user._id)) {
+                                   handleSelectUser(user);
+                                 }
+                               }}
+                             >
+                               <div className="w-8 h-8 rounded-full bg-red-500 flex items-center justify-center text-white font-bold">
+                                 {user?.fullname?.slice(0, 2)}
+                               </div>
+                               <div>
+                                 <p className="text-sm font-medium text-gray-800">{user?.fullname}</p>
+                                 <p className="text-xs text-gray-500">{user?.email}</p>
+                               </div>
+                             </div>
                             ))}
                         </div>
                     )}

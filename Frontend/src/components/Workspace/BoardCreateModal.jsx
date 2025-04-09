@@ -1,9 +1,11 @@
 import {useEffect, useState} from "react";
 import {createBoard} from "../../store/actions/boardAction.js";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {getWorkspaceByMemberId} from "../../store/actions/workspaceAction.js";
 
-const CreateBoardModal = ({ isOpen, onClose, workspaceId }) => {
+const CreateBoardModal = ({ isOpen, onClose }) => {
     const dispatch = useDispatch();
+    const { workspaces } = useSelector((state) => state.workspace);
     const backgrounds = [
         "http://localhost:8000/img/bg-pink.jpg",
         "http://localhost:8000/img/bg-gray.jpeg",
@@ -11,8 +13,12 @@ const CreateBoardModal = ({ isOpen, onClose, workspaceId }) => {
         "http://localhost:8000/img/bg-purple.jpg",
     ];
 
+    useEffect(() => {
+        dispatch(getWorkspaceByMemberId())
+    }, [])
+
     const [formData, setFormData] = useState({
-        workspaceId: workspaceId,
+        workspaceId: workspaces[0]?._id || '',
         title: "",
         background: backgrounds[0],
         visibility: "Workspace",
@@ -39,9 +45,9 @@ const CreateBoardModal = ({ isOpen, onClose, workspaceId }) => {
     useEffect(() => {
         setFormData({
             ...formData,
-            workspaceId: workspaceId,
+            workspaceId: workspaces[0]?._id || '',
         })
-    }, [workspaceId]);
+    }, [workspaces]);
 
     return isOpen ? (
         <div className="fixed inset-0 flex items-center justify-center">
@@ -75,6 +81,19 @@ const CreateBoardModal = ({ isOpen, onClose, workspaceId }) => {
                     onChange={handleChange}
                 />
                 {!formData.title.trim() && <p className="text-red-500 text-xs mt-1">⚠ Board title is required</p>}
+
+                {/* Chọn workspace */}
+                <label className="block text-sm font-medium text-gray-700 mt-3">Wokspace</label>
+                <select
+                    className="w-full border p-2 rounded-sm mt-1 focus:outline-blue-500"
+                    name="workspaceId"
+                    value={formData.workspaceId}
+                    onChange={handleChange}
+                >
+                    {Array.isArray(workspaces) && workspaces.length > 0 && workspaces.map((workspace) => (
+                        <option key={workspace._id} value={workspace._id}>{workspace.name}</option>
+                    ))}
+                </select>
 
                 {/* Chọn Visibility */}
                 <label className="block text-sm font-medium text-gray-700 mt-3">Visibility</label>

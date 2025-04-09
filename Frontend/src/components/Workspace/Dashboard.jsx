@@ -22,7 +22,6 @@ const recentBoards = [
 const Dashboard = () => {
     const {workspaces} = useSelector((state) => state.workspace);
     const {boards} = useSelector((state) => state.board);
-    const [workspaceId, setWorkspaceId] = useState("");
     const dispatch = useDispatch();
     const [isWorkspaceOpen, setIsWorkspaceOpen] = useState(false);
     const [isBoardOpen, setIsBoardOpen] = useState(false);
@@ -59,7 +58,7 @@ const Dashboard = () => {
                     Array.isArray(workspaces) && workspaces.length > 0 ? (
                         workspaces.map((workspace) => (
                             <div className={'mb-6'} key={workspace._id}>
-                                <HorizontalWorkspace name={workspace.name} memberQuantity={workspace.memberQuantity}/>
+                                <HorizontalWorkspace workspaceId={workspace._id}  name={workspace.name} memberQuantity={workspace.memberQuantity}/>
 
                                 <div className="w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                                     {Array.isArray(boards[workspace._id]) && boards[workspace._id].length > 0 ? boards[workspace._id].map((board, index) => (
@@ -73,7 +72,7 @@ const Dashboard = () => {
                                     )) : null}
                                     <button
                                         className="w-40 h-24 md:w-48 bg-gray-200 rounded-lg overflow-hidden shadow-md relative"
-                                        onClick={() => {setWorkspaceId(workspace._id); setIsBoardOpen(true); }}
+                                        onClick={() => {setIsBoardOpen(true); }}
                                     >
                                         <div className="absolute inset-0 flex items-center justify-center">
                                             <p className="text-gray-700 font-semibold">Create new board</p>
@@ -81,7 +80,6 @@ const Dashboard = () => {
                                     </button>
                                     <BoardCreateModel isOpen={isBoardOpen}
                                                       onClose={() => setIsBoardOpen(false)}
-                                                      workspaceId={workspaceId}
                                     />
                                 </div>
                             </div>

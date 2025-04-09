@@ -78,7 +78,6 @@ const VerticalWorkspace = () => {
                 </button>
             )}
             <WorkspaceCreateModel isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}/>
-
         </div>
     );
 };

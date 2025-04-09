@@ -20,12 +20,15 @@ import {
 import {deleteBoard} from "../../store/actions/boardAction.js";
 import {useNavigate} from "react-router-dom";
 import toast from "react-hot-toast";
+import {createPortal} from "react-dom";
+import AddMemberBoardModal from "./AddMemberBoardModal.jsx";
 
 export default function HeaderBoard({workspaceId}) {
+    const {board, error} = useSelector((state) => state.board);
     const [selectedOption, setSelectedOption] = useState("Bảng");
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isOpenDelete, setIsOpenDelete] = useState(false);
-    const {board, error} = useSelector((state) => state.board);
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const toggleMenu = () => {
@@ -82,7 +85,9 @@ export default function HeaderBoard({workspaceId}) {
                         <GoPeople/>
                     </span>
                 </div>
-                <button className="bg-gray-400 text-white font-semibold px-3 py-1 rounded-sm flex items-center">
+                <button className="bg-gray-400 text-white font-semibold px-3 py-1 rounded-sm flex items-center"
+                    onClick={() => setIsModalOpen(true)}
+                >
                     <GoPeople className={'mr-2'}/> Share
                 </button>
                 <div className="relative">
@@ -186,6 +191,11 @@ export default function HeaderBoard({workspaceId}) {
                     )}
                 </div>
             </div>
+            {createPortal(
+                <AddMemberBoardModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}/>,
+                document.body
+            )}
         </div>
+
     );
 }

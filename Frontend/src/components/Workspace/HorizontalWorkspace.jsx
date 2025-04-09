@@ -1,6 +1,7 @@
 import {MdPeople, MdRocketLaunch, MdSettings, MdViewList} from "react-icons/md";
+import {Link} from "react-router-dom";
 
-const HorizontalWorkspace = ({name, memberQuantity}) => {
+const HorizontalWorkspace = ({name, memberQuantity, workspaceId}) => {
 
     return (
         <div className="flex flex-col md:flex-row md:justify-between mb-4 space-y-2 md:space-y-0 ">
@@ -17,12 +18,13 @@ const HorizontalWorkspace = ({name, memberQuantity}) => {
                 <button className="flex items-center justify-center px-1 bg-gray-200 rounded-sm md:w-28 h-8 text-sm">
                     <MdViewList className="mr-1 shrink-0"/> Boards
                 </button>
-                <button className="flex items-center justify-center px-1 bg-gray-200 rounded-sm md:w-28 h-8 text-sm">
+                <Link to={`/user-workspace/member/${workspaceId}`} className="flex items-center justify-center px-1 bg-gray-200 rounded-sm md:w-28 h-8 text-sm">
                     <MdPeople className="mr-1 shrink-0"/> Members ({memberQuantity})
-                </button>
-                <button className="flex items-center justify-center px-1 bg-gray-200 rounded-sm md:w-28 h-8 text-sm">
+                </Link>
+                <Link to={'/user-workspace/workspace-setting'}
+                      state={{workspaceId: workspaceId}} className="flex items-center justify-center px-1 bg-gray-200 rounded-sm md:w-28 h-8 text-sm">
                     <MdSettings className="mr-1 shrink-0"/> Settings
-                </button>
+                </Link>
                 <button
                     className="flex items-center justify-center px-1 bg-purple-500 text-white rounded-sm md:w-28 h-8 text-sm">
                     <MdRocketLaunch className="mr-1 shrink-0"/> Upgrade
