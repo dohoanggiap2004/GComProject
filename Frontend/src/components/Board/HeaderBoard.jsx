@@ -49,7 +49,6 @@ export default function HeaderBoard({workspaceId}) {
         }
     }
 
-
     return (
         <div className="text-gray-700 flex items-center justify-between px-4 py-2 relative">
             {/* Left Section */}

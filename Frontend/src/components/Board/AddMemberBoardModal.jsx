@@ -7,10 +7,12 @@ import { use } from "react";
 
 const AddMemberBoardModal = ({isOpen, onClose}) => {
     const dispatch = useDispatch();
+    const {workspace} = useSelector((state) => state.workspace);
     const {board, error} = useSelector((state) => state.board)
     const {usersSearch} = useSelector((state) => state.user);
     const [selectedUsers, setSelectedUsers] = useState([]);
     const [memberIds, setMemberIds] = useState([]);
+    const [meberIdsInWorkspace, setMeberIdsInWorkspace] = useState([]);
     const [showSearchList, setShowSearchList] = useState(false);
     const inputRef = useRef(null);
     // Xử lý submit form
@@ -92,12 +94,6 @@ const AddMemberBoardModal = ({isOpen, onClose}) => {
         }
     }, [board]);
 
-    
-
-    // useEffect(() => {
-    //     console.log('memberid', memberIds);
-    // }, [memberIds]);
-
     // Đóng danh sách tìm kiếm khi nhấp ra ngoài
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -112,9 +108,12 @@ const AddMemberBoardModal = ({isOpen, onClose}) => {
     }, []);
 
     useEffect(() => {
-        console.log('memberId', memberIds)
-    }, [memberIds])
+        setMeberIdsInWorkspace(workspace?.memberIds)
+    }, [workspace]);
 
+    // useEffect(() => {
+    //     console.log('memberId', memberIds)
+    // }, [memberIds])
 
     if (!isOpen) return null;
 
@@ -175,10 +174,10 @@ const AddMemberBoardModal = ({isOpen, onClose}) => {
                                <div
                                key={user?._id}
                                className={`flex items-center space-x-2 mb-3 cursor-pointer ${
-                                 memberIds.some(id => id === user._id) ? 'opacity-50 cursor-not-allowed' : ''
+                                   memberIds.includes(user._id) || meberIdsInWorkspace.includes(user._id) ? 'opacity-50 cursor-not-allowed' : ''
                                }`}
                                onClick={() => {
-                                 if (!memberIds.some(id => id === user._id)) {
+                                 if (!memberIds.includes(user._id) && !meberIdsInWorkspace.includes(user._id)) {
                                    handleSelectUser(user);
                                  }
                                }}

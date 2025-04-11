@@ -8,10 +8,10 @@ const SidebarBoard = () => {
     const {board, workspace} = useSelector((state) => state.workspace);
     return (
         <div className="w-64 min-h-screen p-4 hidden md:block">
-            <div className="flex items-center">
+            <Link to={'/user-workspace'} className="flex items-center">
                 <span className="bg-green-500 text-white px-3 py-2 rounded-md text-xs mr-2">G</span>
                 {workspace?.name?.length > 15 ? `${workspace?.name?.slice(0, 15)}...` : workspace?.name}
-            </div>
+            </Link>
 
             <div className={'border-b-2 border-gray-400 m-4'}></div>
 
@@ -53,7 +53,11 @@ const SidebarBoard = () => {
                                 className="flex items-center w-full p-1 text-gray-700 hover:bg-gray-200 rounded-lg text-sm">
                                 <Link to={`/user-workspace/board/${board._id}`} className="flex items-center"
                                       state={{ workspaceName: workspace.name, workspaceId: workspace._id }}>
-                                    <img src={board.background} alt={board.title} className="w-5 h-5 object-cover mr-2 " />
+                                    {board.background ? (
+                                        <img src={board.background} alt={board.title} className="w-5 h-5 object-cover mr-2 " />
+                                    ) : (<div className="w-5 h-5 bg-white mr-2 border-2 ">
+                                    </div>)}
+
                                     <div>
                                         {board.title}
                                     </div>

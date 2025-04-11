@@ -1,9 +1,8 @@
 const jwt = require("jsonwebtoken");
 const RefreshToken = require("../app/models/RefreshToken");
 
-const getUserIdFromToken = async (req, res) => {
+const getUserIdFromToken = async (req) => {
     const token = req.cookies.refreshToken;
-    console.log('check token', token);
     if (!token) return null;  // Trả về null nếu không có token
 
     return new Promise((resolve, reject) => {
@@ -12,9 +11,6 @@ const getUserIdFromToken = async (req, res) => {
                 await RefreshToken.deleteOne({ token: token });
                 return reject("Refresh token expired, please log in again");
             }
-            console.log('check user', user);
-
-            console.log('check user', user._id);
             resolve(user._id);
         });
     });

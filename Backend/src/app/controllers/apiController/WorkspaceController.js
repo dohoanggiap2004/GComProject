@@ -12,7 +12,7 @@ class WorkspaceController {
 
     async getWorkspaceByMemberId(req, res) {
         try {
-            const memberId = await getUserIdFromToken(req, res);
+            const memberId = await getUserIdFromToken(req);
             // console.log('check memberId', memberId);
             const workspace = await getWorkspaceByMemberIdService(memberId);
 
@@ -73,7 +73,7 @@ class WorkspaceController {
         try {
             if (!req?.body)
                 return res.status(400).json({message: "Workspace information is required"});
-            const memberId = await getUserIdFromToken(req, res);
+            const memberId = await getUserIdFromToken(req);
             const workspace = req.body;
             const newWorkspace = await createWorkspaceService(workspace, memberId);
 

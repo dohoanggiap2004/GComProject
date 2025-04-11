@@ -27,7 +27,7 @@ class UserController {
 
   async getUserById(req, res) {
     try {
-      const id = getUserIdFromToken(req, res);
+      const id = getUserIdFromToken(req);
       const user = await getUserByIdService(id);
 
       if (!user) {

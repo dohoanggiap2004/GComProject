@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const instanceAxios8000 = axios.create({
-    baseURL: "http://localhost:8000",
+    baseURL: import.meta.env.VITE_API_URL,
     timeout: Number(import.meta.env.VITE_TIMEOUT || 10000),
     withCredentials: true,
     headers: {
@@ -20,7 +20,7 @@ instanceAxios8000.interceptors.response.use(
         // Làm mới token
         try {
             await axios.get("/refresh-token", {
-                baseURL: "http://localhost:8000",
+                baseURL: import.meta.env.VITE_API_URL,
                 timeout: Number(import.meta.env.VITE_TIMEOUT || 10000),
                 withCredentials: true,
             });

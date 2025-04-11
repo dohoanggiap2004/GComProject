@@ -3,7 +3,7 @@ const router = express.Router()
 const BoardController = require('../../app/controllers/apiController/BoardController')
 const verifyJWT = require('../../middlewares/verifyJWT')
 const verifyRoles = require('../../middlewares/verifyRoles')
-
+const checkBoardPermission = require('../../middlewares/checkBoardPermission')
 // router.get('/', verifyJWT, verifyRoles('user'), BoardController.getBoards)
 router.get('/', BoardController.getBoards)
 router.get('/:_id', BoardController.getBoardById)
@@ -11,7 +11,7 @@ router.get('/workspace/:workspaceId', BoardController.getBoardByWorkspaceId)
 router.post('/', BoardController.createBoard)
 router.put('/re-card', BoardController.updateCardIndex)
 router.put('/re-list', BoardController.updateListIndex)
-router.put('/', BoardController.updateBoard)
-router.delete('/', BoardController.deleteBoard)
+router.put('/', checkBoardPermission, BoardController.updateBoard)
+router.delete('/', checkBoardPermission, BoardController.deleteBoard)
 
 module.exports = router

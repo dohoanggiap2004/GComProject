@@ -111,7 +111,7 @@ const CardModal = ({cardProp, onClose, onToggleCheck}) => {
     };
 
     // Hàm xử lý khi người dùng nhấn Enter hoặc blur để lưu tiêu đề
-    const handleTitleSave = () => {
+    const handleUpdateCard = () => {
         if (formData.title.trim()) {
             dispatch(updateCard(formData))
         }
@@ -203,10 +203,10 @@ const CardModal = ({cardProp, onClose, onToggleCheck}) => {
                                 name="title"
                                 value={formData.title}
                                 onChange={handleTitleChange}
-                                onBlur={handleTitleSave} // Lưu khi click ra ngoài
-                                onKeyPress={(e) => {
+                                onBlur={handleUpdateCard} // Lưu khi click ra ngoài
+                                onKeyDown={(e) => {
                                     if (e.key === 'Enter') {
-                                        handleTitleSave(); // Lưu khi nhấn Enter
+                                        handleUpdateCard(); // Lưu khi nhấn Enter
                                     }
                                 }}
                                 autoFocus
@@ -255,6 +255,11 @@ const CardModal = ({cardProp, onClose, onToggleCheck}) => {
                                 value={formData.description}
                                 name="description"
                                 onChange={handleChange}
+                                onKeyDown={(e) => {
+                                    if (e.key === 'Enter') {
+                                        handleUpdateCard()
+                                    }
+                                }}
                                 placeholder="Add a more detailed description..."
                                 className="w-full p-2 mt-2 text-sm border rounded-lg focus:outline-hidden focus:ring-2 focus:ring-blue-500"
                             />
