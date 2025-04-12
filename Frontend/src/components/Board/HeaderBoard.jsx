@@ -23,7 +23,7 @@ import toast from "react-hot-toast";
 import {createPortal} from "react-dom";
 import AddMemberBoardModal from "./AddMemberBoardModal.jsx";
 
-export default function HeaderBoard({workspaceId}) {
+export default function HeaderBoard() {
     const {board, error} = useSelector((state) => state.board);
     const [selectedOption, setSelectedOption] = useState("Bảng");
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -38,7 +38,7 @@ export default function HeaderBoard({workspaceId}) {
     const handleDeleteBoard = () => {
         const payload = {
             boardId: board._id,
-            workspaceId: workspaceId,
+            workspaceId: board.workspaceId,
         }
         dispatch(deleteBoard(payload));
         if (!error) {
@@ -46,6 +46,8 @@ export default function HeaderBoard({workspaceId}) {
                 duration: 3000
             })
             navigate('/user-workspace')
+        } else{
+            toast.error("Error while deleting board!")
         }
     }
 

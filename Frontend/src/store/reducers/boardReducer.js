@@ -7,7 +7,6 @@ import {
     createBoard,
     updateBoard,
     deleteBoard,
-    getBoardByWorkspaceId,
     createCard,
     updateCard,
     deleteCard,
@@ -22,7 +21,7 @@ const boardSlice = createSlice({
     name: 'boards',
     initialState: {
         boards: {},
-        boardTitle: [],
+        membersInBoard: [],
         board: null,
         loading: false,
         error: null,
@@ -37,7 +36,8 @@ const boardSlice = createSlice({
             })
             .addCase(getBoardByBoardId.fulfilled, (state, action) => {
                 state.loading = false;
-                state.board = action.payload;
+                state.board = action.payload.board;
+                state.membersInBoard = action.payload.users;
             })
             .addCase(getBoardByBoardId.rejected, (state, action) => {
                 state.loading = false;
@@ -66,25 +66,6 @@ const boardSlice = createSlice({
                 }
             })
             .addCase(getBoardByWorkspaceIds.rejected, (state, action) => {
-                state.loading = false;
-                state.error = action.payload;
-            })
-
-            // get 1 board by workspace
-            .addCase(getBoardByWorkspaceId.pending, (state) => {
-                state.loading = true;
-                state.error = null;
-            })
-            .addCase(getBoardByWorkspaceId.fulfilled, (state, action) => {
-                state.loading = false;
-                if (Array.isArray(action.payload) && action.payload.length > 0) {
-                    const newBoards = action.payload.filter(
-                        (board) => !state.boardTitle.some((b) => b._id === board._id)
-                    );
-                    state.boardTitle.push(...newBoards);
-                }
-            })
-            .addCase(getBoardByWorkspaceId.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
             })

@@ -1,5 +1,8 @@
 
 const User = require("../../app/models/User");
+const Workspace = require("../../app/models/Workspace");
+const Board = require("../../app/models/Board");
+
 const getUsersService = async () => {
     return User.find().lean();
 };
@@ -34,4 +37,39 @@ const deleteUserService = async (id) => {
     return User.findByIdAndDelete(id);
 };
 
-module.exports = { getUsersService, getUserByIdService, createUserService, updateUserService, deleteUserService, searchUsersService};
+const checkUserRoleService = async (userId, { workspaceId, boardId }) => {
+    if (!userId) throw new Error('User ID is required');
+    console.log('check userId', userId);
+    console.log('check workspaceId', workspaceId);
+
+    // Ưu tiên kiểm tra workspace nếu có
+    if (workspaceId) {
+        const workspace = await Workspace.findById(workspaceId).lean();
+        if (!workspace) return null;
+
+        const memberId = workspace.memberIds.find(memberId => memberId.toString() === userId.toString());
+        if (memberId) {
+            return {
+                role: 'workspaceMember',
+            };
+        }
+    }
+
+    // Nếu không có workspace, kiểm tra trong board
+    if (boardId) {
+        const board = await Board.findById(boardId).lean();
+        if (!board) return null;
+
+        const member = board.members.find(m => m.memberId.toString() === userId.toString());
+        if (member) {
+            return {
+                role: member.role,
+            };
+        }
+    }
+
+    return null;
+};
+
+
+module.exports = { getUsersService, getUserByIdService, createUserService, updateUserService, deleteUserService, searchUsersService, checkUserRoleService};

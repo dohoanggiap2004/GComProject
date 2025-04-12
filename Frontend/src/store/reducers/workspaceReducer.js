@@ -1,12 +1,20 @@
 // reducers/productSlice.js
 import {createSlice} from '@reduxjs/toolkit';
-import {getWorkspaceByMemberId, createWorkspace, updateWorkspace, deleteWorkspace, getWorkspaceByWorkspaceId} from "../actions/workspaceAction";
+import {
+    getWorkspaceByMemberId,
+    getWorkspaceByWorkspaceId,
+    getMemberInBoardsByWorkspaceId,
+    createWorkspace,
+    updateWorkspace,
+    deleteWorkspace,
+} from "../actions/workspaceAction";
 
 const workspaceSlice = createSlice({
     initialState: {
         workspaces: [],
         workspace: null,
         member: [],
+        membersInBoards: [],
         board: null,
         loading: false,
         error: null,
@@ -41,6 +49,20 @@ const workspaceSlice = createSlice({
                 state.board = action.payload.board;
             })
             .addCase(getWorkspaceByWorkspaceId.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            })
+
+            // get all member in all board in workspace
+            .addCase(getMemberInBoardsByWorkspaceId.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(getMemberInBoardsByWorkspaceId.fulfilled, (state, action) => {
+                state.loading = false;
+                state.membersInBoards = action.payload.users;
+            })
+            .addCase(getMemberInBoardsByWorkspaceId.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
             })

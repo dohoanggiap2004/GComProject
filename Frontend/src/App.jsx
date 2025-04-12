@@ -11,9 +11,10 @@ import BoardWorkspace from "./pages/BoardWorkspace.jsx";
 import UserProfile from "./pages/UserProfile.jsx";
 import RoleProtectedRoute from "./Utils/verifyRole.jsx";
 import Unauthorized from "./pages/Unauthozired.jsx";
-import { Toaster } from "react-hot-toast";
+import {Toaster} from "react-hot-toast";
 import WorkspaceSetting from "./pages/WorkspaceSetting.jsx";
 import MemberManagement from "./pages/MemberManagement.jsx";
+import RoleProtectedRouteForWorkspace from "./Utils/verifyRoleInWorkspace.jsx";
 
 const App = () => {
     return (
@@ -36,27 +37,36 @@ const App = () => {
                         <Route path={'/register'} element={<Register/>}/>
                         <Route path={'/login'} element={<Login/>}/>
                         <Route path={'/user-workspace'} element={
-                            <RoleProtectedRoute requiredRole={'user'}>
+                            <RoleProtectedRoute allowedRoles={['user']}>
                                 <UserWorkspace/>
                             </RoleProtectedRoute>
                         }
                         />
                         <Route path={'/user-workspace/board/:boardId'}
-                               element={<RoleProtectedRoute requiredRole={'user'}>
+                               element={<RoleProtectedRoute allowedRoles={['user']}>
                                    <BoardWorkspace/>
                                </RoleProtectedRoute>}/>
-                        <Route path={'/user-workspace/member/:workspaceId'}
-                               element={<RoleProtectedRoute requiredRole={'user'}>
-                                   <MemberManagement/>
-                               </RoleProtectedRoute>}/>
+                        <Route
+                            path="/user-workspace/member/:workspaceId"
+                            element={
+                                <RoleProtectedRoute allowedRoles={['user']}>
+                                    <RoleProtectedRouteForWorkspace allowedRoles={["workspaceMember"]}>
+                                        <MemberManagement/>
+                                    </RoleProtectedRouteForWorkspace>
+                                </RoleProtectedRoute>
+                            }
+                        />
+
                         <Route path={'/user-profile'} element={
-                            <RoleProtectedRoute requiredRole={'user'}>
+                            <RoleProtectedRoute allowedRoles={['user']}>
                                 <UserProfile/>
                             </RoleProtectedRoute>
                         }/>
                         <Route path={'/user-workspace/workspace-setting'} element={
-                            <RoleProtectedRoute requiredRole={'user'}>
-                                <WorkspaceSetting/>
+                            <RoleProtectedRoute allowedRoles={['user']}>
+                                <RoleProtectedRouteForWorkspace allowedRoles={["workspaceMember"]}>
+                                    <WorkspaceSetting/>
+                                </RoleProtectedRouteForWorkspace>
                             </RoleProtectedRoute>
                         }/>
                         <Route path='/unauthorized' element={<Unauthorized/>}/>

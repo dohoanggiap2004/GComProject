@@ -32,14 +32,14 @@ class BoardController {
         return res.status(400).json({ message: "BoardItem id is required" });
 
       const id = req.params._id;
-      const board = await getBoardByIdService(id);
+      const result = await getBoardByIdService(id);
 
-      if (!board) {
+      if (!result) {
         return res.status(200).json({ message: "BoardItem not found" });
       }
 
       res.status(200).json({
-        data: board,
+        data: result,
       });
     } catch (error) {
       console.error(error);

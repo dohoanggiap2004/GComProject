@@ -1,12 +1,16 @@
 // reducers/productSlice.js
 import {createSlice} from '@reduxjs/toolkit';
-import { searchUser } from "../actions/userAction";
+import {
+    searchUser,
+    getUserRoleInWorkspaceOrBoard,
+} from "../actions/userAction";
 
 const userSlice = createSlice({
     initialState: {
         usersSearch: [],
         loading: false,
         error: null,
+        role: '',
     },
     name: 'users',
     extraReducers: (builder) => {
@@ -22,6 +26,20 @@ const userSlice = createSlice({
                 state.usersSearch = action.payload;
             })
             .addCase(searchUser.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            })
+
+            // get user role in workspace or board
+            .addCase(getUserRoleInWorkspaceOrBoard.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(getUserRoleInWorkspaceOrBoard.fulfilled, (state, action) => {
+                state.loading = false;
+                state.role = action.payload;
+            })
+            .addCase(getUserRoleInWorkspaceOrBoard.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
             })

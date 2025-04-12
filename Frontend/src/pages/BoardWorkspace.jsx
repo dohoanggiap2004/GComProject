@@ -8,7 +8,7 @@ import {
 import NavbarWorkspace from "../components/Workspace/Navbar-Workspace.jsx";
 import SidebarBoard from "../components/Board/SidebarBoard.jsx";
 import HeaderBoard from "../components/Board/HeaderBoard.jsx";
-import { useLocation, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
     createCard,
@@ -21,8 +21,6 @@ import SortableList from "../components/Board/SortableItem/SortableList.jsx";
 import {getWorkspaceByWorkspaceId} from "../store/actions/workspaceAction.js";
 
 function BoardWorkspace() {
-    const location = useLocation();
-    const workspaceId = location.state?.workspaceId || "Default Title";
     const { boardId } = useParams();
     const dispatch = useDispatch();
     const { board } = useSelector((state) => state.board);
@@ -33,8 +31,10 @@ function BoardWorkspace() {
     const [reListInfo, setReListInfo] = useState(null);
 
     useEffect(() => {
-        dispatch(getWorkspaceByWorkspaceId(workspaceId))
-    }, [workspaceId, dispatch]);
+        if(board?.workspaceId !== null){
+            dispatch(getWorkspaceByWorkspaceId(board?.workspaceId));
+        }
+    }, [board, dispatch]);
 
     useEffect(() => {
         dispatch(getBoardByBoardId(boardId));
@@ -219,7 +219,7 @@ function BoardWorkspace() {
                     style={{ backgroundImage: `url(${board?.background})` }}
                 >                    {/* HeaderBoard cố định ở đầu nội dung */}
                     <div className="shrink-0">
-                        <HeaderBoard workspaceId={workspaceId || 'default'} />
+                        <HeaderBoard/>
                     </div>
 
                     {/* Vùng board (màu hồng) chiếm toàn bộ không gian còn lại, cuộn ngang */}

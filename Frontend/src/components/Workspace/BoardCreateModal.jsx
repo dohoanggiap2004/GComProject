@@ -2,11 +2,12 @@ import { useEffect, useState } from "react";
 import { createBoard } from "../../store/actions/boardAction.js";
 import { useDispatch, useSelector } from "react-redux";
 import { getWorkspaceByMemberId } from "../../store/actions/workspaceAction.js";
+import toast from "react-hot-toast";
 
-const CreateBoardModal = ({ isOpen, onClose }) => {
+const CreateBoardModal = ({ isOpen, onClose, selectedWorkspaceId }) => {
     const dispatch = useDispatch();
     const { workspaces } = useSelector((state) => state.workspace);
-
+    const { error } = useSelector((state) => state.board);
     const backgrounds = [
         "",
         "http://localhost:8000/img/bg-gray.jpeg",
@@ -23,7 +24,7 @@ const CreateBoardModal = ({ isOpen, onClose }) => {
     }, []);
 
     const [formData, setFormData] = useState({
-        workspaceId: '',
+        workspaceId: selectedWorkspaceId,
         title: "",
         background: backgrounds[0],
         visibility: "Workspace",
@@ -32,9 +33,9 @@ const CreateBoardModal = ({ isOpen, onClose }) => {
     useEffect(() => {
         setFormData((prev) => ({
             ...prev,
-            workspaceId: workspaces[0]?._id || '',
+            workspaceId: selectedWorkspaceId || '',
         }));
-    }, [workspaces]);
+    }, [selectedWorkspaceId]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -48,6 +49,17 @@ const CreateBoardModal = ({ isOpen, onClose }) => {
     const handleSubmit = () => {
         if (!formData.title.trim()) return;
         dispatch(createBoard(formData));
+        if (!error){
+            toast.success("Created new board!");
+            setFormData({
+                workspaceId: selectedWorkspaceId,
+                title: "",
+                background: backgrounds[0],
+                visibility: "Workspace",
+            })
+        }else{
+            toast.error("Error while creating board!")
+        }
         onClose();
     };
 

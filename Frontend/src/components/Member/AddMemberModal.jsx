@@ -23,6 +23,8 @@ const AddMemberModal = ({isOpen, onClose}) => {
             onClose();
             if(!error){
                 toast.success('Add member successfully.');
+            }else{
+                toast.error("Error while adding member")
             }
         }
     };
@@ -151,7 +153,6 @@ const AddMemberModal = ({isOpen, onClose}) => {
                             Invite
                         </button>
                     </div>
-
 
                     {/* Danh sách kết quả tìm kiếm */}
                     {showSearchList && Array.isArray(usersSearch) && usersSearch.length > 0 && (

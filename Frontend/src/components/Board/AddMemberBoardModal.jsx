@@ -2,24 +2,24 @@ import {useEffect, useState, useRef} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {searchUser} from "../../store/actions/userAction.js";
 import toast from "react-hot-toast";
-import { updateBoard } from "../../store/actions/boardAction.js";
-import { use } from "react";
+import {updateBoard} from "../../store/actions/boardAction.js";
 
 const AddMemberBoardModal = ({isOpen, onClose}) => {
     const dispatch = useDispatch();
     const {workspace} = useSelector((state) => state.workspace);
-    const {board, error} = useSelector((state) => state.board)
+    const {board, membersInBoard, error} = useSelector((state) => state.board)
     const {usersSearch} = useSelector((state) => state.user);
     const [selectedUsers, setSelectedUsers] = useState([]);
     const [memberIds, setMemberIds] = useState([]);
     const [meberIdsInWorkspace, setMeberIdsInWorkspace] = useState([]);
     const [showSearchList, setShowSearchList] = useState(false);
     const inputRef = useRef(null);
+    const allRoles = ['admin', 'member', 'viewer'];
     // Xử lý submit form
     const handleSubmit = (e) => {
         e.preventDefault();
         if (board?._id) {
-            const members = memberIds.map(memberId  => (
+            const members = memberIds.map(memberId => (
                 {
                     memberId: memberId,
                     role: 'member'
@@ -30,8 +30,10 @@ const AddMemberBoardModal = ({isOpen, onClose}) => {
                 members: members,
             }));
             onClose();
-            if(!error){
+            if (!error) {
                 toast.success('Add member successfully.');
+            } else {
+                toast.error("Error while adding member")
             }
         }
     };
@@ -123,7 +125,7 @@ const AddMemberBoardModal = ({isOpen, onClose}) => {
             <div className="bg-white p-6 rounded-lg shadow-lg w-2/3 max-w-2xl z-50">
                 {/* Header */}
                 <div className="flex justify-between items-center">
-                    <h2 className="text-xl font-bold">Invite to Workspace</h2>
+                    <h2 className="text-xl font-bold">Invite to Board</h2>
                     <button onClick={onClose} className="text-gray-500 hover:text-gray-700">✖</button>
                 </div>
 
@@ -171,28 +173,84 @@ const AddMemberBoardModal = ({isOpen, onClose}) => {
                     {showSearchList && Array.isArray(usersSearch) && usersSearch.length > 0 && (
                         <div className="bg-white p-4 absolute w-full top-16 mt-1 z-10" ref={inputRef}>
                             {usersSearch.map((user) => (
-                               <div
-                               key={user?._id}
-                               className={`flex items-center space-x-2 mb-3 cursor-pointer ${
-                                   memberIds.includes(user._id) || meberIdsInWorkspace.includes(user._id) ? 'opacity-50 cursor-not-allowed' : ''
-                               }`}
-                               onClick={() => {
-                                 if (!memberIds.includes(user._id) && !meberIdsInWorkspace.includes(user._id)) {
-                                   handleSelectUser(user);
-                                 }
-                               }}
-                             >
-                               <div className="w-8 h-8 rounded-full bg-red-500 flex items-center justify-center text-white font-bold">
-                                 {user?.fullname?.slice(0, 2)}
-                               </div>
-                               <div>
-                                 <p className="text-sm font-medium text-gray-800">{user?.fullname}</p>
-                                 <p className="text-xs text-gray-500">{user?.email}</p>
-                               </div>
-                             </div>
+                                <div
+                                    key={user?._id}
+                                    className={`flex items-center space-x-2 mb-3 cursor-pointer ${
+                                        memberIds.includes(user._id) || meberIdsInWorkspace.includes(user._id) ? 'opacity-50 cursor-not-allowed' : ''
+                                    }`}
+                                    onClick={() => {
+                                        if (!memberIds.includes(user._id) && !meberIdsInWorkspace.includes(user._id)) {
+                                            handleSelectUser(user);
+                                        }
+                                    }}
+                                >
+                                    <div
+                                        className="w-8 h-8 rounded-full bg-red-500 flex items-center justify-center text-white font-bold">
+                                        {user?.fullname?.slice(0, 2)}
+                                    </div>
+                                    <div>
+                                        <p className="text-sm font-medium text-gray-800">{user?.fullname}</p>
+                                        <p className="text-xs text-gray-500">{user?.email}</p>
+                                    </div>
+                                </div>
                             ))}
                         </div>
                     )}
+
+                    <div className={'mt-4'}>
+                        <h3 className={'text-blue-500'}>Board members</h3>
+                        <hr className={'text-gray-600 mt-2'}/>
+                        {Array.isArray(membersInBoard) && membersInBoard.length > 0 && membersInBoard.map((member) => (
+                            <div className={'flex justify-between items-center mt-3'}
+                                 key={member?._id}
+                            >
+                                <div
+                                    className={`flex items-center space-x-2 mb-3 cursor-pointer ${
+                                        memberIds.includes(member._id) || meberIdsInWorkspace.includes(member._id) ? 'opacity-50' +
+                                            ' cursor-not-allowed' : ''
+                                    }`}
+                                    onClick={() => {
+                                        if (!memberIds.includes(member._id) && !meberIdsInWorkspace.includes(member._id)) {
+                                            handleSelectUser(member);
+                                        }
+                                    }}
+                                >
+                                    <div
+                                        className="w-8 h-8 rounded-full bg-red-500 flex items-center justify-center text-white font-bold">
+                                        {member?.fullname?.slice(0, 2)}
+                                    </div>
+                                    <div>
+                                        <p className="text-sm font-medium text-gray-800">{member?.fullname}</p>
+                                        <p className="text-xs text-gray-500">{member?.email}</p>
+                                    </div>
+                                </div>
+
+                                <div className="flex items-center space-x-2">
+                                    <select
+                                        value={member.role}
+                                        // onChange={(e) => handleChangeRole(member._id, e.target.value)}
+                                        // disabled={memberIds.includes(member._id) || meberIdsInWorkspace.includes(member._id)}
+                                        className="px-2 py-1 border rounded mr-2"
+                                    >
+                                        {allRoles.map(role => (
+                                            <option key={role} value={role}>
+                                                {role.charAt(0).toUpperCase() + role.slice(1)}
+                                            </option>
+                                        ))}
+                                    </select>
+                                    <button
+                                        className="px-3 py-1 bg-red-100 text-red-500 rounded"
+                                        // onClick={() => handleRemoveMember(member._id)}
+                                        disabled={memberIds.includes(member._id) || meberIdsInWorkspace.includes(member._id)}
+                                    >
+                                        Remove from board
+                                    </button>
+                                </div>
+
+
+                            </div>
+                        ))}
+                    </div>
                 </div>
 
 

@@ -27,7 +27,7 @@ const WorkspaceSetting = () => {
             navigate('/user-workspace')
             toast.success('Deleted Workspace Successfully');
         }else {
-            toast.error('Deleted Workspace Failed');
+            toast.error('Deleted Workspace Failed!');
         }
 
     }

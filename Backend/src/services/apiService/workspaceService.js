@@ -38,34 +38,49 @@ const getWorkspaceByWorkspaceIdService = async (workspaceId) => {
     };
 };
 
+//trả về tất cả member trong các board của workspace
 const getMemberInBoardsByWorkspaceIdService = async (workspaceId) => {
-    console.log('workspaceId', workspaceId);
     const workspace = await Workspace.findById(workspaceId).lean();
     if (!workspace) {
         throw new Error('Workspace not found');
     }
 
-    // Lấy tất cả board theo workspaceId
     const boards = await Board.find({ workspaceId })
-        .populate('members.memberId') // Lấy thông tin user
+        .populate({
+            path: 'members.memberId',
+            select: '_id fullname email'
+        })
         .lean();
-    console.log('check board', boards)
-    // Gộp danh sách user và thông tin role + boardId
+
     const users = [];
 
     boards.forEach(board => {
         board.members.forEach(member => {
-            users.push({
-                user: member.memberId,
+            const userId = member.memberId?._id?.toString();
+            if (!userId) return;
+
+            const existingUser = users.find(u => u.user._id.toString() === userId);
+
+            const boardInfo = {
+                _id: board._id,
+                title: board.title,
                 role: member.role
-            });
+            };
+
+            if (existingUser) {
+                existingUser.boards.push(boardInfo);
+            } else {
+                users.push({
+                    user: member.memberId,
+                    boards: [boardInfo]
+                });
+            }
         });
     });
 
-    return {
-        users
-    };
+    return { users };
 };
+
 
 
 const createWorkspaceService = async (workspace, memberId) => {

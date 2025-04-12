@@ -14,6 +14,21 @@ export const searchUser = createAsyncThunk('users/searchUser', async (payload, t
     }
 })
 
+export const getUserRoleInWorkspaceOrBoard = createAsyncThunk('users/getUserRoleInWorkspaceOrBoard', async (payload, thunkAPI) => {
+    try {
+        const response = await instanceAxios8000.get(`/api/users/role`, {
+            params: {
+                boardId: payload.boardId,
+                workspaceId: payload.workspaceId,
+            }
+        });
+        return response.data.role;
+    } catch (error) {
+        thunkAPI.rejectWithValue(error.response.data);
+    }
+})
+
+
 
 
 

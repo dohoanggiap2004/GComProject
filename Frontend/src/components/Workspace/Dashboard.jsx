@@ -25,6 +25,7 @@ const Dashboard = () => {
     const dispatch = useDispatch();
     const [isWorkspaceOpen, setIsWorkspaceOpen] = useState(false);
     const [isBoardOpen, setIsBoardOpen] = useState(false);
+    const [selectedId, setSelectedId] = useState(null);
 
     useEffect(() => {
         if (workspaces && workspaces.length > 0) {
@@ -64,7 +65,6 @@ const Dashboard = () => {
                                     {Array.isArray(boards[workspace._id]) && boards[workspace._id].length > 0 ? boards[workspace._id].map((board, index) => (
                                         <Link
                                             to={`/user-workspace/board/${board._id}`}
-                                            state={{workspaceId: workspace._id }}
                                             key={index}
                                         >
                                             <BoardItem title={board.title} background={board.background}/>
@@ -72,15 +72,12 @@ const Dashboard = () => {
                                     )) : null}
                                     <button
                                         className="w-40 h-24 md:w-48 bg-gray-200 rounded-lg overflow-hidden shadow-md relative"
-                                        onClick={() => {setIsBoardOpen(true); }}
+                                        onClick={() => {setIsBoardOpen(true); setSelectedId(workspace._id) }}
                                     >
                                         <div className="absolute inset-0 flex items-center justify-center">
                                             <p className="text-gray-700 font-semibold">Create new board</p>
                                         </div>
                                     </button>
-                                    <BoardCreateModel isOpen={isBoardOpen}
-                                                      onClose={() => setIsBoardOpen(false)}
-                                    />
                                 </div>
                             </div>
                         ))
@@ -99,7 +96,10 @@ const Dashboard = () => {
                     )
                 }
 
-
+                <BoardCreateModel isOpen={isBoardOpen}
+                                  onClose={() => setIsBoardOpen(false)}
+                                  selectedWorkspaceId={selectedId}
+                />
             </div>
         </div>
     )

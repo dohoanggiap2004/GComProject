@@ -32,6 +32,10 @@ export default function Checklist() {
     const handleAddItem = () => {
         if (formData.title.trim()) {
             dispatch(createTask(formData))
+            setFormData({
+                ...formData,
+                title: '',
+            })
             setIsAdding(false);
         }
     };
@@ -50,6 +54,8 @@ export default function Checklist() {
         }));
         if (!error) {
             toast.success("Task already deleted successfully!");
+        } else{
+            toast.error('Error while deleting task!');
         }
     }
 

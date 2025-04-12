@@ -20,6 +20,8 @@ const AvatarDropdown = () => {
                 duration: 3000,
             });
             navigate('/')
+        } else{
+            toast.error("Error while logout!")
         }
     }
     const toggleModal = () => {
@@ -49,7 +51,7 @@ const AvatarDropdown = () => {
                 className="flex items-center space-x-2 p-2 rounded-full bg-gray-200 hover:bg-gray-300"
             >
                 <div className="w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs">
-                    {user.fullname.slice(0, 2)}
+                    {user?.fullname?.slice(0, 2)}
                 </div>
             </button>
 
@@ -62,10 +64,10 @@ const AvatarDropdown = () => {
                         <div className="flex items-center space-x-2 mt-2">
                             <div
                                 className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white font-bold">
-                                {user.fullname.slice(0, 2)}
+                                {user?.fullname?.slice(0, 2)}
                             </div>
                             <div>
-                                <p className="text-sm font-medium text-gray-800">{user.fullname}</p>
+                                <p className="text-sm font-medium text-gray-800">{user?.fullname}</p>
                                 <p className="text-xs text-gray-500">{user.email}</p>
                             </div>
                         </div>

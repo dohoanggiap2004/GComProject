@@ -129,6 +129,8 @@ const CardModal = ({cardProp, onClose, onToggleCheck}) => {
         if (!error) {
             toast.success("Card already deleted successfully!");
             navigate(`/user-workspace/board/${formData.boardId}`)
+        } else{
+            toast.error("Error while deleting card!")
         }
     }
 

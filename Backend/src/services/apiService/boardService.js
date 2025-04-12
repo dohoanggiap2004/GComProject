@@ -1,14 +1,43 @@
 const Task = require("../../app/models/Task");
 const Board = require("../../app/models/Board");
+const User = require("../../app/models/User");
 const mongoose = require('mongoose');
 
 const getBoardsService = async () => {
     return Board.find().lean();
 };
 
+// trả về board và member trong nó
 const getBoardByIdService = async (boardId) => {
-    return Board.findById(boardId).lean();
+    const board = await Board.findById(boardId).lean();
+    let users = [];
+
+    if (!board?.members?.length) {
+        return {
+            board,
+            users,
+        };
+    }
+
+    const memberIds = board.members.map(member => member.memberId);
+    const foundUsers = await User.find({ _id: { $in: memberIds } })
+        .select('_id fullname email')
+        .lean();
+
+    users = board.members.map(member => {
+        const user = foundUsers.find(u => u._id.toString() === member.memberId.toString());
+        return {
+            ...user,
+            role: member.role
+        };
+    });
+
+    return {
+        board,
+        users
+    };
 };
+
 
 const getBoardByWorkspaceIdService = async (workspaceId) => {
     return Board.find({ workspaceId }).lean();
