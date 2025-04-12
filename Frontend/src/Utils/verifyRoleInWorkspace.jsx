@@ -7,20 +7,28 @@ import {getUserRoleInWorkspaceOrBoard} from "../store/actions/userAction.js";
 const RoleProtectedRouteForWorkspace = ({children, allowedRoles = []}) => {
     const dispatch = useDispatch();
     const location = useLocation();
-    const workspaceId = useParams().workspaceId || location.state.workspaceId
-    const {role} = useSelector(state => state.user);
+    const workspaceId = useParams()?.workspaceId || location?.state?.workspaceId || null
+    const boardId = useParams()?.boardId || null
+    const {role, error} = useSelector(state => state.user);
     useEffect(() => {
-        if (workspaceId) {
+        if (workspaceId || boardId) {
             dispatch(getUserRoleInWorkspaceOrBoard({
                     workspaceId: workspaceId,
-                    boardId: null,
+                    boardId: boardId,
                 }
             ));
         }
-    }, [workspaceId]);
+    }, [workspaceId, boardId]);
 
     if (!role) {
-        return <div>Loading...</div>; // bạn có thể custom lại loading UI
+        return <div>Loading...</div>;
+    }
+
+    if (error) {
+        console.log(error)
+        return (
+            <Navigate to="/unauthorized" replace/>
+        )
     }
 
     return allowedRoles.includes(role) ? children : <Navigate to="/unauthorized" replace/>;

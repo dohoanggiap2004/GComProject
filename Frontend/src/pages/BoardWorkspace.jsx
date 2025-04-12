@@ -19,6 +19,7 @@ import {
 } from "../store/actions/boardAction.js";
 import SortableList from "../components/Board/SortableItem/SortableList.jsx";
 import {getWorkspaceByWorkspaceId} from "../store/actions/workspaceAction.js";
+import {getUserRoleInWorkspaceOrBoard} from "../store/actions/userAction.js";
 
 function BoardWorkspace() {
     const { boardId } = useParams();
@@ -31,14 +32,14 @@ function BoardWorkspace() {
     const [reListInfo, setReListInfo] = useState(null);
 
     useEffect(() => {
+        dispatch(getBoardByBoardId(boardId));
+    }, [boardId]);
+
+    useEffect(() => {
         if(board?.workspaceId !== null){
             dispatch(getWorkspaceByWorkspaceId(board?.workspaceId));
         }
-    }, [board, dispatch]);
-
-    useEffect(() => {
-        dispatch(getBoardByBoardId(boardId));
-    }, [boardId, dispatch]);
+    }, [board]);
 
     const handleAddCard = (listId, content) => {
         const newCard = { title: content, listId, boardId };

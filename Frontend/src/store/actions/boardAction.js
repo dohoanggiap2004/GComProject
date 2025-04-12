@@ -6,7 +6,7 @@ export const getBoardByWorkspaceIds = createAsyncThunk('boards/getBoardByWorkspa
         const response = await instanceAxios8000.get(`/api/boards/workspace/${payload}`);
         return response.data.data;
     } catch (error) {
-        thunkAPI.rejectWithValue(error.response.data);
+        return thunkAPI.rejectWithValue(error.response.data);
     }
 })
 
@@ -15,7 +15,7 @@ export const getBoardByBoardId = createAsyncThunk('boards/getBoardByBoardId', as
         const response = await instanceAxios8000.get(`/api/boards/${payload}`);
         return response.data.data;
     } catch (error) {
-        thunkAPI.rejectWithValue(error.response.data);
+        return thunkAPI.rejectWithValue(error.response.data);
     }
 })
 
@@ -24,7 +24,7 @@ export const createBoard = createAsyncThunk('boards/createBoard', async (payload
         const response = await instanceAxios8000.post('/api/boards', payload);
         return response.data.newBoard;
     } catch (error) {
-        thunkAPI.rejectWithValue(error.response.data);
+        return thunkAPI.rejectWithValue(error.response.data);
     }
 })
 
@@ -33,7 +33,7 @@ export const updateBoard = createAsyncThunk('boards/updateBoard', async (payload
         const response = await instanceAxios8000.put('/api/boards', payload);
         return response.data.rowsEffected;
     } catch (error) {
-        thunkAPI.rejectWithValue(error.response.data);
+        return thunkAPI.rejectWithValue(error.response.data);
     }
 })
 
@@ -46,7 +46,7 @@ export const deleteBoard = createAsyncThunk('boards/deleteBoard', async (payload
         });
         return payload;
     } catch (error) {
-        thunkAPI.rejectWithValue(error.response.data);
+        return thunkAPI.rejectWithValue(error.response.data);
     }
 })
 
@@ -58,7 +58,7 @@ export const createList = createAsyncThunk('lists/createList', async (payload, t
         console.log('check response', response.data.newList);
         return response.data.newList;
     } catch (error) {
-        thunkAPI.rejectWithValue(error.response.data);
+        return thunkAPI.rejectWithValue(error.response.data);
     }
 })
 
@@ -67,7 +67,7 @@ export const updateList = createAsyncThunk('lists/updateList', async (payload, t
         const response = await instanceAxios8000.put('/api/lists', payload);
         return response.data.rowsEffected;
     } catch (error) {
-        thunkAPI.rejectWithValue(error.response.data);
+        return thunkAPI.rejectWithValue(error.response.data);
     }
 })
 
@@ -81,7 +81,7 @@ export const deleteList = createAsyncThunk('lists/deleteList', async (payload, t
         });
         return payload
     } catch (error) {
-        thunkAPI.rejectWithValue(error.response.data);
+        return thunkAPI.rejectWithValue(error.response.data);
     }
 })
 
@@ -90,7 +90,7 @@ export const updateListIndex = createAsyncThunk('cards/updateListIndex', async (
         const response = await instanceAxios8000.put('/api/boards/re-list', payload);
         return response.data.data;
     } catch (error) {
-        thunkAPI.rejectWithValue(error.response.data);
+        return thunkAPI.rejectWithValue(error.response.data);
     }
 })
 
@@ -101,7 +101,7 @@ export const createCard = createAsyncThunk('cards/createCard', async (payload, t
         const response = await instanceAxios8000.post('/api/cards', payload);
         return response.data.newCard;
     } catch (error) {
-        thunkAPI.rejectWithValue(error.response.data);
+        return thunkAPI.rejectWithValue(error.response.data);
     }
 })
 
@@ -110,7 +110,7 @@ export const updateCard = createAsyncThunk('cards/updateCard', async (payload, t
         const response = await instanceAxios8000.put('/api/cards', payload);
         return response.data.rowsEffected;
     } catch (error) {
-        thunkAPI.rejectWithValue(error.response.data);
+        return thunkAPI.rejectWithValue(error.response.data);
     }
 })
 
@@ -125,7 +125,7 @@ export const deleteCard = createAsyncThunk('cards/deleteCard', async (payload, t
         });
         return payload;
     } catch (error) {
-        thunkAPI.rejectWithValue(error.response.data);
+        return thunkAPI.rejectWithValue(error.response.data);
     }
 })
 
@@ -134,7 +134,7 @@ export const updateCardIndex = createAsyncThunk('cards/updateCardIndex', async (
         const response = await instanceAxios8000.put('/api/boards/re-card', payload);
         return response.data.data;
     } catch (error) {
-        thunkAPI.rejectWithValue(error.response.data);
+        return thunkAPI.rejectWithValue(error.response.data);
     }
 })
 

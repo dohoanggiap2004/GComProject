@@ -50,11 +50,12 @@ const createBoardService = async (board) => {
 
 const updateBoardService = async (board) => {
     const { _id, ...updateFields } = board;
-    return Board.findByIdAndUpdate(
+    await Board.findByIdAndUpdate(
         _id,
         { $set: updateFields },
         { new: true }
     );
+    return getBoardByIdService(_id);
 };
 
 const deleteBoardService = async (boardId) => {

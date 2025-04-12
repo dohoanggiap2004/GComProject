@@ -95,13 +95,14 @@ const boardSlice = createSlice({
             })
             .addCase(updateBoard.fulfilled, (state, action) => {
                 state.loading = false;
-                const {workspaceId, board} = action.payload;
-                if (state.boards[workspaceId]) {
-                    const index = state.boards[workspaceId].findIndex(b => b._id === board._id);
-                    if (index > -1) {
-                        state.boards[workspaceId][index] = board;
-                    }
-                }
+                // const {workspaceId, board} = action.payload;
+                // if (state.boards[workspaceId]) {
+                //     const index = state.boards[workspaceId].findIndex(b => b._id === board._id);
+                //     if (index > -1) {
+                //         state.boards[workspaceId][index] = board;
+                //     }
+                // }
+                state.membersInBoard = action.payload.users
             })
             .addCase(updateBoard.rejected, (state, action) => {
                 state.loading = false;

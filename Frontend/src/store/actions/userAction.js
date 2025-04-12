@@ -10,7 +10,7 @@ export const searchUser = createAsyncThunk('users/searchUser', async (payload, t
         });
         return response.data.data;
     } catch (error) {
-        thunkAPI.rejectWithValue(error.response.data);
+        return thunkAPI.rejectWithValue(error.response.data);
     }
 })
 
@@ -24,7 +24,7 @@ export const getUserRoleInWorkspaceOrBoard = createAsyncThunk('users/getUserRole
         });
         return response.data.role;
     } catch (error) {
-        thunkAPI.rejectWithValue(error.response.data);
+        return thunkAPI.rejectWithValue(error.response.data);
     }
 })
 

@@ -43,9 +43,12 @@ const App = () => {
                         }
                         />
                         <Route path={'/user-workspace/board/:boardId'}
-                               element={<RoleProtectedRoute allowedRoles={['user']}>
-                                   <BoardWorkspace/>
-                               </RoleProtectedRoute>}/>
+                               element={
+                                   <RoleProtectedRoute allowedRoles={['user']}>
+                                       <RoleProtectedRouteForWorkspace allowedRoles={["workspaceMember", "admin", "member", "viewer"]}>
+                                           <BoardWorkspace/>
+                                       </RoleProtectedRouteForWorkspace>
+                                   </RoleProtectedRoute>}/>
                         <Route
                             path="/user-workspace/member/:workspaceId"
                             element={

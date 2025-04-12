@@ -6,7 +6,7 @@ export const getWorkspaceByMemberId = createAsyncThunk('workspaces/getWorkspaceB
         const response = await instanceAxios8000.get(`/api/workspaces/member`);
         return response.data.data;
     } catch (error) {
-        thunkAPI.rejectWithValue(error.response.data);
+        return thunkAPI.rejectWithValue(error.response.data);
     }
 })
 
@@ -16,7 +16,7 @@ export const getWorkspaceByWorkspaceId = createAsyncThunk('workspaces/getWorkspa
         const response = await instanceAxios8000.get(`/api/workspaces/${payload}`);
         return response.data.data;
     } catch (error) {
-        thunkAPI.rejectWithValue(error.response.data);
+        return thunkAPI.rejectWithValue(error.response.data);
     }
 })
 
@@ -25,7 +25,7 @@ export const getMemberInBoardsByWorkspaceId = createAsyncThunk('workspaces/getMe
         const response = await instanceAxios8000.get(`/api/workspaces/member-board/${payload}`);
         return response.data.data;
     } catch (error) {
-        thunkAPI.rejectWithValue(error.response.data);
+        return thunkAPI.rejectWithValue(error.response.data);
     }
 })
 
@@ -34,7 +34,7 @@ export const createWorkspace = createAsyncThunk('workspaces/createWorkspace', as
         const response = await instanceAxios8000.post('/api/workspaces', payload);
         return response.data.newWorkspace;
     } catch (error) {
-        thunkAPI.rejectWithValue(error.response.data);
+        return thunkAPI.rejectWithValue(error.response.data);
     }
 })
 
@@ -43,7 +43,7 @@ export const updateWorkspace = createAsyncThunk('workspaces/updateWorkspace', as
         const response = await instanceAxios8000.put('/api/workspaces', payload);
         return response.data.rowsEffected;
     } catch (error) {
-        thunkAPI.rejectWithValue(error.response.data);
+        return thunkAPI.rejectWithValue(error.response.data);
     }
 })
 
@@ -56,7 +56,7 @@ export const deleteWorkspace = createAsyncThunk('workspaces/deleteWorkspace', as
         });
         return payload;
     } catch (error) {
-        thunkAPI.rejectWithValue(error.response.data);
+        return thunkAPI.rejectWithValue(error.response.data);
     }
 })
 

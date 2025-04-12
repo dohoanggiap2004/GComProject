@@ -25,6 +25,7 @@ import AddMemberBoardModal from "./AddMemberBoardModal.jsx";
 
 export default function HeaderBoard() {
     const {board, error} = useSelector((state) => state.board);
+    const {role} = useSelector((state) => state.user);
     const [selectedOption, setSelectedOption] = useState("Bảng");
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isOpenDelete, setIsOpenDelete] = useState(false);
@@ -46,7 +47,7 @@ export default function HeaderBoard() {
                 duration: 3000
             })
             navigate('/user-workspace')
-        } else{
+        } else {
             toast.error("Error while deleting board!")
         }
     }
@@ -55,7 +56,8 @@ export default function HeaderBoard() {
         <div className="text-gray-700 flex items-center justify-between px-4 py-2 relative">
             {/* Left Section */}
             <div className="flex items-center gap-1">
-                <span className="font-bold px-3 py-1 rounded-md hover:bg-gray-300">{board ? board.title : 'Board'}</span>
+                <span
+                    className="font-bold px-3 py-1 rounded-md hover:bg-gray-300">{board ? board.title : 'Board'}</span>
                 <div className={'px-3 py-2 rounded-md hover:bg-gray-300'}>
                     <FiStar className="text-sm"/>
                 </div>
@@ -86,8 +88,11 @@ export default function HeaderBoard() {
                         <GoPeople/>
                     </span>
                 </div>
-                <button className="bg-gray-400 text-white font-semibold px-3 py-1 rounded-sm flex items-center"
-                    onClick={() => setIsModalOpen(true)}
+                <button
+                    className="bg-gray-400 text-white font-semibold px-3 py-1 rounded-sm flex items-center hover:bg-gray-500"
+                    onClick={() => {
+                        setIsModalOpen(true);
+                    }}
                 >
                     <GoPeople className={'mr-2'}/> Share
                 </button>
@@ -151,7 +156,13 @@ export default function HeaderBoard() {
                                 <div className="border-t my-2"></div>
                                 <button
                                     className="w-full flex items-center text-sm p-2 hover:bg-gray-100 rounded-sm text-red-500"
-                                    onClick={() => setIsOpenDelete(true)}
+                                    onClick={() => {
+                                        if (!['admin', 'workspaceMember'].includes(role)) {
+                                            toast.error("You don't have permission to delete this board!");
+                                            return;
+                                        }
+                                        setIsOpenDelete(true)
+                                    }}
                                 >
                                     <FaTimes className="mr-2"/>
                                     Permanently delete board

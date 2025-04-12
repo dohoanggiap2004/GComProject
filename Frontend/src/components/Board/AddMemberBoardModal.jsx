@@ -8,6 +8,7 @@ const AddMemberBoardModal = ({isOpen, onClose}) => {
     const dispatch = useDispatch();
     const {workspace} = useSelector((state) => state.workspace);
     const {board, membersInBoard, error} = useSelector((state) => state.board)
+    const {role} = useSelector((state) => state.user);
     const {usersSearch} = useSelector((state) => state.user);
     const [selectedUsers, setSelectedUsers] = useState([]);
     const [memberIds, setMemberIds] = useState([]);
@@ -19,12 +20,13 @@ const AddMemberBoardModal = ({isOpen, onClose}) => {
     const handleSubmit = (e) => {
         e.preventDefault();
         if (board?._id) {
-            const members = memberIds.map(memberId => (
-                {
+            const members = memberIds.map(memberId => {
+                const member = membersInBoard.find(mem=> mem._id === memberId);
+                return({
                     memberId: memberId,
-                    role: 'member'
-                }
-            ))
+                    role: member?.role || 'member',
+                })
+            })
             dispatch(updateBoard({
                 _id: board._id,
                 members: members,
@@ -66,6 +68,68 @@ const AddMemberBoardModal = ({isOpen, onClose}) => {
         setMemberIds(prevIds => prevIds.filter(_id => _id !== userId));
     };
 
+    const handleDeleteMember = (e, userId) => {
+        e.preventDefault();
+
+        const newMemberIds = memberIds.filter(id => id !== userId);
+        handleRemoveUser(userId);
+
+        if (board?._id) {
+            const members = newMemberIds.map(memberId => {
+                const member = membersInBoard.find(mem => mem._id === memberId);
+                return {
+                    memberId,
+                    role: member?.role || 'member',
+                };
+            });
+
+            dispatch(updateBoard({
+                _id: board._id,
+                members,
+            }));
+
+            onClose();
+
+            if (!error) {
+                toast.success('Remove member successfully.');
+            } else {
+                toast.error("Error while removing member");
+            }
+        }
+    };
+
+    const handleChangeRole = (e, userId) => {
+        e.preventDefault();
+        const newRole = e.target.value;
+        console.log('1')
+        if (board?._id) {
+            const members = memberIds.map(memberId => {
+                const member = membersInBoard.find(mem=> mem._id === memberId);
+                if(memberId === userId){
+                    return({
+                        memberId: memberId,
+                        role: newRole || 'member',
+                    })
+                }
+                return({
+                    memberId: memberId,
+                    role: member?.role || 'member',
+                })
+            })
+
+            dispatch(updateBoard({
+                _id: board._id,
+                members,
+            }));
+            onClose();
+            if (!error) {
+                toast.success("Change member's role successfully.");
+            } else {
+                toast.error("Error while adding member")
+            }
+        }
+    }
+
     // Xử lý khi input được focus
     const handleInputFocus = () => {
         setShowSearchList(true);
@@ -82,8 +146,6 @@ const AddMemberBoardModal = ({isOpen, onClose}) => {
     useEffect(() => {
         if (!isOpen) {
             setSelectedUsers([]);
-            // Kiểm tra workspace trước khi cập nhật
-            setMemberIds([]);
             setShowSearchList(false);
             dispatch(searchUser(''));
         }
@@ -113,9 +175,13 @@ const AddMemberBoardModal = ({isOpen, onClose}) => {
         setMeberIdsInWorkspace(workspace?.memberIds)
     }, [workspace]);
 
+    useEffect(() => {
+        console.log('role', role)
+    }, [role])
+
     // useEffect(() => {
-    //     console.log('memberId', memberIds)
-    // }, [memberIds])
+    //     console.log('check memberid', memberIds)
+    // }, [memberIds]);
 
     if (!isOpen) return null;
 
@@ -158,7 +224,13 @@ const AddMemberBoardModal = ({isOpen, onClose}) => {
 
                         {/* Actions */}
                         <button
-                            onClick={(e) => handleSubmit(e)}
+                            onClick={(e) => {
+                                if (!['admin', 'workspaceMember'].includes(role)) {
+                                    toast.error("You don't have permission to share this board!");
+                                    return;
+                                }
+                                handleSubmit(e)
+                            }}
                             className={`px-4 py-2 w-24 mt-2 rounded ${
                                 selectedUsers.length > 0 ? "bg-blue-600 text-white" : "bg-gray-300 text-gray-500 cursor-not-allowed"
                             }`}
@@ -205,15 +277,8 @@ const AddMemberBoardModal = ({isOpen, onClose}) => {
                                  key={member?._id}
                             >
                                 <div
-                                    className={`flex items-center space-x-2 mb-3 cursor-pointer ${
-                                        memberIds.includes(member._id) || meberIdsInWorkspace.includes(member._id) ? 'opacity-50' +
-                                            ' cursor-not-allowed' : ''
+                                    className={`flex items-center space-x-2 mb-3 cursor-pointer 
                                     }`}
-                                    onClick={() => {
-                                        if (!memberIds.includes(member._id) && !meberIdsInWorkspace.includes(member._id)) {
-                                            handleSelectUser(member);
-                                        }
-                                    }}
                                 >
                                     <div
                                         className="w-8 h-8 rounded-full bg-red-500 flex items-center justify-center text-white font-bold">
@@ -228,8 +293,8 @@ const AddMemberBoardModal = ({isOpen, onClose}) => {
                                 <div className="flex items-center space-x-2">
                                     <select
                                         value={member.role}
-                                        // onChange={(e) => handleChangeRole(member._id, e.target.value)}
-                                        // disabled={memberIds.includes(member._id) || meberIdsInWorkspace.includes(member._id)}
+                                        onChange={(e) => handleChangeRole(e, member._id)}
+                                        disabled={!['admin', 'workspaceMember'].includes(role)}
                                         className="px-2 py-1 border rounded mr-2"
                                     >
                                         {allRoles.map(role => (
@@ -240,14 +305,12 @@ const AddMemberBoardModal = ({isOpen, onClose}) => {
                                     </select>
                                     <button
                                         className="px-3 py-1 bg-red-100 text-red-500 rounded"
-                                        // onClick={() => handleRemoveMember(member._id)}
-                                        disabled={memberIds.includes(member._id) || meberIdsInWorkspace.includes(member._id)}
+                                        onClick={(e) => handleDeleteMember(e, member._id)}
+                                        disabled={!['admin', 'workspaceMember'].includes(role)}
                                     >
                                         Remove from board
                                     </button>
                                 </div>
-
-
                             </div>
                         ))}
                     </div>

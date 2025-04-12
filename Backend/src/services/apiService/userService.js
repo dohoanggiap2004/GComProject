@@ -39,8 +39,6 @@ const deleteUserService = async (id) => {
 
 const checkUserRoleService = async (userId, { workspaceId, boardId }) => {
     if (!userId) throw new Error('User ID is required');
-    console.log('check userId', userId);
-    console.log('check workspaceId', workspaceId);
 
     // Ưu tiên kiểm tra workspace nếu có
     if (workspaceId) {
@@ -61,9 +59,20 @@ const checkUserRoleService = async (userId, { workspaceId, boardId }) => {
         if (!board) return null;
 
         const member = board.members.find(m => m.memberId.toString() === userId.toString());
+
         if (member) {
             return {
                 role: member.role,
+            };
+        }
+
+        const workspace = await Workspace.findById(board.workspaceId).lean();
+        if (!workspace) return null;
+
+        const memberId = workspace.memberIds.find(memberId => memberId.toString() === userId.toString());
+        if (memberId) {
+            return {
+                role: 'workspaceMember',
             };
         }
     }
