@@ -20,6 +20,7 @@ const SortableList = ({ list, cards, onToggleCheck, onAddCard, boardId }) => {
         isDragging,
     } = useSortable({ id: list._id });
     const { error } = useSelector(state => state.board)
+    const { role } = useSelector(state => state.user);
     const { setNodeRef: setDroppableRef } = useDroppable({ id: list._id });
     const [isAddingCard, setIsAddingCard] = useState(false);
     const [newCardContent, setNewCardContent] = useState('');
@@ -139,7 +140,7 @@ const SortableList = ({ list, cards, onToggleCheck, onAddCard, boardId }) => {
             <div className="flex justify-between items-center mb-2">
                 {/* Drag handle */}
                 <div
-                    {...listeners}
+                    {... role !== 'viewer' ? listeners : ''}
                     {...attributes}
                     className="cursor-grab active:cursor-grabbing p-1 text-gray-500 hover:text-gray-700"
                 >
@@ -148,7 +149,7 @@ const SortableList = ({ list, cards, onToggleCheck, onAddCard, boardId }) => {
 
                 {/* Tiêu đề/Input (không kéo thả) */}
                 <div className="flex-1" onMouseDown={(e) => e.stopPropagation()}>
-                    {isEditingTitle ? (
+                    {role !== 'viewer' && isEditingTitle ? (
                         <input
                             ref={titleInputRef}
                             type="text"
@@ -189,7 +190,8 @@ const SortableList = ({ list, cards, onToggleCheck, onAddCard, boardId }) => {
                     />
                 ))}
             </SortableContext>
-            {isAddingCard ? (
+            {role !== 'viewer' && (
+                isAddingCard ? (
                 <div className="mt-2">
                     <input
                         type="text"
@@ -222,8 +224,9 @@ const SortableList = ({ list, cards, onToggleCheck, onAddCard, boardId }) => {
                         <GoPlus className={'mr-2 w-4 h-4'}/> Add a card
                     </div>
                 </button>
+                )
             )}
-            {isOpen && (
+            {role !== 'viewer' && isOpen && (
                 <div
                     ref={menuRef}
                     className="absolute right-2 top-10 w-64 bg-white shadow-lg rounded-lg p-3 border border-gray-100 z-50"

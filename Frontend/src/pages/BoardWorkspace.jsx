@@ -19,12 +19,12 @@ import {
 } from "../store/actions/boardAction.js";
 import SortableList from "../components/Board/SortableItem/SortableList.jsx";
 import {getWorkspaceByWorkspaceId} from "../store/actions/workspaceAction.js";
-import {getUserRoleInWorkspaceOrBoard} from "../store/actions/userAction.js";
 
 function BoardWorkspace() {
     const { boardId } = useParams();
     const dispatch = useDispatch();
     const { board } = useSelector((state) => state.board);
+    const { role } = useSelector(state => state.user)
     const [isAddingList, setIsAddingList] = useState(false);
     const [listTitle, setListTitle] = useState("");
     const [tempBoard, setTempBoard] = useState(null);
@@ -234,7 +234,7 @@ function BoardWorkspace() {
                                 items={tempBoard?.lists?.map((list) => list._id) || []}
                                 strategy={horizontalListSortingStrategy}
                             >
-                                {/* Thêm min-w-max ở đây */}
+
                                 <div className="flex space-x-4 min-w-max">
                                     {/* Hiển thị các list */}
                                     {tempBoard?.lists?.length > 0 &&
@@ -246,13 +246,13 @@ function BoardWorkspace() {
                                                 onToggleCheck={handleToggleCheck}
                                                 onAddCard={handleAddCard}
                                                 boardId={boardId}
-                                                // Mỗi list có chiều rộng cố định, để khi nhiều list thì cuộn ngang
                                                 className="w-64 shrink-0"
                                             />
                                         ))}
 
                                     {/* Form / button thêm list mới */}
-                                    {isAddingList ? (
+                                    {role !== 'viewer' && (
+                                        isAddingList ? (
                                         <div className="bg-gray-200 p-2 rounded-lg h-fit w-64 shrink-0">
                                             <input
                                                 type="text"
@@ -262,6 +262,7 @@ function BoardWorkspace() {
                                                 className="w-full p-1 text-sm rounded-lg border border-gray-300 focus:outline-hidden focus:border-blue-500"
                                             />
                                             <div className="flex space-x-2 mt-2">
+
                                                 <button
                                                     onClick={handleAddList}
                                                     className="bg-blue-500 text-white px-4 py-1 rounded-lg hover:bg-blue-600 text-sm font-semibold"
@@ -286,6 +287,7 @@ function BoardWorkspace() {
                                         >
                                             + Add another list
                                         </button>
+                                        )
                                     )}
                                 </div>
                             </SortableContext>

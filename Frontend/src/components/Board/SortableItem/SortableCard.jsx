@@ -3,13 +3,14 @@ import {useSortable} from "@dnd-kit/sortable";
 import {createPortal} from 'react-dom';
 import CardModal from '../../Card/CardModal.jsx';
 import {CompletedSVG, EditSVG} from "../../Icon/icons.jsx";
-import { FaCheckCircle } from 'react-icons/fa';
+import {FaCheckCircle} from 'react-icons/fa';
+import {useSelector} from "react-redux";
 
 const SortableCard = ({card, onToggleCheck}) => {
     const {attributes, listeners, setNodeRef, transform, transition, isDragging} = useSortable({
         id: card._id,
     });
-
+    const {role} = useSelector((state) => state.user);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const style = {
@@ -30,7 +31,6 @@ const SortableCard = ({card, onToggleCheck}) => {
     };
 
     const handleOpenModal = () => {
-        console.log('Card clicked, opening modal'); // Kiểm tra sự kiện
         setIsModalOpen(true);
     };
 
@@ -43,10 +43,11 @@ const SortableCard = ({card, onToggleCheck}) => {
                 className={`group relative bg-white p-2 mb-2 rounded-lg shadow-md hover:border-2 hover:border-cyan-500 ${
                     isDragging ? 'shadow-lg' : 'shadow-xs'
                 } flex items-center cursor-pointer`}
-                onClick={handleOpenModal} // Mở modal khi click vào card
+                onClick={role !== 'viewer' ? handleOpenModal : undefined}
             >
                 <div className={'flex items-center'}>
-                    <div className="mr-2 cursor-pointer z-40" onClick={handleToggleCheck}>
+                    <div className="mr-2 cursor-pointer z-40"
+                         onClick={role !== 'viewer' ? handleToggleCheck : undefined}>
                         {card.isCompleted ? (
                             <FaCheckCircle className={'w-4 h-4'} color={'green'}/>
                         ) : (
@@ -54,7 +55,7 @@ const SortableCard = ({card, onToggleCheck}) => {
                         )}
                     </div>
 
-                    <div className="cursor-grab text-xs" {...listeners}>
+                    <div className="cursor-grab text-xs"  {...(role !== 'viewer' ? listeners : {})}>
                         {card.title}
                     </div>
                 </div>

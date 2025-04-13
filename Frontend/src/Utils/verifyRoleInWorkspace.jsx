@@ -20,16 +20,18 @@ const RoleProtectedRouteForWorkspace = ({children, allowedRoles = []}) => {
         }
     }, [workspaceId, boardId]);
 
-    if (!role) {
-        return <div>Loading...</div>;
-    }
-
     if (error) {
         console.log(error)
         return (
             <Navigate to="/unauthorized" replace/>
         )
     }
+
+    if (!role) {
+        return <div>Loading...</div>;
+    }
+
+
 
     return allowedRoles.includes(role) ? children : <Navigate to="/unauthorized" replace/>;
 };
