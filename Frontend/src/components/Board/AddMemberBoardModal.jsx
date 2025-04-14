@@ -17,7 +17,7 @@ const AddMemberBoardModal = ({isOpen, onClose}) => {
     const inputRef = useRef(null);
     const allRoles = ['admin', 'member', 'viewer'];
     // Xử lý submit form
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         if (board?._id) {
             const members = memberIds.map(memberId => {
@@ -27,15 +27,15 @@ const AddMemberBoardModal = ({isOpen, onClose}) => {
                     role: member?.role || 'member',
                 })
             })
-            dispatch(updateBoard({
-                _id: board._id,
-                members: members,
-            }));
-            onClose();
-            if (!error) {
+            try {
+                await dispatch(updateBoard({
+                    _id: board._id,
+                    members: members,
+                })).unwrap();
                 toast.success('Add member successfully.');
-            } else {
-                toast.error("Error while adding member")
+                onClose();
+            } catch (err) {
+                toast.error(err || "Error while adding member");
             }
         }
     };
@@ -68,7 +68,7 @@ const AddMemberBoardModal = ({isOpen, onClose}) => {
         setMemberIds(prevIds => prevIds.filter(_id => _id !== userId));
     };
 
-    const handleDeleteMember = (e, userId) => {
+    const handleDeleteMember = async (e, userId) => {
         e.preventDefault();
 
         const newMemberIds = memberIds.filter(id => id !== userId);
@@ -83,25 +83,22 @@ const AddMemberBoardModal = ({isOpen, onClose}) => {
                 };
             });
 
-            dispatch(updateBoard({
-                _id: board._id,
-                members,
-            }));
-
-            onClose();
-
-            if (!error) {
-                toast.success('Remove member successfully.');
-            } else {
-                toast.error("Error while removing member");
+            try {
+                await dispatch(updateBoard({
+                    _id: board._id,
+                    members: members,
+                })).unwrap();
+                toast.success('Add member successfully.');
+                onClose();
+            } catch (err) {
+                toast.error(err || "Error while adding member");
             }
         }
     };
 
-    const handleChangeRole = (e, userId) => {
+    const handleChangeRole = async (e, userId) => {
         e.preventDefault();
         const newRole = e.target.value;
-        console.log('1')
         if (board?._id) {
             const members = memberIds.map(memberId => {
                 const member = membersInBoard.find(mem=> mem._id === memberId);
@@ -117,15 +114,15 @@ const AddMemberBoardModal = ({isOpen, onClose}) => {
                 })
             })
 
-            dispatch(updateBoard({
-                _id: board._id,
-                members,
-            }));
-            onClose();
-            if (!error) {
-                toast.success("Change member's role successfully.");
-            } else {
-                toast.error("Error while adding member")
+            try {
+                await dispatch(updateBoard({
+                    _id: board._id,
+                    members: members,
+                })).unwrap();
+                toast.success('Add member successfully.');
+                onClose();
+            } catch (err) {
+                toast.error(err || "Error while adding member");
             }
         }
     }

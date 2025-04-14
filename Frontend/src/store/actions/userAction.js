@@ -10,7 +10,7 @@ export const searchUser = createAsyncThunk('users/searchUser', async (payload, t
         });
         return response.data.data;
     } catch (error) {
-        return thunkAPI.rejectWithValue(error.response.data);
+        return thunkAPI.rejectWithValue(error.response.data.message);
     }
 })
 
@@ -24,9 +24,20 @@ export const getUserRoleInWorkspaceOrBoard = createAsyncThunk('users/getUserRole
         });
         return response.data.role;
     } catch (error) {
-        return thunkAPI.rejectWithValue(error.response.data);
+        return thunkAPI.rejectWithValue(error.response.data.message);
     }
 })
+
+export const getQuantityUserWorkspace = createAsyncThunk('users/getQuantityUserWorkspace', async (payload, thunkAPI) => {
+    try {
+        const response = await instanceAxios8000.get(`/api/users/quantity-workspace`);
+        return response.data.data;
+    } catch (error) {
+        return thunkAPI.rejectWithValue(error.response.data.message);
+    }
+})
+
+
 
 
 

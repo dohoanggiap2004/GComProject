@@ -80,5 +80,22 @@ const checkUserRoleService = async (userId, { workspaceId, boardId }) => {
     return null;
 };
 
+const countUserWorkspaceService = async (userId) => {
+    const user = await User.findById(userId).lean()
+    if (user.service === 'premium'){
+        return 'unlimited'
+    }
+    return Workspace.countDocuments({ "memberIds": userId })
+}
 
-module.exports = { getUsersService, getUserByIdService, createUserService, updateUserService, deleteUserService, searchUsersService, checkUserRoleService};
+
+module.exports = {
+    getUsersService,
+    getUserByIdService,
+    createUserService,
+    updateUserService,
+    deleteUserService,
+    searchUsersService,
+    checkUserRoleService,
+    countUserWorkspaceService,
+};

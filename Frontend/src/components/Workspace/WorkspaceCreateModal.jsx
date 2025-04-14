@@ -1,6 +1,7 @@
 import {useState} from "react";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {createWorkspace} from "../../store/actions/workspaceAction.js";
+import toast from "react-hot-toast";
 
 const WorkspaceCreateModal = ({isOpen, onClose}) => {
     const dispatch = useDispatch();
@@ -18,11 +19,15 @@ const WorkspaceCreateModal = ({isOpen, onClose}) => {
         }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        dispatch(createWorkspace(formData))
-
-        onClose();
+        try {
+            await dispatch(createWorkspace(formData)).unwrap();
+            toast.success("Workspace created successfully.");
+            onClose();
+        } catch (err) {
+            toast.error(err || "Error creating workspace.");
+        }
     };
 
     if (!isOpen) return null;

@@ -6,6 +6,6 @@ export const sendMail = createAsyncThunk('laptops/sendMail', async (payload, thu
         const response = await instanceAxios8000.post('/api/mail/send-mail', payload);
         return response.data;
     } catch (error) {
-        return thunkAPI.rejectWithValue(error.response.data);
+        return thunkAPI.rejectWithValue(error.response.data.message);
     }
 })

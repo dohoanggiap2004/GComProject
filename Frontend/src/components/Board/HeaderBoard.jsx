@@ -24,7 +24,7 @@ import {createPortal} from "react-dom";
 import AddMemberBoardModal from "./AddMemberBoardModal.jsx";
 
 export default function HeaderBoard() {
-    const {board, error} = useSelector((state) => state.board);
+    const {board} = useSelector((state) => state.board);
     const {role} = useSelector((state) => state.user);
     const [selectedOption, setSelectedOption] = useState("Bảng");
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -36,19 +36,17 @@ export default function HeaderBoard() {
         setIsMenuOpen(!isMenuOpen);
     };
 
-    const handleDeleteBoard = () => {
+    const handleDeleteBoard = async () => {
         const payload = {
             boardId: board._id,
             workspaceId: board.workspaceId,
         }
-        dispatch(deleteBoard(payload));
-        if (!error) {
-            toast.success("Deleted the board", {
-                duration: 3000
-            })
-            navigate('/user-workspace')
-        } else {
-            toast.error("Error while deleting board!")
+        try {
+            await dispatch(deleteBoard(payload)).unwrap();
+            toast.success("Deleted the board", { duration: 3000 });
+            navigate('/user-workspace');
+        } catch (err) {
+            toast.error(err.message || "Error while deleting board!");
         }
     }
 

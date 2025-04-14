@@ -52,11 +52,6 @@ export default function Checklist() {
             ...formData,
             taskId: taskId,
         }));
-        if (!error) {
-            toast.success("Task already deleted successfully!");
-        } else{
-            toast.error('Error while deleting task!');
-        }
     }
 
     useEffect(() => {

@@ -46,19 +46,23 @@ const CreateBoardModal = ({ isOpen, onClose, selectedWorkspaceId }) => {
         setFormData((prev) => ({ ...prev, background: bg }));
     };
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         if (!formData.title.trim()) return;
-        dispatch(createBoard(formData));
-        if (!error){
+        try {
+            // Dispatch action tạo board và đợi kết quả trả về
+            await dispatch(createBoard(formData)).unwrap(); // unwrap giúp bắt lỗi nếu có
             toast.success("Created new board!");
+
+            // Reset formData nếu tạo board thành công
             setFormData({
                 workspaceId: selectedWorkspaceId,
                 title: "",
                 background: backgrounds[0],
                 visibility: "Workspace",
-            })
-        }else{
-            toast.error("Error while creating board!")
+            });
+        } catch (err) {
+            // Bắt lỗi nếu có và hiển thị thông báo lỗi
+            toast.error(err.message || "Error while creating board!");
         }
         onClose();
     };

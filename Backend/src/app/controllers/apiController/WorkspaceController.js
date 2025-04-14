@@ -7,6 +7,7 @@ const {
     getMemberInBoardsByWorkspaceIdService
 } = require("../../../services/apiService/workspaceService");
 const getUserIdFromToken = require("../../../utils/getUserIdFromToken");
+const {countUserWorkspaceService} = require("../../../services/apiService/userService");
 
 class WorkspaceController {
 
@@ -75,8 +76,21 @@ class WorkspaceController {
                 return res.status(400).json({message: "Workspace information is required"});
             const memberId = await getUserIdFromToken(req);
             const workspace = req.body;
-            const newWorkspace = await createWorkspaceService(workspace, memberId);
+            const existQuantityWorkspace = await countUserWorkspaceService(memberId)
+            if (existQuantityWorkspace === undefined) {
+                return res.status(400).json({message: "Something went wrong with retrieving the number of workspaces."});
+            }
 
+            if (existQuantityWorkspace === 'unlimited') {
+                const newWorkspace = await createWorkspaceService(workspace, memberId);
+                return res.status(201).json({
+                    newWorkspace: newWorkspace,
+                });
+            } else if (existQuantityWorkspace >= 5) {
+                return res.status(400).json({message: "Reached the limitation to create a new workspace"});
+            }
+
+            const newWorkspace = await createWorkspaceService(workspace, memberId);
             res.status(201).json({
                 newWorkspace: newWorkspace,
             });

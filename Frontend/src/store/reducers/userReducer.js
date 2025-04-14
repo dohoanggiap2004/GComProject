@@ -3,6 +3,8 @@ import {createSlice} from '@reduxjs/toolkit';
 import {
     searchUser,
     getUserRoleInWorkspaceOrBoard,
+    getQuantityUserWorkspace,
+
 } from "../actions/userAction";
 
 const userSlice = createSlice({
@@ -11,6 +13,7 @@ const userSlice = createSlice({
         loading: false,
         error: null,
         role: '',
+        quantityWorkspace: null,
     },
     name: 'users',
     extraReducers: (builder) => {
@@ -40,6 +43,20 @@ const userSlice = createSlice({
                 state.role = action.payload;
             })
             .addCase(getUserRoleInWorkspaceOrBoard.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            })
+
+            // get user quantity workspace
+            .addCase(getQuantityUserWorkspace.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(getQuantityUserWorkspace.fulfilled, (state, action) => {
+                state.loading = false;
+                state.quantityWorkspace = action.payload;
+            })
+            .addCase(getQuantityUserWorkspace.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
             })

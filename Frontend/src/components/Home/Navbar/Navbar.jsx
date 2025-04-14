@@ -2,7 +2,7 @@ import {IoIosSettings, IoMdClose, IoMdMenu} from "react-icons/io";
 import {motion} from "framer-motion";
 import {useDispatch, useSelector} from "react-redux";
 import {logoutUser} from "../../../store/actions/authAction.jsx";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {FaChevronDown, FaChevronRight, FaChevronLeft, FaPlug, FaPencilAlt, FaLightbulb, FaStar} from "react-icons/fa";
 import {MdOutlineEngineering, MdOutlineForwardToInbox} from "react-icons/md"
@@ -13,6 +13,7 @@ import {HiSpeakerphone} from "react-icons/hi";
 import {HiClipboardDocumentList} from "react-icons/hi2";
 import {PiBagSimpleFill} from "react-icons/pi";
 import {LuBuilding2, LuEarth} from "react-icons/lu";
+import toast from "react-hot-toast";
 
 
 const NavbarMenu = [
@@ -190,12 +191,20 @@ const Navbar = () => {
     const [menuOpen, setMenuOpen] = useState(false);
     const [dropdownOpen, setDropdownOpen] = useState(null); // Track which dropdown is open
     const [activeMenuItem, setActiveMenuItem] = useState(null);
-
+    const navigate = useNavigate()
     const dispatch = useDispatch();
     const {isLoginUser} = useSelector((state) => state.auth);
 
-    const handleLogout = () => {
-        dispatch(logoutUser());
+    const handleLogout = async () => {
+        try {
+            await dispatch(logoutUser()).unwrap();
+            toast.success('Logout successfully', {
+                duration: 3000,
+            });
+            navigate('/');
+        } catch (err) {
+            toast.error(err || "Error while logout!");
+        }
     };
 
     const toggleDropdown = (menuId) => {

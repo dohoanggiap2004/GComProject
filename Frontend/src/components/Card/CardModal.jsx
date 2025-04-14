@@ -119,18 +119,18 @@ const CardModal = ({cardProp, onClose, onToggleCheck}) => {
     };
 
 
-    const handleDeleteCard = () => {
+    const handleDeleteCard = async () => {
         const payload = {
             boardId: formData.boardId,
             cardId: formData._id,
             listId: formData.listId,
         }
-        dispatch(deleteCard(payload))
-        if (!error) {
+        try {
+            await dispatch(deleteCard(payload)).unwrap();
             toast.success("Card already deleted successfully!");
-            navigate(`/user-workspace/board/${formData.boardId}`)
-        } else{
-            toast.error("Error while deleting card!")
+            navigate(`/user-workspace/board/${formData.boardId}`);
+        } catch (err) {
+            toast.error(err || "Error while deleting card!");
         }
     }
 

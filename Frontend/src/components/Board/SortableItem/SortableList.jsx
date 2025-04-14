@@ -115,15 +115,21 @@ const SortableList = ({ list, cards, onToggleCheck, onAddCard, boardId }) => {
         return () => document.removeEventListener("mousedown", handleClickOutside);
     }, [isOpen]);
 
-    const handleDeleteList = () => {
+    const handleDeleteList = async () => {
         const payload = {
             boardId: boardId,
             listId: list._id,
         }
-        dispatch(deleteList(payload))
-        toast.success(!error ? 'Deleted the list' : error, {
-            duration: 3000,
-        })
+        try {
+            await dispatch(deleteList(payload)).unwrap();
+            toast.success('Deleted the list', {
+                duration: 3000,
+            });
+        } catch (err) {
+            toast.error(err || 'Error while deleting the list', {
+                duration: 3000,
+            });
+        }
     }
 
     return (

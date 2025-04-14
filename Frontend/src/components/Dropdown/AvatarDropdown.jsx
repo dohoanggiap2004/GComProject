@@ -5,23 +5,25 @@ import {logoutUser} from "../../store/actions/authAction.jsx";
 import {GoPlus} from "react-icons/go";
 import {useNavigate} from "react-router-dom";
 import toast from "react-hot-toast";
+import {getQuantityUserWorkspace} from "../../store/actions/userAction.js";
 
 const AvatarDropdown = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [isWorkspaceOpen, setIsWorkspaceOpen] = useState(false);
-    const {user, error} = useSelector(state => state.auth)
+    const {user} = useSelector(state => state.auth)
+    const {quantityWorkspace} = useSelector(state => state.user)
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const modalRef = useRef(null);
-    const handleLogout = () => {
-        dispatch(logoutUser())
-        if(!error){
-            toast.success('Logout successfully',{
+    const handleLogout = async () => {
+        try {
+            await dispatch(logoutUser()).unwrap();
+            toast.success('Logout successfully', {
                 duration: 3000,
             });
-            navigate('/')
-        } else{
-            toast.error("Error while logout!")
+            navigate('/');
+        } catch (err) {
+            toast.error(err || "Error while logout!");
         }
     }
     const toggleModal = () => {
@@ -33,6 +35,10 @@ const AvatarDropdown = () => {
             setIsOpen(false);
         }
     };
+
+    useEffect(() => {
+        dispatch(getQuantityUserWorkspace())
+    }, [])
 
     useEffect(() => {
         if (isOpen) {
@@ -104,6 +110,7 @@ const AvatarDropdown = () => {
                             onClick={() => setIsWorkspaceOpen(true)}>
                             <span className="flex items-center">
                                 <GoPlus className={'mr-2'}/> Create a Workspace
+                                {quantityWorkspace !== 'unlimited' ? `(Exist ${quantityWorkspace})` : ''}
                             </span>
                         </button>
                     </div>

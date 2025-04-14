@@ -5,7 +5,7 @@ const {
     updateUserService,
     deleteUserService,
     searchUsersService,
-    checkUserRoleService,
+    checkUserRoleService, countUserWorkspaceService,
 } = require("../../../services/apiService/userService");
 const getUserIdFromToken = require("../../../utils/getUserIdFromToken");
 
@@ -144,6 +144,20 @@ class UserController {
             res.status(500).json({message: "Internal Server Error"});
         }
     }
+
+    async countUserWorkspaces (req, res) {
+        const userId = await getUserIdFromToken(req)
+
+        try {
+            const count = await countUserWorkspaceService(userId);
+            res.status(200).json({
+                data: count,
+            });
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ message: "Server error" });
+        }
+    };
 }
 
 module.exports = new UserController();

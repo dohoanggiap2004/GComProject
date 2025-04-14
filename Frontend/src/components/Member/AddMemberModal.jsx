@@ -13,18 +13,18 @@ const AddMemberModal = ({isOpen, onClose}) => {
     const [showSearchList, setShowSearchList] = useState(false);
     const inputRef = useRef(null);
     // Xử lý submit form
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         if (workspace?._id) {
-            dispatch(updateWorkspace({
-                _id: workspace._id,
-                memberIds: memberIds,
-            }));
-            onClose();
-            if(!error){
+            try {
+                await dispatch(updateWorkspace({
+                    _id: workspace._id,
+                    memberIds: memberIds,
+                })).unwrap(); // unwrap giúp bắt lỗi và xử lý
+                onClose();
                 toast.success('Add member successfully.');
-            }else{
-                toast.error("Error while adding member")
+            } catch (err) {
+                toast.error(err.message || "Error while adding member");
             }
         }
     };

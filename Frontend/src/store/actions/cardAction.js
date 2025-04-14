@@ -12,7 +12,7 @@ export const getCardWithTask = createAsyncThunk('cards/getCardWithTask', async (
         });
         return response.data.data;
     } catch (error) {
-        return thunkAPI.rejectWithValue(error.response.data);
+        return thunkAPI.rejectWithValue(error.response.data.message);
     }
 })
 
