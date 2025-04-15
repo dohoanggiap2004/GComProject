@@ -9,6 +9,7 @@ import {useEffect, useState} from "react";
 import { getBoardByWorkspaceIds} from "../../store/actions/boardAction.js";
 import BoardCreateModel from "./BoardCreateModal.jsx";
 import {Link} from "react-router-dom";
+import {getQuantityUserWorkspace} from "../../store/actions/userAction.js";
 
 
 const recentBoards = [
@@ -22,10 +23,15 @@ const recentBoards = [
 const Dashboard = () => {
     const {workspaces} = useSelector((state) => state.workspace);
     const {boards} = useSelector((state) => state.board);
+    const {quantityWorkspace} = useSelector(state => state.user)
     const dispatch = useDispatch();
     const [isWorkspaceOpen, setIsWorkspaceOpen] = useState(false);
     const [isBoardOpen, setIsBoardOpen] = useState(false);
     const [selectedId, setSelectedId] = useState(null);
+
+    useEffect(() => {
+        dispatch(getQuantityUserWorkspace())
+    }, [workspaces])
 
     useEffect(() => {
         if (workspaces && workspaces.length > 0) {
@@ -74,8 +80,11 @@ const Dashboard = () => {
                                         className="w-40 h-24 md:w-48 bg-gray-200 rounded-lg overflow-hidden shadow-md relative"
                                         onClick={() => {setIsBoardOpen(true); setSelectedId(workspace._id) }}
                                     >
-                                        <div className="absolute inset-0 flex items-center justify-center">
+                                        <div className="absolute inset-0 flex-col flex items-center justify-center">
                                             <p className="text-gray-700 font-semibold">Create new board</p>
+                                            {quantityWorkspace !== 'unlimited' && (
+                                                <p className="text-gray-600 i text-xs font-semibold">Limited 5 boards</p>
+                                            )}
                                         </div>
                                     </button>
                                 </div>

@@ -88,10 +88,10 @@ const AddMemberBoardModal = ({isOpen, onClose}) => {
                     _id: board._id,
                     members: members,
                 })).unwrap();
-                toast.success('Add member successfully.');
+                toast.success('Deleted member successfully.');
                 onClose();
             } catch (err) {
-                toast.error(err || "Error while adding member");
+                toast.error(err || "Error while deleting member");
             }
         }
     };
@@ -119,10 +119,9 @@ const AddMemberBoardModal = ({isOpen, onClose}) => {
                     _id: board._id,
                     members: members,
                 })).unwrap();
-                toast.success('Add member successfully.');
                 onClose();
             } catch (err) {
-                toast.error(err || "Error while adding member");
+                toast.error(err || "Error while update member");
             }
         }
     }

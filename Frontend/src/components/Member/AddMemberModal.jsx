@@ -24,7 +24,7 @@ const AddMemberModal = ({isOpen, onClose}) => {
                 onClose();
                 toast.success('Add member successfully.');
             } catch (err) {
-                toast.error(err.message || "Error while adding member");
+                toast.error(err || "Error while adding member");
             }
         }
     };

@@ -149,5 +149,22 @@ const updateListIndexService = async(info) => {
     return board
 }
 
-module.exports = { getBoardsService, getBoardByIdService, getBoardByWorkspaceIdService,
-    createBoardService, updateBoardService, deleteBoardService, updateCardIndexService, updateListIndexService };
+const countBoardInWorkspaceService = async (userId, workspaceId) => {
+    const user = await User.findById(userId).lean()
+    if (user.service === 'premium'){
+        return 'unlimited'
+    }
+    return Board.countDocuments({ "workspaceId": workspaceId })
+}
+
+module.exports = {
+    getBoardsService,
+    getBoardByIdService,
+    getBoardByWorkspaceIdService,
+    createBoardService,
+    updateBoardService,
+    deleteBoardService,
+    updateCardIndexService,
+    updateListIndexService,
+    countBoardInWorkspaceService,
+};

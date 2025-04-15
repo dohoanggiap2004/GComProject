@@ -36,9 +36,7 @@ const AvatarDropdown = () => {
         }
     };
 
-    useEffect(() => {
-        dispatch(getQuantityUserWorkspace())
-    }, [])
+
 
     useEffect(() => {
         if (isOpen) {
@@ -110,11 +108,23 @@ const AvatarDropdown = () => {
                             onClick={() => setIsWorkspaceOpen(true)}>
                             <span className="flex items-center">
                                 <GoPlus className={'mr-2'}/> Create a Workspace
-                                {quantityWorkspace !== 'unlimited' ? `(Exist ${quantityWorkspace})` : ''}
+                                {quantityWorkspace !== 'unlimited' ? ` (Remain ${(5 - quantityWorkspace) >= 0 ? (5 - quantityWorkspace) : 0 })` : ''}
                             </span>
                         </button>
                     </div>
                     <WorkspaceCreateModel isOpen={isWorkspaceOpen} onClose={() => setIsWorkspaceOpen(false)}/>
+
+                    {5 - quantityWorkspace <= 0 && (
+                        <div className="p-4 border-b border-gray-200">
+                            <button
+                                className="w-full text-left text-sm text-blue-700 hover:bg-gray-100 p-1 rounded-sm flex items-center"
+                                onClick={() => setIsWorkspaceOpen(true)}>
+                            <span className="flex items-center">
+                                Try GCom premium to get more workspaces
+                            </span>
+                            </button>
+                        </div>
+                    )}
 
 
                     {/* Help, Shortcuts, Log out */}

@@ -293,91 +293,92 @@ const Navbar = () => {
                     <IoMdMenu className="text-4xl"/>
                 </button>
 
-                <div
-                    className={`fixed top-0 right-0 w-full h-full bg-white shadow-lg transform transition-transform duration-300 z-40 ${
-                        menuOpen ? "translate-y-0" : "-translate-y-full"
-                    }`}
-                >
-                    <div className="p-5 flex justify-between items-center border-b">
-                        {activeMenuItem !== null ? (
-                            <>
-                                <button
-                                    onClick={() => setActiveMenuItem(null)}
-                                    className="text-xl flex items-center"
-                                >
-                                    <FaChevronLeft className="h-3"/> Back
-                                </button>
+                {menuOpen && (
+                    <div
+                        className={`fixed top-0 right-0 w-full h-full bg-white shadow-lg transform transition-transform duration-300 z-40 ${
+                            menuOpen ? "translate-y-0" : "-translate-y-full"
+                        }`}
+                    >
+                        <div className="p-5 flex justify-between items-center border-b">
+                            {activeMenuItem !== null ? (
+                                <>
+                                    <button
+                                        onClick={() => setActiveMenuItem(null)}
+                                        className="text-xl flex items-center"
+                                    >
+                                        <FaChevronLeft className="h-3"/> Back
+                                    </button>
 
-                                <button onClick={() => setMenuOpen(false)}>
-                                    <IoMdClose className="text-3xl"/>
-                                </button>
-                            </>
-                        ) : (
-                            <>
-                                <h2 className="text-xl font-semibold">GCom</h2>
-                                <button onClick={() => setMenuOpen(false)}>
-                                    <IoMdClose className="text-3xl"/>
-                                </button>
-                            </>
-                        )}
-                    </div>
+                                    <button onClick={() => setMenuOpen(false)}>
+                                        <IoMdClose className="text-3xl"/>
+                                    </button>
+                                </>
+                            ) : (
+                                <>
+                                    <h2 className="text-xl font-semibold">GCom</h2>
+                                    <button onClick={() => setMenuOpen(false)}>
+                                        <IoMdClose className="text-3xl"/>
+                                    </button>
+                                </>
+                            )}
+                        </div>
 
-                    <div className="p-5">
-                        {activeMenuItem === null ? (
-                            <ul className="space-y-4">
-                                {NavbarMenu.map((item) => (
-                                    <li key={item.id}>
-                                        <div
-                                            onClick={() => setActiveMenuItem(item.id)}
-                                            className="flex items-center justify-between gap-1 py-2 hover:text-blue-600 cursor-pointer border-b-2"
-                                        >
-                                            {item.title} <FaChevronRight className="h-3"/>
-                                        </div>
+                        <div className="p-5">
+                            {activeMenuItem === null ? (
+                                <ul className="space-y-4">
+                                    {NavbarMenu.map((item) => (
+                                        <li key={item.id}>
+                                            <div
+                                                onClick={() => setActiveMenuItem(item.id)}
+                                                className="flex items-center justify-between gap-1 py-2 hover:text-blue-600 cursor-pointer border-b-2"
+                                            >
+                                                {item.title} <FaChevronRight className="h-3"/>
+                                            </div>
+                                        </li>
+                                    ))}
+                                    <li>
+                                        {isLoginUser ? (
+                                            <button
+                                                onClick={handleLogout}
+                                                className="block py-2 text-lg hover:text-blue-600 font-semibold text-primary"
+                                            >
+                                                Log out
+                                            </button>
+                                        ) : (
+                                            <Link
+                                                to={"/login"}
+                                                className="block py-2 text-lg hover:text-blue-600 font-semibold text-primary"
+                                            >
+                                                Sign in
+                                            </Link>
+                                        )}
                                     </li>
-                                ))}
-                                <li>
-                                    {isLoginUser ? (
-                                        <button
-                                            onClick={handleLogout}
-                                            className="block py-2 text-lg hover:text-blue-600 font-semibold text-primary"
-                                        >
-                                            Log out
-                                        </button>
-                                    ) : (
-                                        <Link
-                                            to={"/login"}
-                                            className="block py-2 text-lg hover:text-blue-600 font-semibold text-primary"
-                                        >
-                                            Sign in
-                                        </Link>
-                                    )}
-                                </li>
-                            </ul>
-                        ) : (
-                            // Hiển thị submenu tương ứng
-                            <div className="space-y-3">
-                                {NavbarMenu.find(
-                                    (item) => item.id === activeMenuItem
-                                )?.dropdown.map((subItem, index) => (
-                                    <div key={index} className="py-2 border-b">
-                                        <div className={'flex items-center gap-2'}>
-                                            {subItem.icon !== '' &&
-                                                <subItem.icon className="text-xl"/>
-                                            }
-                                            <h4 className="font-medium">
-                                                {subItem.title}
-                                            </h4>
+                                </ul>
+                            ) : (
+                                // Hiển thị submenu tương ứng
+                                <div className="space-y-3">
+                                    {NavbarMenu.find(
+                                        (item) => item.id === activeMenuItem
+                                    )?.dropdown.map((subItem, index) => (
+                                        <div key={index} className="py-2 border-b">
+                                            <div className={'flex items-center gap-2'}>
+                                                {subItem.icon !== '' &&
+                                                    <subItem.icon className="text-xl"/>
+                                                }
+                                                <h4 className="font-medium">
+                                                    {subItem.title}
+                                                </h4>
+                                            </div>
+                                            <p className="text-sm text-gray-600">
+                                                {subItem.description}
+                                            </p>
                                         </div>
-                                        <p className="text-sm text-gray-600">
-                                            {subItem.description}
-                                        </p>
-                                    </div>
-                                ))}
-                            </div>
-                        )}
+                                    ))}
+                                </div>
+                            )}
+                        </div>
                     </div>
-                </div>
-
+                )}
             </motion.div>
         </nav>
     );

@@ -46,7 +46,7 @@ export default function HeaderBoard() {
             toast.success("Deleted the board", { duration: 3000 });
             navigate('/user-workspace');
         } catch (err) {
-            toast.error(err.message || "Error while deleting board!");
+            toast.error(err || "Error while deleting board!");
         }
     }
 

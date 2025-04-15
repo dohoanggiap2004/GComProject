@@ -3,12 +3,24 @@ import {IoIosSearch, IoIosNotifications, IoIosHelpCircle,} from "react-icons/io"
 import {Link} from "react-router-dom";
 import {BsGrid1X2Fill} from "react-icons/bs";
 import AvatarDropdown from "../Dropdown/AvatarDropdown.jsx";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import BoardCreateModel from "./BoardCreateModal.jsx";
-import { createPortal } from "react-dom";
+import {createPortal} from "react-dom";
 
 export default function NavbarWorkspace() {
     const [isModalOpen, setIsModalOpen] = useState(false);
+    useEffect(() => {
+        if (isModalOpen) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'auto';
+        }
+
+        return () => {
+            document.body.style.overflow = 'auto'; // Cleanup
+        };
+    }, [isModalOpen]);
+
     return (
 
         <nav className="flex items-center justify-between bg-white p-1.5 shadow-md w-full">
@@ -67,11 +79,15 @@ export default function NavbarWorkspace() {
                 </div>
                 <div className={'md:hidden'}>
                     <button
-                        className="text-gray-400 px-2 py-1.5 rounded-md font-semibold text-md flex justify-center items-center gap-4">More <FaChevronDown/>
+                        className="text-gray-400 px-2 py-1.5 rounded-md font-semibold text-md flex justify-center items-center gap-2">More <FaChevronDown/>
                     </button>
                 </div>
-                <div className="md:hidden gap-4 text-gray-600">
-                    <button className="bg-blue-600 text-white px-2 py-2 rounded-md"><FaPlus/></button>
+                <div className="md:hidden gap-3 text-gray-600">
+                    <button className="bg-blue-600 text-white px-1.5 py-1.5 rounded-md"
+                            onClick={() => setIsModalOpen(true)}
+                    >
+                        <FaPlus/>
+                    </button>
                 </div>
             </div>
 
@@ -92,8 +108,8 @@ export default function NavbarWorkspace() {
                 <AvatarDropdown/>
             </div>
             {createPortal(
-              <BoardCreateModel isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}/>,
-            document.body
+                <BoardCreateModel isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}/>,
+                document.body
             )}
         </nav>
     );

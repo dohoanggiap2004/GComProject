@@ -176,8 +176,8 @@ const CardModal = ({cardProp, onClose, onToggleCheck}) => {
     return (
         <div className="fixed inset-0 flex items-center justify-center z-50 overflow-auto">
             <div className="absolute inset-0 bg-black opacity-50"></div>
-            <div className="bg-white rounded-lg w-full max-w-4xl p-6 relative z-50 max-h-[95vh] overflow-y-auto">
-                {/* Nút đóng modal */}
+            <div className="bg-white rounded-lg w-[95%] sm:w-[90%] md:w-[80%] lg:max-w-4xl p-6 relative z-50 max-h-[95vh] overflow-y-auto">
+            {/* Nút đóng modal */}
                 <button
                     onClick={() => {
                         onClose();
@@ -399,7 +399,7 @@ const CardModal = ({cardProp, onClose, onToggleCheck}) => {
                     </div>
 
                     {/* Phần sidebar bên phải (các nút hành động) */}
-                    <div className="w-40">
+                    <div className="w-40 hidden md:block">
                         <div className="space-y-2">
                             <button
                                 onClick={handleJoinClick}

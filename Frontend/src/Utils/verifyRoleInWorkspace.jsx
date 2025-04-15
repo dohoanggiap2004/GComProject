@@ -3,6 +3,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import PropTypes from 'prop-types';
 import {useEffect} from "react";
 import {getUserRoleInWorkspaceOrBoard} from "../store/actions/userAction.js";
+import LoadingSpinner from "../components/Shared/LoadingSpinner.jsx";
 
 const RoleProtectedRouteForWorkspace = ({children, allowedRoles = []}) => {
     const dispatch = useDispatch();
@@ -27,7 +28,7 @@ const RoleProtectedRouteForWorkspace = ({children, allowedRoles = []}) => {
     }
 
     if (!role) {
-        return <div>Loading...</div>;
+        return <LoadingSpinner/>;
     }
 
     return allowedRoles.includes(role) ? children : <Navigate to="/unauthorized" replace/>;
