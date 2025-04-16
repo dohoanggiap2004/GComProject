@@ -37,6 +37,15 @@ export const getQuantityUserWorkspace = createAsyncThunk('users/getQuantityUserW
     }
 })
 
+export const getUserInfo = createAsyncThunk('users/getUserInfo', async (payload, thunkAPI) => {
+    try {
+        const response = await instanceAxios8000.get(`/api/users/info`);
+        return response.data.data;
+    } catch (error) {
+        return thunkAPI.rejectWithValue(error.response.data.message);
+    }
+})
+
 
 
 

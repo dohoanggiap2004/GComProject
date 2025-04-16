@@ -15,6 +15,8 @@ import {Toaster} from "react-hot-toast";
 import WorkspaceSetting from "./pages/WorkspaceSetting.jsx";
 import MemberManagement from "./pages/MemberManagement.jsx";
 import RoleProtectedRouteForWorkspace from "./Utils/verifyRoleInWorkspace.jsx";
+import Pricing from "./pages/Pricing.jsx";
+import PremiumPayment from "./pages/PremiumPayment.jsx";
 
 const App = () => {
     return (
@@ -23,7 +25,7 @@ const App = () => {
                 <Router>
                     <Toaster
                         toastOptions={{
-                            className: "text-xl p-6 w-96",
+                            className: "p-6 w-96",
                             position: "bottom-left",
                             style: {
                                 fontSize: "20px",
@@ -34,8 +36,15 @@ const App = () => {
                     />
                     <Routes>
                         <Route path="/" element={<Home/>}/>
+                        <Route path="/pricing" element={<Pricing/>}/>
                         <Route path={'/register'} element={<Register/>}/>
                         <Route path={'/login'} element={<Login/>}/>
+                        <Route path={'/premium-payment'} element={
+                            <RoleProtectedRoute allowedRoles={['user']}>
+                                <PremiumPayment/>
+                            </RoleProtectedRoute>
+                        }
+                        />
                         <Route path={'/user-workspace'} element={
                             <RoleProtectedRoute allowedRoles={['user']}>
                                 <UserWorkspace/>

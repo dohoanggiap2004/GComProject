@@ -9,6 +9,7 @@ const cardRouter = require('./card')
 const taskRouter = require('./task')
 const activityRouter = require('./activity')
 const workspaceRouter = require('./workspace')
+const transactionRouter = require('./transaction')
 const verifyJWT = require('../../middlewares/verifyJWT')
 
 router.use('/boards', boardRouter)
@@ -20,6 +21,7 @@ router.use('/lists', listRouter)
 router.use('/users', userRouter)
 router.use('/mail', mailRouter)
 router.use('/payos', payosRouter)
+router.use('/transactions', transactionRouter)
 
 
 module.exports = router

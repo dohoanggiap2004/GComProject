@@ -75,7 +75,7 @@ const SidebarBoard = () => {
 
             <div className="mt-6 p-2 bg-linear-to-r from-indigo-900 to-purple-600 rounded-lg text-sm shadow-md flex items-center">
                 <FaCrown className="text-white mr-2" />
-                <h3 className="text-white font-semibold">Try GCom Premium</h3>
+                <Link to={'/pricing'} className="text-white font-semibold">Try GCom Premium</Link>
             </div>
         </div>
     );

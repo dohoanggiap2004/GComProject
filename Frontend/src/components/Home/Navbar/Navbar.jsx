@@ -241,17 +241,32 @@ const Navbar = () => {
                     <ul className="flex items-center gap-3">
                         {NavbarMenu.map((menu) => (
                             <li key={menu.id}>
-                                <div
-                                    onClick={() => toggleDropdown(menu.id)}
-                                    className={`flex items-center gap-1 py-2 px-3 hover:text-secondary group cursor-pointer
-                     ${
-                                        dropdownOpen === menu.id
-                                            ? "text-blue-400 border-b-2 border-blue-400"
-                                            : ""
-                                    }`}
-                                >
-                                    {menu.title} <FaChevronDown className="h-3"/>
-                                </div>
+                                {menu.title === 'Pricing' ? (
+                                    <Link
+                                        to={'/pricing'}
+                                        className={`flex items-center gap-1 py-2 px-3 hover:text-secondary group cursor-pointer
+                                    ${
+                                            dropdownOpen === menu.id
+                                                ? "text-blue-400 border-b-2 border-blue-400"
+                                                : ""
+                                        }`}
+                                    >
+                                        {menu.title} <FaChevronDown className="h-3"/>
+                                    </Link>
+                                ) : (
+                                    <div
+                                        onClick={() => toggleDropdown(menu.id)}
+                                        className={`flex items-center gap-1 py-2 px-3 hover:text-secondary group cursor-pointer
+                                    ${
+                                            dropdownOpen === menu.id
+                                                ? "text-blue-400 border-b-2 border-blue-400"
+                                                : ""
+                                        }`}
+                                    >
+                                        {menu.title} <FaChevronDown className="h-3"/>
+                                    </div>
+                                )}
+
                                 {/* Dropdown Menu */}
                                 {dropdownOpen === menu.id && menu.dropdown.length > 0 && (
                                     <div
@@ -281,7 +296,7 @@ const Navbar = () => {
                                 Sign In
                             </Link>
                         ) : (
-                            <button onClick={handleLogout} className="primary-btn">
+                            <button onClick={handleLogout} className="primary-btn py-1 text-sm">
                                 Log out
                             </button>
                         )}

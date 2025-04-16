@@ -10,12 +10,11 @@ import {useDispatch, useSelector} from "react-redux";
 import {refreshToken} from "../store/actions/tokenAction.js";
 import {logoutUser} from "../store/actions/authAction.jsx";
 import {loginUserSuccess} from "../store/reducers/authReducer.jsx";
-import {useUserFromToken} from "../Utils/User.jsx";
+import {getUserInfo} from "../store/actions/userAction.js";
 
 const Home = () => {
     const dispatch = useDispatch();
     const {isLoginUser} = useSelector(state => state.auth)
-    const { user } = useUserFromToken()
     const getAccessToken = async () => {
         try {
             await dispatch(refreshToken());
@@ -33,13 +32,14 @@ const Home = () => {
         const accessToken = Cookies.get("accessToken");
 
         if (accessToken) {
-            dispatch(loginUserSuccess(user));
+            dispatch(getUserInfo())
+            dispatch(loginUserSuccess());
         } else if (!accessToken && isLoginUser) {
             getAccessToken();
         } else if (!isLoginUser) {
             dispatch(logoutUser());
         }
-    }, [user]);
+    }, []);
     return (
 
         <main className="overflow-x-hidden bg-white text-dark">

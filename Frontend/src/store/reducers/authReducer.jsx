@@ -2,7 +2,6 @@ import {createSlice} from "@reduxjs/toolkit";
 import {loginUser, loginGG, logoutUser, registerUser, setFalseRegister} from "../actions/authAction.jsx";
 
 const initialState = {
-    user: null,
     loading: false,
     isLoginUser: false,
     role: '',
@@ -14,12 +13,10 @@ const authSlice = createSlice({
     name: "login",
     initialState,
     reducers: {
-        loginUserSuccess(state, action) {
-            console.log(action.payload);
+        loginUserSuccess(state) {
             state.loading = false;
             state.isLoginUser = true;
             state.role = 'user';
-            state.user = action.payload;
         },
     },
     extraReducers: (builder) => {

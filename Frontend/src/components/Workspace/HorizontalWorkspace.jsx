@@ -25,10 +25,10 @@ const HorizontalWorkspace = ({name, memberQuantity, workspaceId}) => {
                       state={{workspaceId: workspaceId}} className="flex items-center justify-center px-1 bg-gray-200 rounded-sm md:w-28 h-8 text-sm">
                     <MdSettings className="mr-1 shrink-0"/> Settings
                 </Link>
-                <button
+                <Link to={'/pricing'}
                     className="flex items-center justify-center px-1 bg-purple-500 text-white rounded-sm md:w-28 h-8 text-sm">
-                    <MdRocketLaunch className="mr-1 shrink-0"/> Upgrade
-                </button>
+                        <MdRocketLaunch className="mr-1 shrink-0"/> Upgrade
+                </Link>
             </div>
         </div>
     )

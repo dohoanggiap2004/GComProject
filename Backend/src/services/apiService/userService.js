@@ -1,4 +1,3 @@
-
 const User = require("../../app/models/User");
 const Workspace = require("../../app/models/Workspace");
 const Board = require("../../app/models/Board");
@@ -14,8 +13,8 @@ const getUserByIdService = async (userId) => {
 const searchUsersService = async (searchValue) => {
     return User.find({
         $or: [
-            { fullname: { $regex: searchValue, $options: "i" } },
-            { email: { $regex: searchValue, $options: "i" } }
+            {fullname: {$regex: searchValue, $options: "i"}},
+            {email: {$regex: searchValue, $options: "i"}}
         ]
     })
         .select("_id fullname email")
@@ -29,15 +28,20 @@ const createUserService = async (user) => {
 };
 
 const updateUserService = async (user) => {
-    const { _id, ...updateFields } = user;
-    return User.findByIdAndUpdate(_id, updateFields, {new: true});
+    const {_id, ...updateFields} = user;
+    return User.findByIdAndUpdate
+    (
+        _id,
+        {$set: updateFields},
+        {new: true}
+    ).lean();
 };
 
 const deleteUserService = async (id) => {
-    return User.findByIdAndDelete(id);
+    return User.findByIdAndDelete(id).lean();
 };
 
-const checkUserRoleService = async (userId, { workspaceId, boardId }) => {
+const checkUserRoleService = async (userId, {workspaceId, boardId}) => {
     if (!userId) throw new Error('User ID is required');
 
     // Ưu tiên kiểm tra workspace nếu có
@@ -82,13 +86,11 @@ const checkUserRoleService = async (userId, { workspaceId, boardId }) => {
 
 const countUserWorkspaceService = async (userId) => {
     const user = await User.findById(userId).lean()
-    if (user.service === 'premium'){
+    if (user.service === 'premium') {
         return 'unlimited'
     }
-    return Workspace.countDocuments({ "memberIds": userId })
+    return Workspace.countDocuments({"memberIds": userId})
 }
-
-
 
 
 module.exports = {
