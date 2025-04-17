@@ -87,6 +87,7 @@ const CardModal = ({cardProp, onClose, onToggleCheck}) => {
             boardId: board?._id,
             listId: card?.listId,
             cardId: card?._id,
+            userId: userInfo._id,
         }
         dispatch(addMemberToCard(payload));
     };
@@ -97,6 +98,7 @@ const CardModal = ({cardProp, onClose, onToggleCheck}) => {
             boardId: board?._id,
             listId: card?.listId,
             cardId: card?._id,
+            userId: userInfo._id,
         }
         dispatch(removeMemberFromCard(payload));
     };

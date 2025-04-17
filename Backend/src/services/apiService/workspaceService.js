@@ -79,7 +79,7 @@ const getMemberInBoardsByWorkspaceIdService = async (workspaceId) => {
         });
     });
 
-    return { users };
+    return users;
 };
 
 

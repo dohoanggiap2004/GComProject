@@ -171,9 +171,6 @@ const AddMemberBoardModal = ({isOpen, onClose}) => {
         setMeberIdsInWorkspace(workspace?.memberIds)
     }, [workspace]);
 
-    useEffect(() => {
-        console.log('role', role)
-    }, [role])
 
     // useEffect(() => {
     //     console.log('check memberid', memberIds)

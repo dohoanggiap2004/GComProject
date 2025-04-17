@@ -84,9 +84,7 @@ class CardController {
 
     async addMemberToCard(req, res) {
         try {
-            const { cardId, listId, boardId } = req.body;
-            const userId = await getUserIdFromToken(req);
-            console.log(cardId, listId, boardId);
+            const { cardId, listId, boardId, userId } = req.body;
             if (!cardId || !listId || !boardId || !userId)
                 return res.status(400).json({message: "Card information is required"});
 
@@ -104,8 +102,7 @@ class CardController {
 
     async removeMemberFromCard(req, res) {
         try {
-            const { cardId, listId, boardId } = req.body;
-            const userId = await getUserIdFromToken(req);
+            const { cardId, listId, boardId, userId } = req.body;
 
             if (!cardId || !listId || !boardId || !userId)
                 return res.status(400).json({message: "Card information is required"});
