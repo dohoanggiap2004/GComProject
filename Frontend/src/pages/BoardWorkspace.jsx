@@ -218,7 +218,7 @@ function BoardWorkspace() {
                 <div
                     className="flex-1 flex flex-col overflow-hidden bg-cover bg-center"
                     style={{ backgroundImage: `url(${board?.background})` }}
-                >                    {/* HeaderBoard cố định ở đầu nội dung */}
+                >
                     <div className="shrink-0">
                         <HeaderBoard/>
                     </div>

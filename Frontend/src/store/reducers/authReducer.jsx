@@ -1,12 +1,14 @@
 import {createSlice} from "@reduxjs/toolkit";
 import {loginUser, loginGG, logoutUser, registerUser, setFalseRegister} from "../actions/authAction.jsx";
+import {getUserInfo} from "../actions/userAction.js";
 
 const initialState = {
     loading: false,
     isLoginUser: false,
     role: '',
     error: null,
-    isRegister: false
+    isRegister: false,
+    userInfo: {},
 };
 
 const authSlice = createSlice({
@@ -89,6 +91,21 @@ const authSlice = createSlice({
             //setFalseRegister
             .addCase(setFalseRegister.fulfilled, (state) => {
                 state.isRegister = false;
+            })
+
+
+            // get user info
+            .addCase(getUserInfo.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(getUserInfo.fulfilled, (state, action) => {
+                state.loading = false;
+                state.userInfo = action.payload;
+            })
+            .addCase(getUserInfo.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
             })
     },
 });

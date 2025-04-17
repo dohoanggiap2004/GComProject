@@ -2,15 +2,15 @@ const mailSenderService = require('../../../services/mailService'); // Đường
 
 const sendMail = (req, res) => {
     try {
-        const { orderInfo, email, productsInfo } = req.body;
+        const { userInfo, cardInfo } = req.body;
 
         // Kiểm tra dữ liệu
-        if (!orderInfo || !email || !productsInfo) {
-            return res.status(400).json({ message: 'Thiếu thông tin đơn hàng hoặc email' });
+        if (!userInfo || !cardInfo) {
+            return res.status(400).json({ message: 'Thiếu thông tin người nhận hoặc thẻ' });
         }
 
         // Gửi email
-        mailSenderService({ orderInfo, email, productsInfo });
+        mailSenderService({ userInfo, cardInfo });
 
         res.status(200).json({ message: 'Email đã được gửi thành công!' });
     } catch (error) {

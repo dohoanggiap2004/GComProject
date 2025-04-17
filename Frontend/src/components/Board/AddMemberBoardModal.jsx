@@ -7,7 +7,7 @@ import {updateBoard} from "../../store/actions/boardAction.js";
 const AddMemberBoardModal = ({isOpen, onClose}) => {
     const dispatch = useDispatch();
     const {workspace} = useSelector((state) => state.workspace);
-    const {board, membersInBoard, error} = useSelector((state) => state.board)
+    const {board, membersInBoard} = useSelector((state) => state.board)
     const {role} = useSelector((state) => state.user);
     const {usersSearch} = useSelector((state) => state.user);
     const [selectedUsers, setSelectedUsers] = useState([]);

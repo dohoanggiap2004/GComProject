@@ -51,21 +51,23 @@ export default function HeaderBoard() {
     }
 
     return (
-        <div className="text-gray-700 flex items-center justify-between px-4 py-2 relative">
+        <div className="text-gray-700 block md:flex items-center justify-between px-4 py-2 relative">
             {/* Left Section */}
             <div className="flex items-center gap-1">
                 <span
-                    className="font-bold px-3 py-1 rounded-md hover:bg-gray-300">{board ? board.title : 'Board'}</span>
-                <div className={'px-3 py-2 rounded-md hover:bg-gray-300'}>
+                    className="font-bold md:px-2 md:py-1 rounded-md hover:bg-gray-300">{board ? board.title : 'Board'}</span>
+                <div className={'px-2 py-1 rounded-md hover:bg-gray-300'}>
                     <FiStar className="text-sm"/>
                 </div>
-                <div className={'text-sm flex items-center font-semibold gap-2 px-3 py-1.5 rounded-md' +
+                <div className={'text-sm flex items-center font-semibold gap-3 px-2 py-1.5 rounded-md' +
                     ' hover:bg-gray-300'}>
                     <FiUsers className="text-sm"/>
-                    Workspace visible
+                    <p className={'hidden lg:block'}>
+                        Workspace visible
+                    </p>
                 </div>
                 <select
-                    className="bg-gray-400 font-semibold text-white px-1 py-1 rounded-md "
+                    className="bg-gray-400 font-semibold text-sm lg:text-md text-white py-1 rounded-md mx-2"
                     value={selectedOption}
                     onChange={(e) => setSelectedOption(e.target.value)}
                 >
@@ -76,11 +78,11 @@ export default function HeaderBoard() {
             </div>
 
             {/* Right Section */}
-            <div className="flex items-center gap-4">
+            <div className="flex items-center justify-end gap-4">
                 <IoRocketOutline className="text-sm"/>
                 <BsLightning className="text-sm"/>
                 <FiFilter className="text-sm"/>
-                <div className="flex items-center gap-1">
+                <div className="hidden lg:flex items-center gap-1">
                     <span className="bg-red-600 text-white rounded-full p-1 text-xs">GH</span>
                     <span className="bg-blue-600 text-white rounded-full p-1 text-xs">
                         <GoPeople/>

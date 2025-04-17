@@ -2,12 +2,12 @@ import Navbar from "../components/Home/Navbar/Navbar.jsx";
 import {useUserFromToken} from "../Utils/User.jsx";
 import {instanceAxios8000} from "../config/axiosConfig.jsx";
 import toast from "react-hot-toast";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {createTransaction, deleteTransaction} from "../store/actions/transactionAction.js";
 
 const PremiumPayment = () => {
     const dispatch = useDispatch();
-    const { user } = useUserFromToken()
+    const {userInfo} = useSelector(state => state.auth)
     const plan = {
         name: 'Premium',
         price: 250000,
@@ -16,7 +16,7 @@ const PremiumPayment = () => {
     const handleConfirmPayment = async () => {
         try {
             const response = await dispatch(createTransaction({
-                userId: user._id,
+                userId: userInfo._id,
                 amount: plan.price,
             })).unwrap()
             console.log(response)
@@ -39,10 +39,20 @@ const PremiumPayment = () => {
                 dispatch(deleteTransaction(response._id));
                 toast.error(error.message)
             }
-        }catch (error) {
+        } catch (error) {
             toast.error(error);
         }
     };
+
+    const formatDateEN = (dateStr) => {
+        const date = new Date(dateStr);
+        return date.toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "long",
+            day: "2-digit"
+        });
+    };
+
 
     return (
         <>
@@ -73,19 +83,36 @@ const PremiumPayment = () => {
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                             <div>
                                 <label className="text-sm text-gray-500">Fullname</label>
-                                <div className="font-medium text-gray-800">{user.fullname}</div>
+                                <div className="font-medium text-gray-800">{userInfo.fullname}</div>
                             </div>
                             <div>
                                 <label className="text-sm text-gray-500">Email</label>
-                                <div className="font-medium text-gray-800">{user.email}</div>
+                                <div className="font-medium text-gray-800">{userInfo.email}</div>
                             </div>
+
+                            <div>
+                                <label className="text-sm text-gray-500">Current Service</label>
+                                <div className="font-medium text-gray-800">{userInfo.service.toUpperCase()}</div>
+                            </div>
+
+                            {userInfo.service === "premium" && (
+                                <div>
+                                    <label className="text-sm text-gray-500">Service Expiry</label>
+                                    <div className="font-medium text-gray-800">{formatDateEN(userInfo.serviceExpiry)}</div>
+                                </div>
+                            )}
+
                             <div>
                                 <label className="text-sm text-gray-500">Country</label>
                                 <div className="font-medium text-gray-800">Việt Nam</div>
                             </div>
                             <div>
-                                <label className="text-sm text-gray-500">Plan Type</label>
-                                <div className="font-medium text-gray-800">{plan.name}</div>
+                                <label className="text-sm text-gray-500">Service Type</label>
+                                <div className="font-medium text-gray-800">{plan.name.toUpperCase()}</div>
+                            </div>
+
+                            <div>
+
                             </div>
                         </div>
 
@@ -97,11 +124,22 @@ const PremiumPayment = () => {
                         <div className="text-gray-800 font-medium mb-1">
                             {plan.price.toLocaleString()} VND
                         </div>
+
+                        <div>
+                            <span className="font-medium text-gray-800">New expiry date:</span>{" "}
+                            <span className="text-black">
+                            {formatDateEN(
+                                new Date(userInfo.serviceExpiry) > new Date()
+                                    ? new Date(new Date(userInfo.serviceExpiry).getTime() + 30 * 24 * 60 * 60 * 1000)
+                                    : new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
+                            )}
+                            </span>
+                        </div>
                         <div className="flex justify-between items-center border-t pt-4 mt-4">
                             <span className="text-lg font-semibold">Total</span>
                             <span className="text-xl font-bold text-blue-600">
                              {plan.price.toLocaleString()} VND
-            </span>
+                             </span>
                         </div>
 
                         {/* Confirm Button */}
@@ -109,7 +147,7 @@ const PremiumPayment = () => {
                             onClick={handleConfirmPayment}
                             className="mt-6 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition"
                         >
-                            Xác nhận thanh toán
+                            Confirm
                         </button>
                     </div>
                 </div>

@@ -25,13 +25,8 @@ const App = () => {
                 <Router>
                     <Toaster
                         toastOptions={{
-                            className: "p-6 w-96",
+                            className: " p-6 min-w-96 w-full",
                             position: "bottom-left",
-                            style: {
-                                fontSize: "20px",
-                                padding: "16px",
-                                width: "400px",
-                            },
                         }}
                     />
                     <Routes>

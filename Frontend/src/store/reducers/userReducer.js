@@ -4,7 +4,6 @@ import {
     searchUser,
     getUserRoleInWorkspaceOrBoard,
     getQuantityUserWorkspace,
-    getUserInfo,
 
 } from "../actions/userAction";
 
@@ -14,7 +13,6 @@ const userSlice = createSlice({
         loading: false,
         error: null,
         role: '',
-        userInfo: {},
         quantityWorkspace: null,
     },
     name: 'users',
@@ -59,20 +57,6 @@ const userSlice = createSlice({
                 state.quantityWorkspace = action.payload;
             })
             .addCase(getQuantityUserWorkspace.rejected, (state, action) => {
-                state.loading = false;
-                state.error = action.payload;
-            })
-
-            // get user info
-            .addCase(getUserInfo.pending, (state) => {
-                state.loading = true;
-                state.error = null;
-            })
-            .addCase(getUserInfo.fulfilled, (state, action) => {
-                state.loading = false;
-                state.userInfo = action.payload;
-            })
-            .addCase(getUserInfo.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
             })

@@ -21,14 +21,17 @@ import toast from "react-hot-toast";
 import {useNavigate} from "react-router-dom";
 import DatePickModal from "./DatePickModal.jsx";
 import DateRange from "./DateRange.jsx";
+import MemberCardModal from "./MemberCardModal.jsx";
 
 const CardModal = ({cardProp, onClose, onToggleCheck}) => {
     const {board} = useSelector((state) => state.board);
-    const {card, error} = useSelector((state) => state.card);
+    const {card} = useSelector((state) => state.card);
+    const {userInfo} = useSelector((state) => state.auth);
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [comment, setComment] = useState('');
     const [isEditingTitle, setIsEditingTitle] = useState(false);
+    const [isMemberModalOpen, setIsMemberModalOpen] = useState(false);
     const [attachments, setAttachments] = useState([
         {
             id: 1,
@@ -82,8 +85,12 @@ const CardModal = ({cardProp, onClose, onToggleCheck}) => {
         console.log('Join button clicked');
     };
 
+    const handleLeaveClick = () => {
+        console.log('Join button clicked');
+    };
+
     const handleMembersClick = () => {
-        console.log('Members button clicked');
+        setIsMemberModalOpen(true);
     };
 
     const handleAddAttachment = () => {
@@ -176,8 +183,9 @@ const CardModal = ({cardProp, onClose, onToggleCheck}) => {
     return (
         <div className="fixed inset-0 flex items-center justify-center z-50 overflow-auto">
             <div className="absolute inset-0 bg-black opacity-50"></div>
-            <div className="bg-white rounded-lg w-[95%] sm:w-[90%] md:w-[80%] lg:max-w-4xl p-6 relative z-50 max-h-[95vh] overflow-y-auto">
-            {/* Nút đóng modal */}
+            <div
+                className="bg-white rounded-lg w-[95%] sm:w-[90%] md:w-[80%] lg:max-w-4xl p-6 relative z-50 max-h-[95vh] overflow-y-auto">
+                {/* Nút đóng modal */}
                 <button
                     onClick={() => {
                         onClose();
@@ -226,7 +234,7 @@ const CardModal = ({cardProp, onClose, onToggleCheck}) => {
                 </div>
 
                 {/* Phần còn lại của modal giữ nguyên */}
-                <div className="flex">
+                <div className="block md:flex">
                     {/* Phần nội dung chính (mô tả, hoạt động) */}
                     <div className="flex-1 pr-4">
                         {/* Notifications */}
@@ -327,7 +335,8 @@ const CardModal = ({cardProp, onClose, onToggleCheck}) => {
                                     </h3>
                                 </div>
 
-                                <button className="ml-4 text-sm font-semibold px-2 py-1.5 rounded-xs text-gray-500 bg-gray-100 hover:bg-gray-200">
+                                <button
+                                    className="ml-4 text-sm font-semibold px-2 py-1.5 rounded-xs text-gray-500 bg-gray-100 hover:bg-gray-200">
                                     Hide details
                                 </button>
                             </div>
@@ -398,21 +407,39 @@ const CardModal = ({cardProp, onClose, onToggleCheck}) => {
                         </div>
                     </div>
 
-                    {/* Phần sidebar bên phải (các nút hành động) */}
-                    <div className="w-40 hidden md:block">
-                        <div className="space-y-2">
-                            <button
-                                onClick={handleJoinClick}
-                                className="w-full flex items-center bg-gray-100 text-sm text-gray-700 hover:bg-gray-200 p-2 rounded-lg"
-                            >
-                                <FaUserPlus className="mr-2"/> Join
-                            </button>
-                            <button
-                                onClick={handleMembersClick}
-                                className="w-full flex items-center bg-gray-100 text-sm text-gray-700 hover:bg-gray-200 p-2 rounded-lg"
-                            >
-                                <FaUserPlus className="mr-2"/> Members
-                            </button>
+                    <div>
+                        {/* Phần sidebar bên phải (các nút hành động) */}
+                        <div className="mt-6 gap-2 grid grid-cols-2 md:grid-cols-1">
+                            {card?.members?.includes(userInfo?._id) ? (
+                                <button
+                                    onClick={handleJoinClick}
+                                    className="w-full flex items-center bg-gray-100 text-sm text-gray-700 hover:bg-gray-200 p-2 rounded-lg"
+                                >
+                                    <FaUserPlus className="mr-2"/> Leave
+                                </button>
+                            ) : (
+                                <button
+                                    onClick={handleJoinClick}
+                                    className="w-full flex items-center bg-gray-100 text-sm text-gray-700 hover:bg-gray-200 p-2 rounded-lg"
+                                >
+                                    <FaUserPlus className="mr-2"/> Join
+                                </button>
+                            )}
+
+                            <div className="relative inline-block w-40 ">
+                                <button
+                                    onClick={handleMembersClick}
+                                    className="w-full flex items-center bg-gray-100 text-sm text-gray-700 hover:bg-gray-200 p-2 rounded-lg"
+                                >
+                                    <FaUserPlus className="mr-2"/> Members
+                                </button>
+
+                                {isMemberModalOpen && (
+                                    <div className="absolute z-50 right-full ml-2 top-0">
+                                        <MemberCardModal onClose={() => setIsMemberModalOpen(false)}/>
+                                    </div>
+                                )}
+                            </div>
                             <button
                                 className="w-full flex items-center bg-gray-100 text-sm text-gray-700 hover:bg-gray-200 p-2 rounded-lg">
                                 <FaTag className="mr-2"/> Labels
@@ -425,11 +452,10 @@ const CardModal = ({cardProp, onClose, onToggleCheck}) => {
                                 <FaPaperclip className="mr-2"/> Attachment
                             </button>
                         </div>
-
                         {/* Actions */}
                         <div className="mt-4">
                             <h4 className="text-sm font-semibold text-gray-700 mb-2">Actions</h4>
-                            <div className="space-y-2">
+                            <div className="gap-2 grid grid-cols-2 md:grid-cols-1">
                                 <button
                                     className="w-full flex items-center bg-gray-100 text-sm text-gray-700 hover:bg-gray-200 p-2 rounded-lg">
                                     <FaArrowRight className="mr-2"/> Move

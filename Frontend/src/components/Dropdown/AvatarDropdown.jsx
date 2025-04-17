@@ -9,7 +9,8 @@ import toast from "react-hot-toast";
 const AvatarDropdown = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [isWorkspaceOpen, setIsWorkspaceOpen] = useState(false);
-    const {userInfo, quantityWorkspace} = useSelector(state => state.user)
+    const {quantityWorkspace} = useSelector(state => state.user)
+    const {userInfo} = useSelector(state => state.auth)
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const modalRef = useRef(null);

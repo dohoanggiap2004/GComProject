@@ -2,7 +2,7 @@ const {
     getCardByIdWithTasksService,
     createCardService,
     updateCardService,
-    deleteCardService,
+    deleteCardService, addMemberToCardService, removeMemberFromCardService,
 } = require("../../../services/apiService/cardService");
 
 class CardController {
@@ -78,6 +78,40 @@ class CardController {
         } catch (error) {
             console.error(error);
             res.status(500).json({message: "Internal Server Error"});
+        }
+    }
+
+    async addMemberToCard(req, res) {
+        try {
+            const { cardId, listId, boardId, userId } = req.body;
+            if (!cardId || !listId || !boardId || !userId)
+                return res.status(400).json({message: "Card information is required"});
+
+            const result = await addMemberToCardService(boardId, listId, cardId, userId);
+            if (!result) return res.status(200).json({message: "No member added to card"});
+            res.status(200).json({
+                data: result,
+            })
+        } catch (err) {
+            console.error(err);
+            res.status(500).json({ message: "Server error" });
+        }
+    }
+
+    async removeMemberFromCard(req, res) {
+        try {
+            const { cardId, listId, boardId, userId } = req.body;
+            if (!cardId || !listId || !boardId || !userId)
+                return res.status(400).json({message: "Card information is required"});
+
+            const result = await removeMemberFromCardService(boardId, listId, cardId, userId);
+            if (!result) return res.status(200).json({message: "No member added to card"});
+            res.status(200).json({
+                data: result,
+            })
+        } catch (err) {
+            console.error(err);
+            res.status(500).json({ message: "Server error" });
         }
     }
 }

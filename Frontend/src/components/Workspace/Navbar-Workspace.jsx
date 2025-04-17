@@ -56,7 +56,7 @@ export default function NavbarWorkspace() {
                         <p className="-ms-2 text-xl font-semibold text-gray-800">GCom</p>
                     </Link>
                 </div>
-                <div className="hidden md:flex gap-4 text-sm text-gray-600">
+                <div className="hidden lg:flex gap-4 text-sm text-gray-600">
                       <span
                           className="cursor-pointer hover:text-black flex items-center gap-2 text-gray-600 font-semibold text-md">
                           Workspaces <FaChevronDown/>
@@ -77,13 +77,14 @@ export default function NavbarWorkspace() {
                             className="bg-blue-600 text-white px-4 py-2 rounded-md">Create
                     </button>
                 </div>
-                <div className={'md:hidden'}>
+                <div className={'lg:hidden'}>
                     <button
-                        className="text-gray-400 px-2 py-1.5 rounded-md font-semibold text-md flex justify-center items-center gap-2">More <FaChevronDown/>
+                        className="text-gray-400 px-2 py-1.5 rounded-md font-semibold text-md flex justify-center items-center gap-2">
+                        More <FaChevronDown className={'h-2 w-2 font-bold'}/>
                     </button>
                 </div>
-                <div className="md:hidden gap-3 text-gray-600">
-                    <button className="bg-blue-600 text-white px-1.5 py-1.5 rounded-md"
+                <div className="lg:hidden text-gray-600">
+                    <button className="bg-gray-300 px-1.5 py-1.5 rounded-md"
                             onClick={() => setIsModalOpen(true)}
                     >
                         <FaPlus/>
@@ -92,7 +93,7 @@ export default function NavbarWorkspace() {
             </div>
 
             {/* Right Section */}
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-4 ms-2">
                 <div className="relative items-center hidden md:flex">
                     <IoIosSearch className="absolute left-3 text-gray-500 w-4 h-4"/>
                     <input

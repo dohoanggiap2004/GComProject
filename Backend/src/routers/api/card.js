@@ -9,6 +9,8 @@ const verifyRoles = require('../../middlewares/verifyRoles')
 router.get('/', CardController.getCardByIdWithTasks)
 router.post('/', CardController.createCard)
 router.put('/', CardController.updateCard)
+router.put('/add-member', CardController.addMemberToCard)
+router.put('/remove-member', CardController.removeMemberFromCard)
 router.delete('/', CardController.deleteCard)
 
 module.exports = router

@@ -4,32 +4,33 @@ const Task = require("../../app/models/Task");
 const Activity = require("../../app/models/Activity");
 
 const getCardByIdWithTasksService = async (boardId, listId, cardId) => {
-    // Query lấy đúng card và populate tasks bên trong card đó
     const board = await Board.findOne(
         {
             _id: boardId,
             "lists._id": listId,
             "lists.cards._id": cardId
         },
-        {"lists.$": 1} // Chỉ lấy ra đúng list thoả mãn điều kiện
+        {"lists.$": 1}
     )
         .populate({
-            path: 'lists.cards.tasks', // Đường dẫn đến các task trong card
-        }).lean();
+            path: 'lists.cards.tasks',
+        })
+        .populate({
+            path: 'lists.cards.memberIds',
+            select: 'fullname email avatar'
+        })
+        .lean();
 
     if (!board || board.lists.length === 0) {
         return null;
     }
 
-    // Tìm đúng list
     const [list] = board.lists;
-
-    // Tìm đúng card trong list
     const card = list.cards.find(c => c._id.toString() === cardId);
 
-    // Sau khi populate, card.tasks sẽ là mảng objects (details của task)
     return card || null;
 };
+
 
 const createCardService = async (cardData) => {
     const {boardId, listId, ...cardFields} = cardData;
@@ -157,4 +158,75 @@ const deleteCardService = async (boardId, listId, cardId) => {
         throw error;
     }
 };
-module.exports = {getCardByIdWithTasksService, createCardService, updateCardService, deleteCardService,};
+
+const addMemberToCardService = async ({ boardId, listId, cardId, userId }) => {
+    const board = await Board.findOneAndUpdate(
+        {
+            _id: boardId,
+            'lists._id': listId,
+            'lists.cards._id': cardId
+        },
+        {
+            $addToSet: {
+                'lists.$[list].cards.$[card].members': userId
+            }
+        },
+        {
+            new: true,
+            arrayFilters: [
+                { 'list._id': listId },
+                { 'card._id': cardId }
+            ]
+        }
+    );
+
+    if (!board) {
+        throw new Error('Board, List, or Card not found');
+    }
+
+    // Lấy card đã cập nhật từ kết quả
+    const updatedList = board.lists.id(listId);
+    const updatedCard = updatedList?.cards.id(cardId);
+
+    return updatedCard;
+};
+
+const removeMemberFromCardService = async ({ boardId, listId, cardId, userId }) => {
+    const board = await Board.findOneAndUpdate(
+        {
+            _id: boardId,
+            'lists._id': listId,
+            'lists.cards._id': cardId
+        },
+        {
+            $pull: {
+                'lists.$[list].cards.$[card].members': userId
+            }
+        },
+        {
+            new: true,
+            arrayFilters: [
+                { 'list._id': listId },
+                { 'card._id': cardId }
+            ]
+        }
+    );
+
+    if (!board) {
+        throw new Error('Board, List, or Card not found');
+    }
+
+    const updatedList = board.lists.id(listId);
+    const updatedCard = updatedList?.cards.id(cardId);
+
+    return updatedCard;
+};
+
+module.exports = {
+    getCardByIdWithTasksService,
+    createCardService,
+    updateCardService,
+    deleteCardService,
+    addMemberToCardService,
+    removeMemberFromCardService
+};
