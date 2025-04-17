@@ -20,8 +20,8 @@ class RefreshTokenController{
             const accessToken = generateAccessToken(user);
             res.cookie('accessToken', accessToken, {
                 httpOnly: false, // Cookie truy cập bằng JavaScript)
-                secure: false,   // Cookie chỉ được gửi qua HTTPS (nên sử dụng trong môi trường production)
-                sameSite: 'Strict', // Bảo vệ CSRF
+                secure: true,   // Cookie chỉ được gửi qua HTTPS (nên sử dụng trong môi trường production)
+                sameSite: 'None', // Bảo vệ CSRF
                 maxAge: 15 * 60 * 1000 // Thời gian tồn tại của cookie (15 phút)
             });
             res.send(accessToken)

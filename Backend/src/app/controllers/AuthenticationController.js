@@ -30,13 +30,13 @@ class Authentication {
         res.cookie("refreshToken", refreshToken, {
           httpOnly: true,
           secure: true,
-          sameSite: "Strict",
+          sameSite: "None",
           maxAge: 7 * 24 * 60 * 60 * 1000,
         });
         res.cookie("accessToken", accessToken, {
           httpOnly: false,
-          secure: false,
-          sameSite: "Strict",
+          secure: true,
+          sameSite: "None",
           maxAge: 15 * 60 * 1000,
         });
         return res.redirect('http://localhost:3000/');
@@ -72,16 +72,16 @@ class Authentication {
         await refreshTokenDoc.save();
 
         res.cookie("refreshToken", refreshToken, {
-          httpOnly: true, // Cookie chỉ được gửi qua HTTP (không thể truy cập qua JavaScript)
-          secure: true, // Chỉ gửi cookie qua HTTPS
-          sameSite: "Strict", // Ngăn tấn công CSRF
-          maxAge: 7 * 24 * 60 * 60 * 1000, // Thời gian sống của cookie (7 ngày)
+          httpOnly: true,
+          secure: true,
+          sameSite: "None",
+          maxAge: 7 * 24 * 60 * 60 * 1000,
         });
         res.cookie("accessToken", accessToken, {
-          httpOnly: false, // cho phép truy cập qua JavaScript)
-          secure: false,
-          sameSite: "Strict", // Ngăn tấn công CSRF
-          maxAge: 15 * 60 * 1000, // Thời gian sống của cookie 15 phut
+          httpOnly: false,
+          secure: true,
+          sameSite: "None",
+          maxAge: 15 * 60 * 1000,
         });
         res.status(200).json({
           error: 0,
@@ -118,16 +118,16 @@ class Authentication {
         });
         await refreshTokenDoc.save();
         res.cookie("refreshToken", refreshToken, {
-          httpOnly: true, // Cookie chỉ được gửi qua HTTP (không thể truy cập qua JavaScript)
-          secure: true, // Chỉ gửi cookie qua HTTPS
-          sameSite: "Strict", // Ngăn tấn công CSRF
-          maxAge: 7 * 24 * 60 * 60 * 1000, // Thời gian sống của cookie (7 ngày)
+          httpOnly: true,
+          secure: true,
+          sameSite: "None",
+          maxAge: 7 * 24 * 60 * 60 * 1000,
         });
         res.cookie("accessToken", accessToken, {
-          httpOnly: false, // cho phép truy cập qua JavaScript)
-          secure: false,
-          sameSite: "Strict", // Ngăn tấn công CSRF
-          maxAge: 15 * 60 * 1000, // Thời gian sống của cookie 15 phut
+          httpOnly: false,
+          secure: true,
+          sameSite: "None",
+          maxAge: 15 * 60 * 1000,
         });
         res.status(200).json({
           error: 0,
