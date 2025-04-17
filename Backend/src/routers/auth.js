@@ -76,13 +76,13 @@ router.post("/logout", async (req, res, next) => {
         // Clear the refresh token from the cookies first
         res.clearCookie("refreshToken", {
             httpOnly: true,
-            sameSite: "Strict",
-            secure: true, // Use secure only in production with HTTPS
+            sameSite: "None",
+            secure: true,
         });
         res.clearCookie("accessToken", {
-            httpOnly: true,
-            sameSite: "Strict",
-            secure: true, // Use secure only in production with HTTPS
+            httpOnly: false,
+            sameSite: "None",
+            secure: true,
         });
 
         res.status(201).json({
