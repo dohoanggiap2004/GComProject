@@ -6,6 +6,8 @@ const verifyRoles = require('../../middlewares/verifyRoles')
 const checkBoardPermission = require('../../middlewares/checkBoardPermission')
 const checkReOrderListCardPermission = require('../../middlewares/checkReOrderListCardPermission')
 // router.get('/', verifyJWT, verifyRoles('user'), BoardController.getBoards)
+
+// router.all('*', verifyJWT)
 router.get('/', BoardController.getBoards)
 router.get('/:_id', BoardController.getBoardById)
 router.get('/workspace/:workspaceId', BoardController.getBoardByWorkspaceId)

@@ -2,13 +2,15 @@
 import {createSlice} from '@reduxjs/toolkit';
 
 import {
-    getCardWithTask
+    getCardWithTask,
+    addMemberToCard,
+    removeMemberFromCard,
 } from "../actions/cardAction";
 
 import {
     updateTask,
     createTask,
-    deleteTask
+    deleteTask,
 } from '../actions/taskAction.js'
 
 const cardSlice = createSlice({
@@ -30,6 +32,34 @@ const cardSlice = createSlice({
                 state.card = action.payload;
             })
             .addCase(getCardWithTask.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            })
+
+            //add member
+            .addCase(addMemberToCard.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(addMemberToCard.fulfilled, (state, action) => {
+                state.loading = false;
+                state.card = action.payload;
+            })
+            .addCase(addMemberToCard.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            })
+
+            //remove
+            .addCase(removeMemberFromCard.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(removeMemberFromCard.fulfilled, (state, action) => {
+                state.loading = false;
+                state.card = action.payload;
+            })
+            .addCase(removeMemberFromCard.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
             })

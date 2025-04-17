@@ -17,7 +17,7 @@ const getCardByIdWithTasksService = async (boardId, listId, cardId) => {
         })
         .populate({
             path: 'lists.cards.memberIds',
-            select: 'fullname email avatar'
+            select: 'fullname email'
         })
         .lean();
 
@@ -159,39 +159,47 @@ const deleteCardService = async (boardId, listId, cardId) => {
     }
 };
 
-const addMemberToCardService = async ({ boardId, listId, cardId, userId }) => {
+const addMemberToCardService = async (boardId, listId, cardId, userId) => {
     const board = await Board.findOneAndUpdate(
         {
             _id: boardId,
             'lists._id': listId,
-            'lists.cards._id': cardId
+            'lists.cards._id': cardId,
         },
         {
             $addToSet: {
-                'lists.$[list].cards.$[card].members': userId
-            }
+                'lists.$[list].cards.$[card].memberIds': userId,
+            },
         },
         {
             new: true,
             arrayFilters: [
                 { 'list._id': listId },
-                { 'card._id': cardId }
-            ]
+                { 'card._id': cardId },
+            ],
         }
-    );
+    )
+        .populate({
+            path: 'lists.cards.memberIds',
+            select: 'fullname email',
+        })
+        .lean();
 
     if (!board) {
         throw new Error('Board, List, or Card not found');
     }
 
-    // Lấy card đã cập nhật từ kết quả
-    const updatedList = board.lists.id(listId);
-    const updatedCard = updatedList?.cards.id(cardId);
+    const updatedList = board.lists.find(list => list._id.toString() === listId);
+    const updatedCard = updatedList?.cards.find(card => card._id.toString() === cardId);
+
+    if (!updatedCard) {
+        throw new Error('Card not found');
+    }
 
     return updatedCard;
 };
 
-const removeMemberFromCardService = async ({ boardId, listId, cardId, userId }) => {
+const removeMemberFromCardService = async (boardId, listId, cardId, userId ) => {
     const board = await Board.findOneAndUpdate(
         {
             _id: boardId,
@@ -200,7 +208,7 @@ const removeMemberFromCardService = async ({ boardId, listId, cardId, userId }) 
         },
         {
             $pull: {
-                'lists.$[list].cards.$[card].members': userId
+                'lists.$[list].cards.$[card].memberIds': userId
             }
         },
         {
@@ -210,14 +218,23 @@ const removeMemberFromCardService = async ({ boardId, listId, cardId, userId }) 
                 { 'card._id': cardId }
             ]
         }
-    );
+    )
+        .populate({
+            path: 'lists.cards.memberIds',
+            select: 'fullname email',
+        })
+        .lean();
+
+    const updatedList = board.lists.find(list => list._id.toString() === listId);
+    const updatedCard = updatedList?.cards.find(card => card._id.toString() === cardId);
 
     if (!board) {
         throw new Error('Board, List, or Card not found');
     }
 
-    const updatedList = board.lists.id(listId);
-    const updatedCard = updatedList?.cards.id(cardId);
+    if (!updatedCard) {
+        throw new Error('Card not found');
+    }
 
     return updatedCard;
 };

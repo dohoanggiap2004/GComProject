@@ -15,7 +15,7 @@ import {
 import {ActivitySVG, CompletedSVG, DescriptionSVG} from "../Icon/icons.jsx";
 import {useDispatch, useSelector} from "react-redux";
 import {deleteCard, updateCard} from "../../store/actions/boardAction.js";
-import {getCardWithTask} from "../../store/actions/cardAction.js";
+import {addMemberToCard, getCardWithTask, removeMemberFromCard} from "../../store/actions/cardAction.js";
 import Checklist from "./Checklist.jsx";
 import toast from "react-hot-toast";
 import {useNavigate} from "react-router-dom";
@@ -81,13 +81,26 @@ const CardModal = ({cardProp, onClose, onToggleCheck}) => {
         console.log('Watch button clicked');
     };
 
-    const handleJoinClick = () => {
-        console.log('Join button clicked');
+    const handleJoinClick = (e) => {
+        e.preventDefault();
+        const payload = {
+            boardId: board?._id,
+            listId: card?.listId,
+            cardId: card?._id,
+        }
+        dispatch(addMemberToCard(payload));
     };
 
-    const handleLeaveClick = () => {
-        console.log('Join button clicked');
+    const handleLeaveClick = (e) => {
+        e.preventDefault();
+        const payload = {
+            boardId: board?._id,
+            listId: card?.listId,
+            cardId: card?._id,
+        }
+        dispatch(removeMemberFromCard(payload));
     };
+
 
     const handleMembersClick = () => {
         setIsMemberModalOpen(true);
@@ -410,9 +423,9 @@ const CardModal = ({cardProp, onClose, onToggleCheck}) => {
                     <div>
                         {/* Phần sidebar bên phải (các nút hành động) */}
                         <div className="mt-6 gap-2 grid grid-cols-2 md:grid-cols-1">
-                            {card?.members?.includes(userInfo?._id) ? (
+                            {card?.memberIds?.map(member => member._id.toString()).includes(userInfo?._id.toString()) ? (
                                 <button
-                                    onClick={handleJoinClick}
+                                    onClick={handleLeaveClick}
                                     className="w-full flex items-center bg-gray-100 text-sm text-gray-700 hover:bg-gray-200 p-2 rounded-lg"
                                 >
                                     <FaUserPlus className="mr-2"/> Leave
@@ -425,6 +438,7 @@ const CardModal = ({cardProp, onClose, onToggleCheck}) => {
                                     <FaUserPlus className="mr-2"/> Join
                                 </button>
                             )}
+
 
                             <div className="relative inline-block w-40 ">
                                 <button

@@ -33,15 +33,16 @@ export default function MemberCardModal({onClose}) {
                 className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
             />
             <p className="text-sm text-gray-600 mt-4 mb-2">Card members</p>
-            <div className="flex items-center gap-3 p-2 rounded hover:bg-gray-100 cursor-pointer">
+            <div className="">
                 {card.memberIds.length > 0 && card.memberIds.map(member => (
-                    <>
+                    <div className="flex items-center gap-3 p-2 rounded hover:bg-gray-100 cursor-pointer">
                         <div
                             className="w-8 h-8 bg-orange-600 rounded-full flex items-center justify-center text-white font-semibold">
-                            {member?.fullname.slice(0,2)}
+                            {member?.fullname.slice(0, 2)}
                         </div>
                         <span className="text-sm font-medium">{member?.fullname}</span>
-                    </>
+                    </div>
+
                 ))
                 }
 

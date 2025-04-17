@@ -1,6 +1,5 @@
 
 const mongoose = require('mongoose');
-const taskSchema = require('./Task');
 
 const cardSchema = new mongoose.Schema({
     title: {

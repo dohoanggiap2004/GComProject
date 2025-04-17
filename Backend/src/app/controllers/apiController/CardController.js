@@ -4,6 +4,7 @@ const {
     updateCardService,
     deleteCardService, addMemberToCardService, removeMemberFromCardService,
 } = require("../../../services/apiService/cardService");
+const getUserIdFromToken = require("../../../utils/getUserIdFromToken");
 
 class CardController {
 
@@ -83,12 +84,15 @@ class CardController {
 
     async addMemberToCard(req, res) {
         try {
-            const { cardId, listId, boardId, userId } = req.body;
+            const { cardId, listId, boardId } = req.body;
+            const userId = await getUserIdFromToken(req);
+            console.log(cardId, listId, boardId);
             if (!cardId || !listId || !boardId || !userId)
                 return res.status(400).json({message: "Card information is required"});
 
             const result = await addMemberToCardService(boardId, listId, cardId, userId);
             if (!result) return res.status(200).json({message: "No member added to card"});
+
             res.status(200).json({
                 data: result,
             })
@@ -100,12 +104,15 @@ class CardController {
 
     async removeMemberFromCard(req, res) {
         try {
-            const { cardId, listId, boardId, userId } = req.body;
+            const { cardId, listId, boardId } = req.body;
+            const userId = await getUserIdFromToken(req);
+
             if (!cardId || !listId || !boardId || !userId)
                 return res.status(400).json({message: "Card information is required"});
 
             const result = await removeMemberFromCardService(boardId, listId, cardId, userId);
             if (!result) return res.status(200).json({message: "No member added to card"});
+
             res.status(200).json({
                 data: result,
             })

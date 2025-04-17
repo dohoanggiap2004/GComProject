@@ -68,8 +68,6 @@ router.post("/logout", async (req, res, next) => {
     try {
         if (req.cookies.refreshToken) {
             const refreshToken = req.cookies.refreshToken;
-
-            // Delete refresh token from the database
             await RefreshToken.deleteOne({ token: refreshToken });
         }
 
