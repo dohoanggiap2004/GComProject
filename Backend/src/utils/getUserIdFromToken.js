@@ -3,6 +3,7 @@ const RefreshToken = require("../app/models/RefreshToken");
 
 const getUserIdFromToken = async (req) => {
     const token = req.cookies.refreshToken;
+    console.log('check cookies', req.cookies)
     if (!token) return null;  // Trả về null nếu không có token
 
     return new Promise((resolve, reject) => {

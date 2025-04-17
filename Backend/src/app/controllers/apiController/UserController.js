@@ -147,7 +147,8 @@ class UserController {
 
     async countUserWorkspaces (req, res) {
         const userId = await getUserIdFromToken(req)
-
+        if (!userId)
+            return res.status(400).json({message: "User information is required"});
         try {
             const count = await countUserWorkspaceService(userId);
             res.status(200).json({
