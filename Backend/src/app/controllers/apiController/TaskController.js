@@ -29,7 +29,7 @@ class TaskController {
 
   async createTask(req, res) {
     try {
-      if (!req?.body)
+      if (!req?.body?.boardId || !req?.body?.listId || !req?.body?.cardId || !req?.body?.title)
         return res.status(400).json({ message: "Task information is required" });
 
       const { boardId, listId, cardId, ...task} = req.body;
@@ -47,7 +47,7 @@ class TaskController {
 
   async updateTask(req, res) {
     try {
-      if (!req?.body)
+      if (!req?.body?._id)
        return res.status(400).json({ message: "Task information is required" });
 
       const task = req.body;
@@ -66,7 +66,7 @@ class TaskController {
 
   async deleteTask(req, res) {
     try {
-      if (!req?.query)
+      if (!req?.query?.boardId || !req?.query?.listId || !req?.query?.cardId || !req?.query?.taskId)
         return res.status(400).json({ message: "Task information is required" });
       const { boardId, listId, cardId, taskId } = req.query;
       const result = await deleteTaskService( boardId, listId, cardId, taskId );

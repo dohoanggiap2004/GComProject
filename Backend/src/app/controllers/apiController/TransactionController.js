@@ -24,7 +24,7 @@ class TransactionController {
 
     async createTransaction(req, res) {
         try {
-            if (!req?.body)
+            if (!req?.body?.userId || !req?.body?.amount)
                 return res.status(400).json({message: "Transaction information is required"});
 
             const transaction = req.body;
@@ -41,7 +41,7 @@ class TransactionController {
 
     async updateTransaction(req, res) {
         try {
-            if (!req?.body)
+            if (!req?.body?._id)
                 return res.status(400).json({message: "Transaction information is required"});
             const transaction = req.body;
             const result = await updateTransactionService(transaction);
@@ -59,7 +59,7 @@ class TransactionController {
 
     async deleteTransaction(req, res) {
         try {
-            if (!req?.query)
+            if (!req?.query?._id)
                 return res.status(400).json({message: "Transaction information is required"});
             const {_id} = req.query;
             const result = await deleteTransactionService(_id);

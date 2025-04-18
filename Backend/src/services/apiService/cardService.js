@@ -34,7 +34,7 @@ const getCardByIdWithTasksService = async (boardId, listId, cardId) => {
 
 const createCardService = async (cardData) => {
     const {boardId, listId, ...cardFields} = cardData;
-    console.log('cardData', cardData)
+
     // Tìm kiếm board dựa trên ID board
     const board = await Board.findById(boardId);
     if (!board) {

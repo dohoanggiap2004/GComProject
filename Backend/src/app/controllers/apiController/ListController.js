@@ -28,8 +28,8 @@ class ListController {
 
   async createList(req, res) {
     try {
-      if (!req?.body)
-        return res.status(400).json({ message: "List information is required" });
+      if (!req?.body?.boardId)
+        return res.status(400).json({ message: "BoardId is required" });
 
       const list= req.body;
       const newList = await createListService(list);
@@ -46,12 +46,12 @@ class ListController {
 
   async updateList(req, res) {
     try {
-      if (!req?.body)
+      if (!req?.body?.boardId || req?.body?._id)
        return res.status(400).json({ message: "List information is required" });
 
-      const list= req.body;
+      const list = req.body;
       const result = await updateListService(list);
-      console.log(result)
+
       if (!result) return res.status(200).json({ message: "No listchanged" });
 
       res.status(200).json({
@@ -65,7 +65,7 @@ class ListController {
 
   async deleteList(req, res) {
     try {
-      if (!req?.query)
+      if (!req?.query?.boardId || !req?.query?.listId)
         return res.status(400).json({ message: "List information is required" });
       const { boardId, listId } = req.query;
       console.log(boardId, listId)

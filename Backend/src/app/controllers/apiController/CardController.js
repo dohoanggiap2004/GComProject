@@ -10,7 +10,7 @@ class CardController {
 
     async getCardByIdWithTasks(req, res) {
         try {
-            if (!req?.query)
+            if (!req?.query?.boardId || !req?.query?.listId || !req?.query?.cardId)
                 return res.status(400).json({message: "BoardItem id is required"});
 
             const {boardId, listId, cardId} = req.query;
@@ -31,7 +31,7 @@ class CardController {
 
     async createCard(req, res) {
         try {
-            if (!req?.body)
+            if (!req?.body?.boardId || !req?.body?.listId || !req?.body?.title)
                 return res.status(400).json({message: "Card information is required"});
 
             const card = req.body;
@@ -49,7 +49,7 @@ class CardController {
 
     async updateCard(req, res) {
         try {
-            if (!req?.body)
+            if (!req?.body?.boardId || !req?.body?.listId || !req?.body?._id)
                 return res.status(400).json({message: "Card information is required"});
             const card = req.body;
             const result = await updateCardService(card);
@@ -67,7 +67,7 @@ class CardController {
 
     async deleteCard(req, res) {
         try {
-            if (!req?.query)
+            if (!req?.query?.boardId || !req?.query?.listId || !req?.query?.cardId)
                 return res.status(400).json({message: "Card information is required"});
             const {boardId, listId, cardId} = req.query;
             const result = await deleteCardService(boardId, listId, cardId);

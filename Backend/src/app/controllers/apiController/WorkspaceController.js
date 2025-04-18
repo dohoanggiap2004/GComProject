@@ -14,7 +14,8 @@ class WorkspaceController {
     async getWorkspaceByMemberId(req, res) {
         try {
             const memberId = await getUserIdFromToken(req);
-            // console.log('check memberId', memberId);
+            if(!memberId)
+                return res.status(400).json({message: 'User information is required'})
             const workspace = await getWorkspaceByMemberIdService(memberId);
 
             if (!workspace) {
@@ -72,9 +73,9 @@ class WorkspaceController {
 
     async createWorkspace(req, res) {
         try {
-            if (!req?.body)
-                return res.status(400).json({message: "Workspace information is required"});
             const memberId = await getUserIdFromToken(req);
+            if (!req?.body?.name || !memberId)
+                return res.status(400).json({message: "Workspace information is required"});
             const workspace = req.body;
             const existQuantityWorkspace = await countUserWorkspaceService(memberId)
             if (existQuantityWorkspace === undefined) {
@@ -103,12 +104,12 @@ class WorkspaceController {
 
     async updateWorkspace(req, res) {
         try {
-            if (!req?.body)
+            if (!req?.body?._id)
                 return res.status(400).json({message: "Workspace information is required"});
 
             const workspace = req.body;
             const result = await updateWorkspaceService(workspace);
-            console.log(result)
+
             if (!result) return res.status(200).json({message: "No board changed"});
 
             res.status(200).json({
@@ -122,12 +123,12 @@ class WorkspaceController {
 
     async deleteWorkspace(req, res) {
         try {
-            if (!req?.query)
+            if (!req?.query?._id)
                 return res.status(400).json({message: "Workspace information is required"});
 
             const id = req.query._id;
             const result = await deleteWorkspaceService(id);
-            console.log('check res', result)
+
             if (!result) return res.status(200).json({message: "No workspace be deleted"});
 
             res.status(200).json({

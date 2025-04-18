@@ -93,7 +93,6 @@ const deleteBoardService = async (boardId) => {
 };
 
 const updateCardIndexService = async(info) => {
-    console.log(info);
     const {boardId, sourceListId, destListId, sourceCardIndex, destCardIndex } = info;
     const board = await Board.findById(boardId);
     if (!board) {

@@ -1,6 +1,5 @@
 const { payos } = require('../../../config/payos');
 const {isValidSignature} = require("../../../utils/checkCheckSumKey");
-const getUserIdFromToken = require("../../../utils/getUserIdFromToken");
 const {updateStatusAndUserService, getTransactionByOrderCode} = require("../../../services/apiService/payOSService");
 const {createWebhookService} = require("../../../services/apiService/webhookService");
 
@@ -9,8 +8,8 @@ class PayOsController {
     async createPaymentLink(req, res) {
         try {
             const reqData = req.body;
-            if (!reqData) {
-                return res.status(400).json({ message: 'Invalid productsInfo in request body' });
+            if (!reqData?.orderCode || !reqData?.amount) {
+                return res.status(400).json({ message: 'Order info is required' });
             }
 
             const expiredAt = Math.floor(Date.now() / 1000) + 3600;
@@ -39,7 +38,7 @@ class PayOsController {
             return res.status(200).json({ checkoutUrl: paymentLink.checkoutUrl });
         } catch (error) {
             console.error('Create payment link error:', error);
-            return res.status(500).json({ message: 'Internal Server Error', error: error.message });
+            return res.status(500).json({ message: 'Internal Server Error' });
         }
     }
 

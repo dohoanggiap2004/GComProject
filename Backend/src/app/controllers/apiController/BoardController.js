@@ -71,7 +71,7 @@ class BoardController {
 
     async createBoard(req, res) {
         try {
-            if (!req?.body)
+            if (!req?.body?.title || !req.body?.visibility || !req.body?.workspaceId)
                 return res.status(400).json({message: "BoardItem information is required"});
 
             const board = req.body;
@@ -104,7 +104,7 @@ class BoardController {
 
     async updateBoard(req, res) {
         try {
-            if (!req?.body)
+            if (!req?.body?._id)
                 return res.status(400).json({message: "BoardItem information is required"});
 
             const board = req.body;
@@ -123,7 +123,7 @@ class BoardController {
 
     async deleteBoard(req, res) {
         try {
-            if (!req?.query)
+            if (!req?.query._id)
                 return res.status(400).json({message: "BoardItem information is required"});
 
             const id = req.query._id;
@@ -141,7 +141,7 @@ class BoardController {
 
     async updateListIndex(req, res) {
         try {
-            if (!req?.body)
+            if (!req?.body?.sourceIndex || req?.body?.destIndex || req?.body?.boardId)
                 return res.status(400).json({message: "List information is required"});
 
             const info = req.body;
@@ -160,7 +160,8 @@ class BoardController {
 
     async updateCardIndex(req, res) {
         try {
-            if (!req?.body)
+            if (!req?.body?.boardId || !req?.body?.sourceListId || !req?.body?.destListId
+                || !req?.body?.sourceCardIndex || !req?.body?.destCardIndex)
                 return res.status(400).json({message: "Card information is required"});
 
             const info = req.body;

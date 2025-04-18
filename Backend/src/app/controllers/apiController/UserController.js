@@ -30,6 +30,7 @@ class UserController {
     async getUserById(req, res) {
         try {
             const id = await getUserIdFromToken(req);
+            if(!id) return res.status(400).json({message: "UserId is required"});
             const user = await getUserByIdService(id);
 
             if (!user) {
@@ -128,8 +129,8 @@ class UserController {
         try {
             const { boardId, workspaceId } = req.query;
             const userId = await getUserIdFromToken(req);
-            if (!boardId && !workspaceId) {
-                return res.status(400).json({ message: "Workspace or board information is required" });
+            if ((!boardId && !workspaceId) || !userId) {
+                return res.status(400).json({ message: "Workspace, board information or userId is required" });
             }
 
             const roleInfo = await checkUserRoleService(userId, { workspaceId, boardId });
