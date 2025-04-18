@@ -19,6 +19,16 @@ export const getBoardByBoardId = createAsyncThunk('boards/getBoardByBoardId', as
     }
 })
 
+//member là guest của workspace
+export const getBoardByMemberId = createAsyncThunk('boards/getBoardByMemberId', async (payload, thunkAPI) => {
+    try {
+        const response = await instanceAxios8000.get(`/api/boards/board-guest`);
+        return response.data.data;
+    } catch (error) {
+        return thunkAPI.rejectWithValue(error.response.data.message);
+    }
+})
+
 export const createBoard = createAsyncThunk('boards/createBoard', async (payload, thunkAPI) => {
     try {
         const response = await instanceAxios8000.post('/api/boards', payload);

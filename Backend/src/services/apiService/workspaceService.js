@@ -83,7 +83,6 @@ const getMemberInBoardsByWorkspaceIdService = async (workspaceId) => {
 };
 
 
-
 const createWorkspaceService = async (workspace, memberId) => {
 
     const newWorkspace = new Workspace({

@@ -14,13 +14,14 @@ import {
     createList,
     updateList,
     deleteList,
-    updateListIndex, removeMemberFromBoard,
+    updateListIndex, removeMemberFromBoard, getBoardByMemberId,
 } from "../actions/boardAction";
 
 const boardSlice = createSlice({
     name: 'boards',
     initialState: {
         boards: {},
+        boardGuest: {},
         membersInBoard: [],
         board: null,
         loading: false,
@@ -40,6 +41,20 @@ const boardSlice = createSlice({
                 state.membersInBoard = action.payload.users;
             })
             .addCase(getBoardByBoardId.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            })
+
+            // get boarr guest by memberId
+            .addCase(getBoardByMemberId.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(getBoardByMemberId.fulfilled, (state, action) => {
+                state.loading = false;
+                state.boardGuest = action.payload;
+            })
+            .addCase(getBoardByMemberId.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
             })

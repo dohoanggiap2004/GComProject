@@ -8,6 +8,7 @@ const checkReOrderListCardPermission = require('../../middlewares/checkReOrderLi
 // router.get('/', verifyJWT, verifyRoles('user'), BoardController.getBoards)
 
 // router.all('*', verifyJWT)
+router.get('/board-guest', BoardController.getBoardByMemberId)
 router.get('/', BoardController.getBoards)
 router.get('/:_id', BoardController.getBoardById)
 router.get('/workspace/:workspaceId', BoardController.getBoardByWorkspaceId)

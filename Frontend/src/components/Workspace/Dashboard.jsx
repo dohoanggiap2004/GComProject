@@ -6,7 +6,7 @@ import {GoPlus} from "react-icons/go";
 import {useDispatch, useSelector} from "react-redux";
 import WorkspaceCreateModel from "./WorkspaceCreateModal.jsx";
 import {useEffect, useState} from "react";
-import { getBoardByWorkspaceIds} from "../../store/actions/boardAction.js";
+import {getBoardByMemberId, getBoardByWorkspaceIds} from "../../store/actions/boardAction.js";
 import BoardCreateModel from "./BoardCreateModal.jsx";
 import {Link} from "react-router-dom";
 import {getQuantityUserWorkspace} from "../../store/actions/userAction.js";
@@ -22,7 +22,7 @@ const recentBoards = [
 
 const Dashboard = () => {
     const {workspaces} = useSelector((state) => state.workspace);
-    const {boards} = useSelector((state) => state.board);
+    const {boards, boardGuest} = useSelector((state) => state.board);
     const {quantityWorkspace} = useSelector(state => state.user)
     const dispatch = useDispatch();
     const [isWorkspaceOpen, setIsWorkspaceOpen] = useState(false);
@@ -31,7 +31,11 @@ const Dashboard = () => {
 
     useEffect(() => {
         dispatch(getQuantityUserWorkspace())
-    }, [workspaces])
+    }, [])
+
+    useEffect(() => {
+        dispatch(getBoardByMemberId())
+    }, [])
 
     useEffect(() => {
         if (workspaces && workspaces.length > 0) {
@@ -60,7 +64,7 @@ const Dashboard = () => {
                     ))}
                 </div>
 
-                <h2 className="text-lg font-semibold mb-4">YOUR WORKSPACES</h2>
+                <h2 className="text-lg font-bold text-gray-700 mb-4">YOUR WORKSPACES</h2>
                 {
                     Array.isArray(workspaces) && workspaces.length > 0 ? (
                         workspaces.map((workspace) => (
@@ -105,6 +109,19 @@ const Dashboard = () => {
                     )
                 }
 
+                {(Array.isArray(boardGuest) && boardGuest.length > 0) && (
+                    <h2 className="text-lg font-bold text-gray-700 my-4">GUEST WORKSPACES</h2>
+                )}
+                <div className="w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                    {Array.isArray(boardGuest) && boardGuest.length > 0 ? boardGuest.map((board) => (
+                        <Link
+                            to={`/user-workspace/board/${board._id}`}
+                            key={board._id}
+                        >
+                            <BoardItem title={board.title} background={board.background}/>
+                        </Link>
+                    )) : null}
+                </div>
                 <BoardCreateModel isOpen={isBoardOpen}
                                   onClose={() => setIsBoardOpen(false)}
                                   selectedWorkspaceId={selectedId}

@@ -8,7 +8,7 @@ const {
     updateCardIndexService,
     updateListIndexService,
     countBoardInWorkspaceService,
-    removeMemberFromBoardService,
+    removeMemberFromBoardService, getBoardByMemberIdService,
 } = require("../../../services/apiService/boardService");
 const getUserIdFromToken = require("../../../utils/getUserIdFromToken");
 
@@ -59,6 +59,27 @@ class BoardController {
 
             const id = req.params.workspaceId;
             const board = await getBoardByWorkspaceIdService(id);
+            if (!board) {
+                return res.status(200).json({message: "BoardItem not found"});
+            }
+
+            res.status(200).json({
+                data: board,
+            });
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({message: "Internal Server Error"});
+        }
+    }
+
+    async getBoardByMemberId(req, res) {
+        try {
+            const userId = await getUserIdFromToken(req)
+
+            if (!userId)
+                return res.status(400).json({message: "Member id is required"});
+
+            const board = await getBoardByMemberIdService(userId);
             if (!board) {
                 return res.status(200).json({message: "BoardItem not found"});
             }

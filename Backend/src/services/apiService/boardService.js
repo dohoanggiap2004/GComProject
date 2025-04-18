@@ -40,8 +40,19 @@ const getBoardByIdService = async (boardId) => {
 
 
 const getBoardByWorkspaceIdService = async (workspaceId) => {
-    return Board.find({ workspaceId }).lean();
+    return Board.find({ workspaceId }).select('title background workspaceId').lean();
 };
+
+const getBoardByMemberIdService = async (memberId) => {
+    return Board.find({ 'members.memberId': memberId })
+        .select('title background workspaceId')
+        .populate({
+            path: 'workspaceId',
+            select: 'name'
+        })
+        .lean();
+};
+
 
 const createBoardService = async (board) => {
     const newBoard = new Board(board);
@@ -188,5 +199,6 @@ module.exports = {
     updateCardIndexService,
     updateListIndexService,
     countBoardInWorkspaceService,
-    removeMemberFromBoardService
+    removeMemberFromBoardService,
+    getBoardByMemberIdService,
 };
