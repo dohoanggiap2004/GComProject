@@ -48,8 +48,6 @@ class Authentication {
   }
 
   authenticateLocal(req, res, next) {
-    console.log("Authentication local:");
-    console.log("Request body:", req.body);
     passport.authenticate("local", async (err, user, info) => {
       if (err) {
         console.log("Error during authentication:", err);
@@ -59,7 +57,6 @@ class Authentication {
         console.log("Authentication failed:", info);
         return res.status(404).send(info); // Error message sent here
       }
-      console.log("User authenticated successfully:", user);
 
       try {
         const accessToken = generateAccessToken(user);
@@ -107,7 +104,6 @@ class Authentication {
         console.log('user role not match admin')
         return res.status(401).send('Unauthorized');
       }
-      console.log("User authenticated successfully:", user);
 
       try {
         const accessToken = generateAccessToken(user);

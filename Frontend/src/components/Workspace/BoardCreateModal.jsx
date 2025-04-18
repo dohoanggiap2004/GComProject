@@ -94,12 +94,22 @@ const CreateBoardModal = ({isOpen, onClose, selectedWorkspaceId}) => {
                         }}
                     >
                         <div className="absolute inset-0 flex items-center justify-center">
-                            <div className="flex gap-2">
-                                <div className="w-[60px] h-[80px] bg-gray-300 opacity-70 rounded-sm"></div>
-                                <div className="w-[60px] h-[80px] bg-gray-300 opacity-70 rounded-sm"></div>
-                                <div className="w-[60px] h-[80px] bg-gray-300 opacity-70 rounded-sm"></div>
+                            <div className="flex gap-4">
+                                {[...Array(3)].map((_, index) => (
+                                    <div
+                                        key={index}
+                                        className="w-[60px] h-[80px] bg-gray-300 bg-opacity-70 rounded-sm p-1 shadow-sm flex flex-col gap-1"
+                                    >
+                                        <div className="h-2 bg-white/60 rounded w-5/6"></div>
+                                        <div className="h-1.5 bg-white/50 rounded w-2/3"></div>
+                                        <div className="h-2 bg-white/60 rounded w-full"></div>
+                                        <div className="h-1.5 bg-white/50 rounded w-4/6"></div>
+                                    </div>
+                                ))}
                             </div>
+
                         </div>
+
                     </div>
 
                     {/* Background Selection */}

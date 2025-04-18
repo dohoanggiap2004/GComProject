@@ -46,9 +46,8 @@ class ListController {
 
   async updateList(req, res) {
     try {
-      if (!req?.body?.boardId || req?.body?._id)
+      if (!req?.body?.boardId || !req?.body?._id)
        return res.status(400).json({ message: "List information is required" });
-
       const list = req.body;
       const result = await updateListService(list);
 
@@ -68,7 +67,7 @@ class ListController {
       if (!req?.query?.boardId || !req?.query?.listId)
         return res.status(400).json({ message: "List information is required" });
       const { boardId, listId } = req.query;
-      console.log(boardId, listId)
+
       const result = await deleteListService(boardId, listId);
       if (!result) return res.status(200).json({ message: "No list be deleted" });
 

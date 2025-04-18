@@ -71,7 +71,7 @@ const SortableList = ({ list, cards, onToggleCheck, onAddCard, boardId }) => {
 
     const handleTitleDoubleClick = () => {
         setIsEditingTitle(true);
-        setNewTitle(list.title); // Reset the input to the current title
+        setNewTitle(list.title);
     };
 
     // Handle title change submission (on Enter or blur)

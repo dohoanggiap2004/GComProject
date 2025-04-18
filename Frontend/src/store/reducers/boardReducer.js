@@ -14,7 +14,7 @@ import {
     createList,
     updateList,
     deleteList,
-    updateListIndex,
+    updateListIndex, removeMemberFromBoard,
 } from "../actions/boardAction";
 
 const boardSlice = createSlice({
@@ -105,6 +105,20 @@ const boardSlice = createSlice({
                 state.membersInBoard = action.payload.users
             })
             .addCase(updateBoard.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            })
+
+            // put board
+            .addCase(removeMemberFromBoard.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(removeMemberFromBoard.fulfilled, (state, action) => {
+                state.loading = false;
+                state.membersInBoard = action.payload.users
+            })
+            .addCase(removeMemberFromBoard.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
             })

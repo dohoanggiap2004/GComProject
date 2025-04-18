@@ -37,6 +37,16 @@ export const updateBoard = createAsyncThunk('boards/updateBoard', async (payload
     }
 })
 
+
+export const removeMemberFromBoard = createAsyncThunk('boards/removeMemberFromBoard', async (payload, thunkAPI) => {
+    try {
+        const response = await instanceAxios8000.put('/api/boards/remove-member', payload);
+        return response.data.data;
+    } catch (error) {
+        return thunkAPI.rejectWithValue(error.response.data.message);
+    }
+})
+
 export const deleteBoard = createAsyncThunk('boards/deleteBoard', async (payload, thunkAPI) => {
     try {
         await instanceAxios8000.delete('/api/boards', {

@@ -2,7 +2,7 @@ import {useEffect, useState, useRef} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {searchUser} from "../../store/actions/userAction.js";
 import toast from "react-hot-toast";
-import {updateBoard} from "../../store/actions/boardAction.js";
+import {removeMemberFromBoard, updateBoard} from "../../store/actions/boardAction.js";
 
 const AddMemberBoardModal = ({isOpen, onClose}) => {
     const dispatch = useDispatch();
@@ -70,23 +70,15 @@ const AddMemberBoardModal = ({isOpen, onClose}) => {
 
     const handleDeleteMember = async (e, userId) => {
         e.preventDefault();
-
-        const newMemberIds = memberIds.filter(id => id !== userId);
         handleRemoveUser(userId);
 
         if (board?._id) {
-            const members = newMemberIds.map(memberId => {
-                const member = membersInBoard.find(mem => mem._id === memberId);
-                return {
-                    memberId,
-                    role: member?.role || 'member',
-                };
-            });
+
 
             try {
-                await dispatch(updateBoard({
+                await dispatch(removeMemberFromBoard({
                     _id: board._id,
-                    members: members,
+                    userId: userId,
                 })).unwrap();
                 toast.success('Deleted member successfully.');
                 onClose();
@@ -179,16 +171,16 @@ const AddMemberBoardModal = ({isOpen, onClose}) => {
     if (!isOpen) return null;
 
     return (
-        <div className="fixed inset-0 flex items-center justify-center z-50">
+        <div className="fixed inset-0 flex items-center justify-center z-40">
             <div className="absolute inset-0 bg-black opacity-50"></div>
-            <div className="bg-white p-6 rounded-lg shadow-lg w-2/3 max-w-2xl z-50">
+            <div className="bg-white p-6 rounded-lg shadow-lg w-[90%] max-h-[95vh] max-w-2xl z-50 overflow-visible">
                 {/* Header */}
                 <div className="flex justify-between items-center">
                     <h2 className="text-xl font-bold">Invite to Board</h2>
                     <button onClick={onClose} className="text-gray-500 hover:text-gray-700">✖</button>
                 </div>
 
-                <div className="relative">
+                <div className="">
                     {/* Hiển thị người dùng đã chọn */}
                     <div className="flex flex-wrap gap-2 mt-2">
                         {selectedUsers.map((user) => (
@@ -204,7 +196,7 @@ const AddMemberBoardModal = ({isOpen, onClose}) => {
                         ))}
                     </div>
 
-                    <div className={'flex items-center gap-4'}>
+                    <div className={'flex items-center gap-4 relative'}>
                         {/* Input tìm kiếm */}
                         <input
                             type="text"
@@ -236,7 +228,7 @@ const AddMemberBoardModal = ({isOpen, onClose}) => {
 
                     {/* Danh sách kết quả tìm kiếm */}
                     {showSearchList && Array.isArray(usersSearch) && usersSearch.length > 0 && (
-                        <div className="bg-white p-4 absolute w-full top-16 mt-1 z-10" ref={inputRef}>
+                        <div className="bg-white p-4 absolute w-3/5 md:w-3/7 mt-1 z-50" ref={inputRef}>
                             {usersSearch.map((user) => (
                                 <div
                                     key={user?._id}
@@ -266,7 +258,7 @@ const AddMemberBoardModal = ({isOpen, onClose}) => {
                         <h3 className={'text-blue-500'}>Board members</h3>
                         <hr className={'text-gray-600 mt-2'}/>
                         {Array.isArray(membersInBoard) && membersInBoard.length > 0 && membersInBoard.map((member) => (
-                            <div className={'flex justify-between items-center mt-3'}
+                            <div className={'md:flex justify-between items-center mt-3'}
                                  key={member?._id}
                             >
                                 <div
@@ -283,7 +275,7 @@ const AddMemberBoardModal = ({isOpen, onClose}) => {
                                     </div>
                                 </div>
 
-                                <div className="flex items-center space-x-2">
+                                <div className="flex items-center justify-end space-x-2">
                                     <select
                                         value={member.role}
                                         onChange={(e) => handleChangeRole(e, member._id)}
@@ -301,7 +293,7 @@ const AddMemberBoardModal = ({isOpen, onClose}) => {
                                         onClick={(e) => handleDeleteMember(e, member._id)}
                                         disabled={!['admin', 'workspaceMember'].includes(role)}
                                     >
-                                        Remove from board
+                                        Remove
                                     </button>
                                 </div>
                             </div>

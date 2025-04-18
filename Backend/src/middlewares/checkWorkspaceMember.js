@@ -16,7 +16,7 @@ const checkWorkspaceMember = async (req, res, next) => {
         }
 
         const isMember = workspace.memberIds.some(id => id.toString() === userId.toString());
-        console.log(isMember);
+
         if (!isMember) {
             return res.status(403).json({ message: "You are not authorized to access this workspace" });
         }

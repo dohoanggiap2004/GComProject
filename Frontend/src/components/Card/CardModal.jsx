@@ -442,7 +442,7 @@ const CardModal = ({cardProp, onClose, onToggleCheck}) => {
                             )}
 
 
-                            <div className="relative inline-block w-40 ">
+                            <div className="relative inline-block w-40">
                                 <button
                                     onClick={handleMembersClick}
                                     className="w-full flex items-center bg-gray-100 text-sm text-gray-700 hover:bg-gray-200 p-2 rounded-lg"
@@ -451,11 +451,19 @@ const CardModal = ({cardProp, onClose, onToggleCheck}) => {
                                 </button>
 
                                 {isMemberModalOpen && (
-                                    <div className="absolute z-50 right-full ml-2 top-0">
+                                    <div
+                                        className={`
+                                            absolute z-50 
+                                            top-full mt-2 w-max 
+                                            right-0
+                                            md:top-0 md:left-auto md:right-full md:ml-2
+                                        `}
+                                    >
                                         <MemberCardModal onClose={() => setIsMemberModalOpen(false)}/>
                                     </div>
                                 )}
                             </div>
+
                             <button
                                 className="w-full flex items-center bg-gray-100 text-sm text-gray-700 hover:bg-gray-200 p-2 rounded-lg">
                                 <FaTag className="mr-2"/> Labels

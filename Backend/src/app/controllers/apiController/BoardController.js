@@ -6,9 +6,12 @@ const {
     deleteBoardService,
     getBoardByWorkspaceIdService,
     updateCardIndexService,
-    updateListIndexService, countBoardInWorkspaceService,
+    updateListIndexService,
+    countBoardInWorkspaceService,
+    removeMemberFromBoardService,
 } = require("../../../services/apiService/boardService");
 const getUserIdFromToken = require("../../../utils/getUserIdFromToken");
+
 
 class BoardController {
     async getBoards(req, res) {
@@ -109,7 +112,7 @@ class BoardController {
 
             const board = req.body;
             const result = await updateBoardService(board);
-            console.log(result)
+
             if (!result) return res.status(200).json({message: "No board changed"});
 
             res.status(200).json({
@@ -118,6 +121,25 @@ class BoardController {
         } catch (error) {
             console.error(error);
             res.status(500).json({message: "Internal Server Error"});
+        }
+    }
+
+    async removeMemberFromBoard(req, res) {
+        try {
+            const { _id, userId } = req.body;
+
+            if (!_id || !userId)
+                return res.status(400).json({message: "Card information is required"});
+
+            const result = await removeMemberFromBoardService(_id, userId);
+            if (!result) return res.status(200).json({message: "No member added to card"});
+
+            res.status(200).json({
+                data: result,
+            })
+        } catch (err) {
+            console.error(err);
+            res.status(500).json({ message: "Server error" });
         }
     }
 
@@ -141,7 +163,7 @@ class BoardController {
 
     async updateListIndex(req, res) {
         try {
-            if (!req?.body?.sourceIndex || req?.body?.destIndex || req?.body?.boardId)
+            if (!req?.body?.sourceIndex || !req?.body?.destIndex || !req?.body?.boardId)
                 return res.status(400).json({message: "List information is required"});
 
             const info = req.body;

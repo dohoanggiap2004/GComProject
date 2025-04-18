@@ -9,7 +9,7 @@ const checkBoardPermission = async (req, res, next) => {
 
         if (!boardId) return res.status(400).json({ message: 'Board ID is required' });
         const board = await Board.findById(boardId).lean();
-        console.log(board)
+
         if (!board) return res.status(404).json({ message: 'Board not found' });
 
         // Tìm thành viên trong board

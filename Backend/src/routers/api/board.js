@@ -15,6 +15,7 @@ router.post('/', BoardController.createBoard)
 router.put('/re-card', checkReOrderListCardPermission, BoardController.updateCardIndex)
 router.put('/re-list',checkReOrderListCardPermission, BoardController.updateListIndex)
 router.put('/', checkBoardPermission, BoardController.updateBoard)
+router.put('/remove-member', checkBoardPermission, BoardController.removeMemberFromBoard)
 router.delete('/', checkBoardPermission, BoardController.deleteBoard)
 
 module.exports = router

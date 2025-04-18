@@ -235,7 +235,7 @@ function BoardWorkspace() {
                                 strategy={horizontalListSortingStrategy}
                             >
 
-                                <div className="flex space-x-4 min-w-max">
+                                <div className="flex space-x-4 min-w-max items-start">
                                     {/* Hiển thị các list */}
                                     {tempBoard?.lists?.length > 0 &&
                                         tempBoard.lists.map((list) => (

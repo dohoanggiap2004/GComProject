@@ -19,7 +19,7 @@ const PremiumPayment = () => {
                 userId: userInfo._id,
                 amount: plan.price,
             })).unwrap()
-            console.log(response)
+
             try {
                 const reqData = {
                     orderCode: response.orderCode,

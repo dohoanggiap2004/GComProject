@@ -58,6 +58,28 @@ const updateBoardService = async (board) => {
     return getBoardByIdService(_id);
 };
 
+const removeMemberFromBoardService = async (boardId, userId) => {
+    const board = await Board.findById(boardId);
+    if (!board) {
+        throw new Error('Board not found');
+    }
+
+    // Xóa userId khỏi board.members
+    board.members = board.members.filter(member => member.memberId.toString() !== userId);
+
+    // Lặp qua các lists và cards để xóa userId khỏi memberIds
+    for (let list of board.lists) {
+        for (let card of list.cards) {
+            card.memberIds = card.memberIds.filter(id => id.toString() !== userId);
+        }
+    }
+
+    await board.save();
+
+    return getBoardByIdService(boardId);
+};
+
+
 const deleteBoardService = async (boardId) => {
     const session = await mongoose.startSession();
     try {
@@ -166,4 +188,5 @@ module.exports = {
     updateCardIndexService,
     updateListIndexService,
     countBoardInWorkspaceService,
+    removeMemberFromBoardService
 };

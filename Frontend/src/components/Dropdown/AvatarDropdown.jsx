@@ -71,7 +71,7 @@ const AvatarDropdown = () => {
                             </div>
                             <div>
                                 <p className="text-sm font-medium text-gray-800">{userInfo?.fullname}</p>
-                                <p className="text-xs text-gray-500">{userInfo.email}</p>
+                                <p className="text-xs text-gray-500">{userInfo?.email}</p>
                             </div>
                         </div>
                         <div className="mt-2 space-y-1">
