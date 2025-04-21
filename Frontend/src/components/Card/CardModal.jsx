@@ -19,7 +19,7 @@ import {addMemberToCard, getCardWithTask, removeMemberFromCard} from "../../stor
 import Checklist from "./Checklist.jsx";
 import toast from "react-hot-toast";
 import {useNavigate} from "react-router-dom";
-import DatePickModal from "./DatePickModal.jsx";
+import DateCardPickModal from "./DateCardPickModal.jsx";
 import DateRange from "./DateRange.jsx";
 import MemberCardModal from "./MemberCardModal.jsx";
 
@@ -471,7 +471,7 @@ const CardModal = ({cardProp, onClose, onToggleCheck}) => {
                                 <FaTag className="mr-2"/> Labels
                             </button>
 
-                            <DatePickModal onChangeDateTime={handleDueDateChange}/>
+                            <DateCardPickModal onChangeDateTime={handleDueDateChange}/>
 
                             <button
                                 className="w-full flex items-center bg-gray-100 text-sm text-gray-700 hover:bg-gray-200 p-2 rounded-lg">

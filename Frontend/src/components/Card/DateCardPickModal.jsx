@@ -1,7 +1,7 @@
 import {FaCalendar} from "react-icons/fa";
 import {useState} from "react";
 
-const DatePickModal = ({onChangeDateTime}) => {
+const DateCardPickModal = ({onChangeDateTime}) => {
     const [isDateModalOpen, setIsDateModalOpen] = useState(false);
     const [isDueDateEnabled, setIsDueDateEnabled] = useState(true);
     const [isStartDateEnabled, setIsStartDateEnabled] = useState(false);
@@ -165,4 +165,4 @@ const DatePickModal = ({onChangeDateTime}) => {
     );
 };
 
-export default DatePickModal;
+export default DateCardPickModal;

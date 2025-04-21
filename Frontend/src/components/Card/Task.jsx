@@ -1,13 +1,18 @@
 import {MdAccessTime, MdDeleteOutline, MdOutlineAssignmentInd} from "react-icons/md";
 import {updateTask} from "../../store/actions/taskAction.js";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {useDispatch} from "react-redux";
 import MemberTaskModal from "./MemberTaskModal.jsx";
+import DateTaskPickModal from "./DateTaskPickModal.jsx";
+import toast from "react-hot-toast";
 
 const Task = ({task, handleDeleteTask}) => {
     const dispatch = useDispatch();
     const [isEditingTitle, setIsEditingTitle] = useState(false);
+    const [isDateModalOpen, setIsDateModalOpen] = useState(false);
     const [isMemberModalOpen, setIsMemberModalOpen] = useState(false);
+    const [time, setTime] = useState();
+    const [date, setDate] = useState();
     const [formData, setFormData] = useState({
         title: task?.title || '',
         _id: task?._id,
@@ -53,6 +58,50 @@ const Task = ({task, handleDeleteTask}) => {
         });
     };
 
+    const handleChangeDueDate = async ({dueDate}) => {
+        const formData2 = {
+            ...formData,
+            dueDate,
+        }
+        try {
+            await dispatch(updateTask(formData2)).unwrap();
+            setFormData(formData2)
+            setIsDateModalOpen(false)
+        } catch (err){
+            toast.error(err);
+        }
+    }
+
+    const formatDate = (date) => {
+        // Check if date is a valid Date object
+        if (!(date instanceof Date) || isNaN(date)) {
+            return "";
+        }
+        return date.toLocaleDateString("en-US", {
+            month: "short", // "Apr"
+            day: "numeric", // "4"
+        });
+    };
+
+    // Function to format the time from a Date object to "h:mm A" (e.g., "7:34 PM")
+    const formatTime = (date) => {
+        // Check if date is a valid Date object
+        if (!(date instanceof Date) || isNaN(date)) {
+            return "";
+        }
+        return date.toLocaleTimeString("en-US", {
+            hour: "numeric", // "7"
+            minute: "2-digit", // "34"
+            hour12: true, // "PM"
+        });
+    };
+
+    useEffect(() => {
+        const dueDate = new Date(task.dueDate);
+        setDate(formatDate(dueDate));
+        setTime(formatTime(dueDate));
+    }, [task?.dueDate]);
+
     return (
         <div
             className="flex items-center justify-between mt-2 p-1 bg-gray-100 rounded-lg shadow-xs hover:bg-gray-200 transition relative">
@@ -93,9 +142,18 @@ const Task = ({task, handleDeleteTask}) => {
             {/* Right Side Icons */}
             <div className="flex items-center space-x-2">
                 {/* Comment Icon with Count */}
-                <div className="hover:bg-gray-400 rounded-lg" title={'Due date'}>
-                    <MdAccessTime/>
+                <div className={'flex items-center'}>
+                    {formData?.dueDate && (
+                        <div className={'text-xs text-gray-600'}>{date} - {time} -</div>
+                    )}
+                    <button
+                        className="hover:bg-gray-400 rounded-lg ms-1" title={'Due date'}
+                        onClick={() => setIsDateModalOpen(true)}
+                    >
+                        <MdAccessTime/>
+                    </button>
                 </div>
+
 
                 {/* Assign Icon */}
                 <button className="hover:bg-gray-400 rounded-lg"
@@ -120,6 +178,14 @@ const Task = ({task, handleDeleteTask}) => {
                     className={`absolute z-50 w-max right-0 md:top-6 md:left-auto md:right-0 md:ml-2`}
                 >
                     <MemberTaskModal task={task} onClose={() => setIsMemberModalOpen(false)}/>
+                </div>
+            )}
+
+            {isDateModalOpen && (
+                <div
+                    className={`absolute z-50 w-max right-0 md:top-6 md:left-auto md:right-0 md:ml-2`}
+                >
+                    <DateTaskPickModal onChangeDateTime={handleChangeDueDate}  onClose={() => setIsDateModalOpen(false)}/>
                 </div>
             )}
         </div>

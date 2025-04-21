@@ -61,7 +61,6 @@ export default function MemberTaskModal({onClose , task}) {
             } catch (err) {
                 toast.error(err || "Error while adding member");
             }
-
         }
     };
 
