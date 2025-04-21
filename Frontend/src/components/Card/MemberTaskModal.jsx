@@ -2,13 +2,12 @@ import {useEffect, useRef, useState} from "react";
 import {FaTimes} from "react-icons/fa";
 import {useDispatch, useSelector} from "react-redux";
 import {FaX} from "react-icons/fa6";
+import {addMemberToTask, removeMemberFromTask} from "../../store/actions/taskAction.js";
 import toast from "react-hot-toast";
-import {addMemberToCard, removeMemberFromCard} from "../../store/actions/cardAction.js";
 
-export default function MemberCardModal({onClose}) {
+export default function MemberTaskModal({onClose , task}) {
     const modalRef = useRef(null);
     const {card} = useSelector((state) => state.card);
-    const {board, membersInBoard} = useSelector((state) => state.board);
     const {role, userInfo} = useSelector((state) => state.user);
     const [memberIds, setMemberIds] = useState([]);
     const [memberShow, setMemberShow] = useState(false);
@@ -35,71 +34,69 @@ export default function MemberCardModal({onClose}) {
 
     // Xử lý thay đổi trong input tìm kiếm
     const handleOnChange = debounce((e) => {
-        const filteredMembers = membersInBoard?.filter(member =>
+        const filteredMembers = card.memberIds?.filter(member =>
             member.fullname.toLowerCase().includes(e.target.value.toLowerCase())
         );
         setMemberShow(filteredMembers);
     }, 300);
 
     // Xử lý chọn người dùng từ danh sách
-    const handleSelectUser = async (e, userId) => {
+    const handleSelectUser = async (e, taskId, user) => {
         e.preventDefault();
-        if (!memberIds.some(_id => _id === userId)) {
-            const newMemberIds = [...new Set([...memberIds, userId])];
+        if (!memberIds.some(_id => _id === user._id)) {
+            const newMemberIds = [...new Set([...memberIds, user._id])];
 
             const payload = {
-                boardId: board._id,
-                listId: card.listId,
-                cardId: card._id,
-                userId: userId
+                userId: user._id,
+                fullname: user.fullname,
+                email: user.email,
+                taskId: taskId,
             };
 
-            if (board?._id) {
-                try {
-                    await dispatch(addMemberToCard(payload)).unwrap();
-                    toast.success('Add member successfully.');
-                    setMemberIds(newMemberIds);
-                    onClose();
-                } catch (err) {
-                    toast.error(err || "Error while adding member");
-                }
-            }
-        }
-    };
-
-    const handleDeleteMember = async (e, userId) => {
-        e.preventDefault();
-
-        const newMemberIds = memberIds.filter(id => id !== userId);
-
-        if (board?._id) {
-            const payload = {
-                boardId: board._id,
-                listId: card.listId,
-                cardId: card._id,
-                userId: userId
-            };
             try {
-                await dispatch(removeMemberFromCard(payload)).unwrap();
-                toast.success('Remove member successfully.');
+                await dispatch(addMemberToTask(payload)).unwrap();
+                toast.success('Assigned task successfully.');
                 setMemberIds(newMemberIds);
                 onClose();
             } catch (err) {
                 toast.error(err || "Error while adding member");
             }
+
+        }
+    };
+
+    const handleDeleteMember = async (e, taskId, userId) => {
+        e.preventDefault();
+
+        const newMemberIds = memberIds.filter(id => id !== userId);
+
+        const payload = {
+            taskId: taskId,
+            userId: userId
+        };
+        try {
+            await dispatch(removeMemberFromTask(payload)).unwrap();
+            toast.success('Remove member successfully.');
+            setMemberIds(newMemberIds);
+            onClose();
+        } catch (err) {
+            toast.error(err || "Error while adding member");
         }
     };
 
     useEffect(() => {
-        if (card?.memberIds) {
-            const idMemberInCard = card?.memberIds.map(member => member._id);
-            setMemberIds(idMemberInCard);
+        if (card?.tasks?.length > 0) {
+            const allMemberIds = card.tasks.flatMap(task =>
+                task?.assignedTo?.map(member => member._id) || []
+            );
+            const uniqueMemberIds = [...new Set(allMemberIds)];
+            setMemberIds(uniqueMemberIds);
         }
-    }, [card]);
+    }, [card?.tasks]);
 
     useEffect(() => {
-        setMemberShow(membersInBoard)
-    }, [membersInBoard])
+        setMemberShow(card?.memberIds);
+    }, [card?.memberIds])
 
     return (
         <div
@@ -118,9 +115,9 @@ export default function MemberCardModal({onClose}) {
                 placeholder="Search for users"
                 onChange={handleOnChange}
             />
-            <p className="text-sm text-gray-600 mt-4 mb-2">Card members</p>
+            <p className="text-sm text-gray-600 mt-4 mb-2">Assigned task to</p>
             <div className="">
-                {card.memberIds.length > 0 && card.memberIds.map(member => (
+                {task?.assignedTo?.length > 0 && task?.assignedTo.map(member => (
                     <div className="flex items-center gap-3 p-2 rounded hover:bg-gray-100 cursor-pointer relative">
                         <div
                             className="w-8 h-8 bg-orange-600 rounded-full flex items-center justify-center text-white font-semibold">
@@ -134,7 +131,7 @@ export default function MemberCardModal({onClose}) {
                             ['admin', 'workspaceMember'].includes(role) || card.memberIds.map(mem => mem._id.toString()).includes(userInfo._id)
                         ) && (
                             <button
-                            onClick={(e) => handleDeleteMember(e, member._id)}>
+                            onClick={(e) => handleDeleteMember(e, task._id, member._id)}>
                                 <FaX
                                     className="h-2 w-2 absolute top-3 right-2 cursor-pointer text-gray-500 hover:text-black"/>
                             </button>
@@ -142,17 +139,16 @@ export default function MemberCardModal({onClose}) {
                     </div>
                 ))
                 }
-
             </div>
 
-            <p className="text-sm text-gray-600 mt-4 mb-2">Board members</p>
+            <p className="text-sm text-gray-600 mt-4 mb-2">Card members</p>
             <div className="">
                 {memberShow?.length > 0 && memberShow?.map(member => (
                     <div
                         className={`flex items-center gap-3 p-2 rounded hover:bg-gray-100 relative cursor-pointer ${
                             memberIds.includes(member._id) ? 'opacity-50 cursor-not-allowed' : ''
                         }`}
-                        onClick={(e) => handleSelectUser(e, member._id)}
+                        onClick={(e) => handleSelectUser(e, task._id, member)}
                         key={member?._id}
                     >
                         <div

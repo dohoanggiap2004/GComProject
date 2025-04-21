@@ -1,16 +1,18 @@
 import {MdAccessTime, MdDeleteOutline, MdOutlineAssignmentInd} from "react-icons/md";
 import {updateTask} from "../../store/actions/taskAction.js";
-import { useState } from "react";
+import {useState} from "react";
 import {useDispatch} from "react-redux";
+import MemberTaskModal from "./MemberTaskModal.jsx";
 
 const Task = ({task, handleDeleteTask}) => {
     const dispatch = useDispatch();
     const [isEditingTitle, setIsEditingTitle] = useState(false);
+    const [isMemberModalOpen, setIsMemberModalOpen] = useState(false);
     const [formData, setFormData] = useState({
         title: task?.title || '',
         _id: task?._id,
         isCompleted: task?.isCompleted || false,
-        assignedTo: task?.assignedTo || [] ,
+        assignedTo: task?.assignedTo || [],
         dueDate: task?.dueDate || null,
     });
 
@@ -52,7 +54,8 @@ const Task = ({task, handleDeleteTask}) => {
     };
 
     return (
-        <div className="flex items-center justify-between mt-2 p-1 bg-gray-100 rounded-lg shadow-xs hover:bg-gray-200 transition">
+        <div
+            className="flex items-center justify-between mt-2 p-1 bg-gray-100 rounded-lg shadow-xs hover:bg-gray-200 transition relative">
             <div className="flex items-center">
                 <input
                     type="checkbox"
@@ -90,21 +93,35 @@ const Task = ({task, handleDeleteTask}) => {
             {/* Right Side Icons */}
             <div className="flex items-center space-x-2">
                 {/* Comment Icon with Count */}
-                <div className="hover:bg-gray-400 rounded-lg">
+                <div className="hover:bg-gray-400 rounded-lg" title={'Due date'}>
                     <MdAccessTime/>
                 </div>
-                {/* More Options Icon */}
-                <button className="hover:bg-gray-400 rounded-lg">
+
+                {/* Assign Icon */}
+                <button className="hover:bg-gray-400 rounded-lg"
+                        onClick={() => setIsMemberModalOpen(true)}
+                        title={'Assign'}
+                >
                     <MdOutlineAssignmentInd/>
                 </button>
+
                 <button className={'hover:bg-gray-400 rounded-lg'}
                         onClick={() => {
                             handleDeleteTask()
                         }}
+                        title={'Delete'}
                 >
                     <MdDeleteOutline/>
                 </button>
             </div>
+
+            {isMemberModalOpen && (
+                <div
+                    className={`absolute z-50 w-max right-0 md:top-6 md:left-auto md:right-0 md:ml-2`}
+                >
+                    <MemberTaskModal task={task} onClose={() => setIsMemberModalOpen(false)}/>
+                </div>
+            )}
         </div>
     )
 }

@@ -98,5 +98,20 @@ const deleteTaskService = async (boardId, listId, cardId, taskId) => {
     }
 };
 
+const addMemberToTaskService = async (taskId, userId) => {
+    return Task.findByIdAndUpdate(
+        taskId,
+        { $addToSet: { assignedTo: userId } },
+        { new: true }
+    ).lean()
+}
 
-module.exports = {  createTaskService, updateTaskService, deleteTaskService };
+const removeMemberFromTaskService = async (taskId, userId) => {
+    return Task.findByIdAndUpdate(
+        taskId,
+        { $pull: { assignedTo: userId } },
+        { new: true }
+    ).lean()
+}
+
+module.exports = {  createTaskService, updateTaskService, deleteTaskService, addMemberToTaskService, removeMemberFromTaskService };

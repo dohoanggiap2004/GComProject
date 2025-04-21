@@ -1,9 +1,9 @@
 const {
-  getTaskByBoardIdService,
   createTaskService,
   updateTaskService,
-  deleteTaskService,
+  deleteTaskService, addMemberToTaskService, removeMemberFromTaskService,
 } = require("../../../services/apiService/taskService");
+
 class TaskController {
 
   // async getTaskByBoardId(req, res) {
@@ -78,6 +78,43 @@ class TaskController {
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: "Internal Server Error" });
+    }
+  }
+
+  async addMemberToTask(req, res) {
+    try {
+      const { taskId, userId } = req.body;
+      if (!taskId || !userId)
+        return res.status(400).json({message: "Task information is required"});
+
+      const result = await addMemberToTaskService(taskId, userId);
+      if (!result) return res.status(200).json({message: "No member added to card"});
+
+      res.status(200).json({
+        error: 0
+      })
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ message: "Server error" });
+    }
+  }
+
+  async removeMemberFromTask(req, res) {
+    try {
+      const { taskId, userId } = req.body;
+
+      if (!taskId || !userId)
+        return res.status(400).json({message: "Task information is required"});
+
+      const result = await removeMemberFromTaskService(taskId, userId);
+      if (!result) return res.status(200).json({message: "No member added to card"});
+
+      res.status(200).json({
+        error: 0
+      })
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ message: "Server error" });
     }
   }
 }

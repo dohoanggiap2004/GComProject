@@ -11,6 +11,9 @@ import {
     updateTask,
     createTask,
     deleteTask,
+    addMemberToTask,
+    removeMemberFromTask,
+
 } from '../actions/taskAction.js'
 
 const cardSlice = createSlice({
@@ -71,7 +74,6 @@ const cardSlice = createSlice({
             })
             .addCase(createTask.fulfilled, (state, action) => {
                 state.loading = false;
-                console.log('creating task', action.payload);
                 state.card.tasks = [...state.card.tasks, action.payload];
             })
             .addCase(createTask.rejected, (state, action) => {
@@ -103,10 +105,57 @@ const cardSlice = createSlice({
             })
             .addCase(deleteTask.fulfilled, (state, action) => {
                 state.loading = false;
-                const { taskId } = action.payload;
+                const {taskId} = action.payload;
                 state.card.tasks = state.card.tasks.filter((t) => t._id !== taskId);
             })
             .addCase(deleteTask.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            })
+
+            // add member to task by userId, taskId
+            .addCase(addMemberToTask.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(addMemberToTask.fulfilled, (state, action) => {
+                state.loading = false;
+                const { taskId, userId, email, fullname } = action.payload;
+
+                // Tìm task đúng
+                const task = state.card.tasks.find(task => task._id === taskId);
+                if (task) {
+                    // Nếu chưa có user đó trong danh sách thì thêm
+                    const alreadyExists = task.assignedTo.some(user => user._id === userId);
+                    if (!alreadyExists) {
+                        task.assignedTo.push({
+                            _id: userId,
+                            fullname,
+                            email
+                        });
+                    }
+                }
+            })
+            .addCase(addMemberToTask.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            })
+
+            // remove member from task by userId, taskId
+            .addCase(removeMemberFromTask.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(removeMemberFromTask.fulfilled, (state, action) => {
+                state.loading = false;
+                const { taskId, userId } = action.payload;
+
+                const task = state.card.tasks.find(task => task._id === taskId);
+                if (task) {
+                    task.assignedTo = task.assignedTo.filter(user => user._id !== userId);
+                }
+            })
+            .addCase(removeMemberFromTask.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
             });

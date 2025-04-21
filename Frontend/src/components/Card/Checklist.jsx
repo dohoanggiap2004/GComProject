@@ -4,11 +4,9 @@ import ProgressBar from "./ProgressBar.jsx";
 import {useDispatch, useSelector} from "react-redux";
 import {createTask, deleteTask,} from "../../store/actions/taskAction.js";
 import Task from "./Task.jsx";
-import toast from "react-hot-toast";
-
 
 export default function Checklist() {
-    const { card, error } = useSelector(state => state.card)
+    const { card } = useSelector(state => state.card)
     const { board } = useSelector(state => state.board)
     const [isAdding, setIsAdding] = useState(false);
     const [progress, setProgress] = useState(0);
@@ -63,7 +61,7 @@ export default function Checklist() {
                 }
             })
             setProgress((cnt/card?.tasks.length * 100).toFixed(2))
-        }
+        }else setProgress(0);
     }, [card?.tasks])
 
     return (

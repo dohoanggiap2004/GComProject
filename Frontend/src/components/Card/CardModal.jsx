@@ -41,6 +41,7 @@ const CardModal = ({cardProp, onClose, onToggleCheck}) => {
             url: '#',
         },
     ]);
+
     const [formData, setFormData] = useState({
         boardId: board?._id,
         listId: cardProp.listId,
@@ -181,19 +182,20 @@ const CardModal = ({cardProp, onClose, onToggleCheck}) => {
     }, [formData.listId, board])
 
     useEffect(() => {
-        if (card) {
+        if (cardProp) {
             setFormData({
                 ...formData,
-                _id: card._id || '',
-                title: card.title || '',
-                description: card.description || '',
-                memberIds: card?.memberIds || [],
-                dueDate: card?.dueDate || null,
-                startDate: card?.startDate || null,
-                dateReminder: card?.dateReminder || null,
+                _id: cardProp._id || '',
+                listId: cardProp.listId || '',
+                title: cardProp.title || '',
+                description: cardProp.description || '',
+                memberIds: cardProp?.memberIds || [],
+                dueDate: cardProp?.dueDate || null,
+                startDate: cardProp?.startDate || null,
+                dateReminder: cardProp?.dateReminder || null,
             });
         }
-    }, [card]);
+    }, [cardProp]);
 
     return (
         <div className="fixed inset-0 flex items-center justify-center z-50 overflow-auto">

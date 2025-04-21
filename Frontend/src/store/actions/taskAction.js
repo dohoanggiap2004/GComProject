@@ -35,6 +35,24 @@ export const deleteTask = createAsyncThunk('tasks/deleteTask', async (payload, t
     }
 })
 
+export const addMemberToTask = createAsyncThunk('tasks/addMemberToTask', async (payload, thunkAPI) => {
+    try {
+        await instanceAxios8000.put(`/api/tasks/add-member`, payload);
+        return payload;
+    } catch (error) {
+        return thunkAPI.rejectWithValue(error.response.data.message);
+    }
+})
+
+export const removeMemberFromTask = createAsyncThunk('tasks/removeMemberFromTask', async (payload, thunkAPI) => {
+    try {
+        await instanceAxios8000.put(`/api/tasks/remove-member`, payload);
+        return payload;
+    } catch (error) {
+        return thunkAPI.rejectWithValue(error.response.data.message);
+    }
+})
+
 
 
 

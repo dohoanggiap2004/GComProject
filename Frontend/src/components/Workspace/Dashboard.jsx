@@ -39,13 +39,9 @@ const Dashboard = () => {
 
     useEffect(() => {
         if (workspaces && workspaces.length > 0) {
-            // Tạo danh sách các promise từ dispatch
-            const fetchBoards = workspaces.map(workspace =>
-                dispatch(getBoardByWorkspaceIds(workspace._id))
-            );
+            const uniqueWorkspaceIds = [...new Set(workspaces.map(ws => ws._id))];
 
-            // Thực hiện tất cả request cùng một lúc
-            Promise.all(fetchBoards)
+            Promise.all(uniqueWorkspaceIds.map(id => dispatch(getBoardByWorkspaceIds(id))))
                 .then(() => console.log("All boards fetched successfully"))
                 .catch(error => console.error("Error fetching boards:", error));
         }

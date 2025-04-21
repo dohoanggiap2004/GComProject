@@ -10,16 +10,22 @@ const getCardByIdWithTasksService = async (boardId, listId, cardId) => {
             "lists._id": listId,
             "lists.cards._id": cardId
         },
-        {"lists.$": 1}
+        { "lists.$": 1 }
     )
         .populate({
             path: 'lists.cards.tasks',
+            populate: {
+                path: 'assignedTo', // <<-- chính là phần cần thêm
+                model: 'User',
+                select: 'fullname email'
+            }
         })
         .populate({
             path: 'lists.cards.memberIds',
             select: 'fullname email'
         })
         .lean();
+
 
     if (!board || board.lists.length === 0) {
         return null;
@@ -60,7 +66,7 @@ const createCardService = async (cardData) => {
     return list.cards[list.cards.length - 1];
 };
 
-const updateCardService = async (updateData) => {
+const  updateCardService = async (updateData) => {
     const {boardId, listId, _id, ...updateFields} = updateData;
 
     const board = await Board.findOneAndUpdate(
