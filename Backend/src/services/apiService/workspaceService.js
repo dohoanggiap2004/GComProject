@@ -5,7 +5,6 @@ const Board = require("../../app/models/Board");
 const Task = require("../../app/models/Task");
 const User = require("../../app/models/User");
 const {getBoardByWorkspaceIdService} = require("./boardService");
-const {countUserWorkspaceService} = require("./userService");
 
 const getWorkspaceByMemberIdService = async (memberId) => {
     return Workspace.find({ memberIds: memberId })

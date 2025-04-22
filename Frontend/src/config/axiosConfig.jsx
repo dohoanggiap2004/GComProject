@@ -9,6 +9,15 @@ export const instanceAxios8000 = axios.create({
     },
 });
 
+export const instanceAxiosFile8000 = axios.create({
+    baseURL: import.meta.env.VITE_API_URL,
+    timeout: Number(import.meta.env.VITE_TIMEOUT || 10000),
+    withCredentials: true,
+    headers: {
+        "Content-Type": "multipart/form-data",
+    },
+});
+
 instanceAxios8000.interceptors.response.use(
     (response) => response,
     async (error) => {

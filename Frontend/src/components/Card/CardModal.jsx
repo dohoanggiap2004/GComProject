@@ -10,7 +10,7 @@ import {
     FaShareAlt,
     FaArchive,
     FaEllipsisH,
-    FaLink, FaCheckCircle
+    FaLink, FaCheckCircle, FaRemoveFormat
 } from 'react-icons/fa';
 import {ActivitySVG, CompletedSVG, DescriptionSVG} from "../Icon/icons.jsx";
 import {useDispatch, useSelector} from "react-redux";
@@ -22,6 +22,10 @@ import {useNavigate} from "react-router-dom";
 import DateCardPickModal from "./DateCardPickModal.jsx";
 import DateRange from "./DateRange.jsx";
 import MemberCardModal from "./MemberCardModal.jsx";
+import UploadFile from "./UploadFile.jsx";
+import {getAttachmentsByCardId, removeAttachment} from "../../store/actions/attachmentAction.js";
+import {formatDateTime} from "../../Utils/formatDate.jsx";
+import {FaX} from "react-icons/fa6";
 
 const CardModal = ({cardProp, onClose, onToggleCheck}) => {
     const {board} = useSelector((state) => state.board);
@@ -32,15 +36,7 @@ const CardModal = ({cardProp, onClose, onToggleCheck}) => {
     const [comment, setComment] = useState('');
     const [isEditingTitle, setIsEditingTitle] = useState(false);
     const [isMemberModalOpen, setIsMemberModalOpen] = useState(false);
-    const [attachments, setAttachments] = useState([
-        {
-            id: 1,
-            name: 'tờn chỉ dự án.docx',
-            type: 'DOCX',
-            addedAt: '12 minutes ago',
-            url: '#',
-        },
-    ]);
+    const {attachments} = useSelector((state) => state.attachment);
 
     const [formData, setFormData] = useState({
         boardId: board?._id,
@@ -109,16 +105,6 @@ const CardModal = ({cardProp, onClose, onToggleCheck}) => {
         setIsMemberModalOpen(true);
     };
 
-    const handleAddAttachment = () => {
-        const newAttachment = {
-            id: attachments.length + 1,
-            name: `new_file_${attachments.length + 1}.pdf`,
-            type: 'PDF',
-            addedAt: 'Just now',
-            url: '#',
-        };
-        setAttachments([...attachments, newAttachment]);
-    };
 
     // Hàm xử lý khi double-click vào tiêu đề
     const handleDoubleClickTitle = () => {
@@ -196,6 +182,35 @@ const CardModal = ({cardProp, onClose, onToggleCheck}) => {
             });
         }
     }, [cardProp]);
+
+    useEffect(() => {
+        if (cardProp)
+            dispatch(getAttachmentsByCardId(cardProp._id))
+    }, [cardProp])
+
+    const getMimeTypeLabel = (mimeType) => {
+        // Xử lý các trường hợp phổ biến
+        if (mimeType.includes('pdf')) return 'PDF';
+        if (mimeType.includes('word') || mimeType.includes('doc')) return 'DOC';
+        if (mimeType.includes('sheet') || mimeType.includes('excel') || mimeType.includes('xls')) return 'SHEET';
+        if (mimeType.includes('presentation') || mimeType.includes('powerpoint')) return 'SLIDE';
+        if (mimeType.includes('image/')) return 'IMG';
+        if (mimeType.includes('video/')) return 'VIDEO';
+        if (mimeType.includes('audio/')) return 'AUDIO';
+        if (mimeType.includes('text/')) return 'TEXT';
+        // Trường hợp mặc định
+        return 'FILE';
+    };
+
+    const handleRemoveAttachment = async (e, _id) => {
+        e.preventDefault();
+        try {
+            const response = await dispatch(removeAttachment(_id)).unwrap();
+            toast.success("Attachment already deleted successfully!");
+        }catch (err){
+            toast.error(err || "Error while deleting attachment!");
+        }
+    }
 
     return (
         <div className="fixed inset-0 flex items-center justify-center z-50 overflow-auto">
@@ -304,14 +319,14 @@ const CardModal = ({cardProp, onClose, onToggleCheck}) => {
                             <div className="mt-2">
                                 {attachments.map((attachment) => (
                                     <div
-                                        key={attachment.id}
+                                        key={attachment._id}
                                         className="flex items-center justify-between p-2 bg-gray-100 rounded-lg mb-2"
                                     >
                                         <div className="flex items-center">
-                                        <span
-                                            className="bg-blue-500 text-white text-xs font-semibold px-2 py-1 rounded-sm mr-2">
-                                            {attachment.type}
-                                        </span>
+                                       <span
+                                           className="bg-blue-500 text-white text-xs font-semibold px-2 py-1 rounded-sm mr-2">
+                                             {getMimeTypeLabel(attachment.mimeType)}
+                                       </span>
                                             <div>
                                                 <a
                                                     href={attachment.url}
@@ -322,21 +337,19 @@ const CardModal = ({cardProp, onClose, onToggleCheck}) => {
                                                     {attachment.name}
                                                 </a>
                                                 <p className="text-xs text-gray-500">
-                                                    Added {attachment.addedAt}
+                                                    Added {formatDateTime(new Date(attachment.createdAt))}
                                                 </p>
+
                                             </div>
                                         </div>
-                                        <button className="text-gray-500 hover:text-gray-700">
-                                            <FaEllipsisH/>
+                                        <button className="text-gray-500 hover:text-gray-700"
+                                                onClick={(e) => handleRemoveAttachment(e, attachment._id)}
+                                        >
+                                            <FaX className={'w-3 h-3'}/>
                                         </button>
                                     </div>
                                 ))}
-                                <button
-                                    onClick={handleAddAttachment}
-                                    className="mt-2 text-sm text-blue-500 hover:underline flex items-center"
-                                >
-                                    <FaLink className="mr-1"/> Add
-                                </button>
+                                <UploadFile cardId={cardProp._id}/>
                             </div>
                         </div>
 
