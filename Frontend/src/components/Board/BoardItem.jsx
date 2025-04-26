@@ -1,5 +1,5 @@
 const BoardItem = ({ title, background }) => (
-  <div className="w-40 h-24 lg:w-48 rounded-lg overflow-hidden shadow-md relative">
+  <div className="w-40 h-24 lg:w-[180px] xl:w-48 rounded-lg overflow-hidden shadow-md relative">
     {background && (
       <img
         src={background}

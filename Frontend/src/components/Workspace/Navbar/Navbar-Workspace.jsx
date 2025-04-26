@@ -2,10 +2,11 @@ import {FaChevronDown, FaPlus} from 'react-icons/fa';
 import {IoIosSearch, IoIosNotifications, IoIosHelpCircle,} from "react-icons/io";
 import {Link} from "react-router-dom";
 import {BsGrid1X2Fill} from "react-icons/bs";
-import AvatarDropdown from "../Dropdown/AvatarDropdown.jsx";
+import AvatarDropdown from "../../Dropdown/AvatarDropdown.jsx";
 import {useEffect, useState} from "react";
-import BoardCreateModel from "./BoardCreateModal.jsx";
+import BoardCreateModel from "../BoardCreateModal.jsx";
 import {createPortal} from "react-dom";
+import NavbarMenu from "./NavbarMenu.jsx";
 
 export default function NavbarWorkspace() {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -56,40 +57,7 @@ export default function NavbarWorkspace() {
                         <p className="-ms-2 text-xl font-semibold text-gray-800">GCom</p>
                     </Link>
                 </div>
-                <div className="hidden lg:flex gap-4 text-sm text-gray-600">
-                      <span
-                          className="cursor-pointer hover:text-black flex items-center gap-2 text-gray-600 font-semibold text-md">
-                          Workspaces <FaChevronDown/>
-                      </span>
-                    <span
-                        className="cursor-pointer hover:text-black flex items-center gap-2 text-gray-600 font-semibold text-md">
-                           Recent <FaChevronDown/>
-                      </span>
-                    <span
-                        className="cursor-pointer hover:text-black flex items-center gap-2 text-gray-600 font-semibold text-md">
-                           Starred <FaChevronDown/>
-                     </span>
-                    <span
-                        className="cursor-pointer hover:text-black flex items-center gap-2 text-gray-600 font-semibold text-md">
-                        Templates <FaChevronDown/>
-                    </span>
-                    <button onClick={() => setIsModalOpen(true)}
-                            className="bg-blue-600 text-white px-4 py-2 rounded-md">Create
-                    </button>
-                </div>
-                <div className={'lg:hidden'}>
-                    <button
-                        className="text-gray-400 px-2 py-1.5 rounded-md font-semibold text-md flex justify-center items-center gap-2">
-                        More <FaChevronDown className={'h-2 w-2 font-bold'}/>
-                    </button>
-                </div>
-                <div className="lg:hidden text-gray-600">
-                    <button className="bg-gray-300 px-1.5 py-1.5 rounded-md"
-                            onClick={() => setIsModalOpen(true)}
-                    >
-                        <FaPlus/>
-                    </button>
-                </div>
+                <NavbarMenu/>
             </div>
 
             {/* Right Section */}

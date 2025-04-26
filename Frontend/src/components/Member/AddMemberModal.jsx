@@ -108,7 +108,7 @@ const AddMemberModal = ({isOpen, onClose}) => {
     return (
         <div className="fixed inset-0 flex items-center justify-center z-50">
             <div className="absolute inset-0 bg-black opacity-50"></div>
-            <div className="bg-white p-6 rounded-lg shadow-lg w-2/3 max-w-2xl z-50">
+            <div className="bg-white p-6 rounded-lg shadow-lg w-[90%] max-h-[95vh] max-w-2xl z-50">
                 {/* Header */}
                 <div className="flex justify-between items-center">
                     <h2 className="text-xl font-bold">Invite to Workspace</h2>

@@ -1,6 +1,6 @@
-import NavbarWorkspace from "../components/Workspace/Navbar-Workspace.jsx";
+import NavbarWorkspace from "../components/Workspace/Navbar/Navbar-Workspace.jsx";
 import SidebarBoard from "../components/Board/SidebarBoard.jsx";
-import { useParams } from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import { useEffect, useState } from "react";
 import AddMemberModal from "../components/Member/AddMemberModal.jsx";
 import { useDispatch, useSelector } from "react-redux";
@@ -25,25 +25,27 @@ const MemberManagement = () => {
         return (
           <>
             <div className="mb-6">
-              <div className="flex space-x-8">
-                <div className="w-1/4">
-                  <div className="bg-purple-500 p-4 rounded">
-                    <div className="mt-2">
-                      <p className=" text-white px-4 py-2 rounded text-sm hover:bg-purple-600">
+              <div className="md:flex flex-col space-x-8">
+                <div className="w-3/4 md:w-1/4">
+                  <div className="bg-indigo-500 pt-2 pb-4 px-4 rounded">
+                    <div>
+                      <p className=" text-white font-semibold py-2 rounded text-sm">
                         Upgrade for more permissions controls
                       </p>
-                      <p className="text-white text-sm mt-1">
+                      <p className="text-white text-sm py-2">
                         Decide who can send invitations, edit Workspace
                         settings, and more with Premium.
                       </p>
-                      <button className="text-white px-4 py-2 rounded text-sm mt-2 hover:bg-purple-200">
+                      <Link to={'/pricing'} className="text-white py-2 rounded text-sm mt-2 hover:bg-purple-200 underline">
                         Try Premium free for 14 days
-                      </button>
+                      </Link>
                     </div>
                   </div>
                 </div>
-                <div className="w-3/4">
-                  <h4 className="text-sm font-medium text-gray-700">
+                <hr className="my-4 border-gray-200" />
+
+                <div className="w-full md:w-3/4 mt-4 md:mt-0">
+                  <h4 className="text-lg font-medium text-gray-700">
                     Invite members to join you
                   </h4>
                   <p className="text-gray-600 text-sm mt-1">
@@ -66,7 +68,7 @@ const MemberManagement = () => {
                 member.map((member) => (
                   <div
                     key={member._id}
-                    className="flex items-center justify-between py-4 border-b last:border-b-0"
+                    className="md:flex items-center justify-between py-4 border-b last:border-b-0"
                   >
                     <div className="flex items-center space-x-2">
                       <div className="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center text-white">
@@ -110,20 +112,20 @@ const MemberManagement = () => {
         return (
           <>
             <div className="mb-6">
-              <div className="flex space-x-8">
-                <div className="w-1/4">
-                  <div className="bg-purple-500 p-4 rounded">
-                    <div className="mt-2">
-                      <p className=" text-white px-4 py-2 rounded text-sm hover:bg-purple-600">
+              <div className="md:flex flex-col space-x-8">
+                <div className="w-3/4 md:w-1/4">
+                  <div className="bg-indigo-500 pt-2 pb-4 px-4 rounded">
+                    <div>
+                      <p className=" text-white font-semibold py-2 rounded text-sm">
                         Upgrade for more permissions controls
                       </p>
-                      <p className="text-white text-sm mt-1">
+                      <p className="text-white text-sm py-2">
                         Decide who can send invitations, edit Workspace
                         settings, and more with Premium.
                       </p>
-                      <button className="text-white px-4 py-2 rounded text-sm mt-2 hover:bg-purple-200">
+                      <Link to={'/pricing'} className="text-white py-2 rounded text-sm mt-2 hover:bg-purple-200 underline">
                         Try Premium free for 14 days
-                      </button>
+                      </Link>
                     </div>
                   </div>
                 </div>
@@ -138,7 +140,7 @@ const MemberManagement = () => {
                 member.map((member) => (
                   <div
                     key={member._id}
-                    className="flex items-center justify-between py-4 border-b last:border-b-0"
+                    className="md:flex items-center justify-between py-4 border-b last:border-b-0"
                   >
                     <div className="flex items-center space-x-2">
                       <div className="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center text-white">
@@ -193,7 +195,7 @@ const MemberManagement = () => {
         <div className="flex-1 flex flex-col overflow-y-auto bg-cover bg-center mt-6">
           <div className="max-w-4xl mx-auto p-6 bg-white">
             {/* Header */}
-            <div className="flex justify-between items-center mb-6">
+            <div className="block md:flex justify-between items-center mb-6">
               <div className="flex items-center space-x-2">
                 <div className="w-10 h-10 bg-gray-200 rounded flex items-center justify-center">
                   <span className="text-gray-700 font-bold">
@@ -206,7 +208,7 @@ const MemberManagement = () => {
                 </div>
               </div>
               <button
-                className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+                className="bg-blue-600 text-white px-4 py-2 mt-4 md:mt-0 rounded hover:bg-blue-700"
                 onClick={() => setIsMemberModalOpen(true)}
               >
                 Invite Workspace members
@@ -218,11 +220,11 @@ const MemberManagement = () => {
               <h3 className="text-lg font-semibold mb-2">
                 Collaborators: {member?.length} / 10
               </h3>
-              <div className="flex space-x-8 mt-6">
-                <div className="w-1/4">
+              <div className="md:flex space-x-8 mt-6">
+                <div className="w-full md:w-1/4">
                   <div className="rounded flex flex-col">
                     <button
-                      className={`text-sm font-medium px-3 py-2 w-48 text-start
+                      className={`text-sm font-medium px-3 py-2 w-52 md:w-full text-start
                                              ${
                                                selected === "admin" &&
                                                "text-blue-800 bg-blue-50 hover:none"
@@ -232,7 +234,7 @@ const MemberManagement = () => {
                       Workspace members ({member?.length})
                     </button>
                     <button
-                      className={`font-medium text-sm px-3 py-2 w-48 text-start hover:bg-blue-50 
+                      className={`font-medium text-sm px-3 py-2 w-52 md:w-full text-start hover:bg-blue-50 
                                             ${
                                               selected === "member" &&
                                               "text-blue-800 bg-blue-50 hover:none"
@@ -245,22 +247,22 @@ const MemberManagement = () => {
                   <hr className="mt-2 border-gray-200" />
                 </div>
                 {selected === "admin" && (
-                  <div className="w-3/4">
-                    <button className="text-sm font-medium text-gray-800 py-2 w-48 text-start hover:bg-blue-50">
+                  <div className="w-full md:w-3/4">
+                    <button className="text-lg font-medium text-gray-800 py-2 w-52 text-start hover:bg-blue-50">
                       Workspace members ({member?.length})
                     </button>
-                    <p className="text-gray-700">
+                    <p className="text-gray-700 text-sm">
                       Workspace members can view and join all Workspace visible
                       boards and create new boards in the Workspace.
                     </p>
                   </div>
                 )}
                 {selected === "member" && (
-                  <div className="w-3/4">
-                    <button className="text-sm font-medium text-gray-800 py-2 w-48 text-start hover:bg-blue-50">
+                  <div className="w-full md:w-3/4">
+                    <button className="text-lg font-medium text-gray-800 py-2 w-48 text-start hover:bg-blue-50">
                       Guests ({member?.length})
                     </button>
-                    <p className="text-gray-700">
+                    <p className="text-gray-700 text-sm">
                       Guests can only view and edit the boards to which they've
                       been added. Guests can only view and edit the boards to
                       which they've been added.

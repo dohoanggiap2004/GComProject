@@ -24,7 +24,7 @@ const Sidebar = () => {
             </div>
 
             <div className="mt-6 p-4 bg-white border-2 border-gray-300 rounded-lg text-sm shadow-md">
-                <Link to={'/pricing'} className="text-gray-800 font-semibold">Try GCom Premium</Link>
+                <Link to={'/pricing'} className="text-gray-800 font-semibold underline">Try GCom Premium</Link>
                 <p className="text-gray-600 text-sm mt-2">
                     Get unlimited boards, card mirroring, unlimited automation, and more.
                 </p>

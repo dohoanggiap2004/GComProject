@@ -1,4 +1,4 @@
-import NavbarWorkspace from "../components/Workspace/Navbar-Workspace.jsx";
+import NavbarWorkspace from "../components/Workspace/Navbar/Navbar-Workspace.jsx";
 
 import Dashboard from "../components/Workspace/Dashboard.jsx";
 import {useEffect} from "react";

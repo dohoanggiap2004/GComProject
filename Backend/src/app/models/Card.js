@@ -36,6 +36,9 @@ const cardSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Task',
     }],
+    completedAt: {
+        type: Date,
+    }
 });
 
 module.exports = cardSchema;

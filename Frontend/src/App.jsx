@@ -17,6 +17,8 @@ import MemberManagement from "./pages/MemberManagement.jsx";
 import RoleProtectedRouteForWorkspace from "./Utils/verifyRoleInWorkspace.jsx";
 import Pricing from "./pages/Pricing.jsx";
 import PremiumPayment from "./pages/PremiumPayment.jsx";
+import Messenger from "./pages/Messenger.jsx";
+import BoardDashboard from "./pages/BoardDashboard.jsx";
 
 const App = () => {
     return (
@@ -46,11 +48,24 @@ const App = () => {
                             </RoleProtectedRoute>
                         }
                         />
+                        <Route path={'/messenger'} element={
+                            <RoleProtectedRoute allowedRoles={['user']}>
+                                <Messenger/>
+                            </RoleProtectedRoute>
+                        }
+                        />
                         <Route path={'/user-workspace/board/:boardId'}
                                element={
                                    <RoleProtectedRoute allowedRoles={['user']}>
                                        <RoleProtectedRouteForWorkspace allowedRoles={["workspaceMember", "admin", "member", "viewer"]}>
                                            <BoardWorkspace/>
+                                       </RoleProtectedRouteForWorkspace>
+                                   </RoleProtectedRoute>}/>
+                        <Route path={'/user-workspace/board/dashboard/:boardId'}
+                               element={
+                                   <RoleProtectedRoute allowedRoles={['user']}>
+                                       <RoleProtectedRouteForWorkspace allowedRoles={["workspaceMember", "admin"]}>
+                                           <BoardDashboard/>
                                        </RoleProtectedRouteForWorkspace>
                                    </RoleProtectedRoute>}/>
                         <Route

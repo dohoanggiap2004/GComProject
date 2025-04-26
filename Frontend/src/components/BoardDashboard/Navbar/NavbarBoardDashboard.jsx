@@ -17,16 +17,16 @@ import {
     FaShareAlt,
     FaTimes
 } from "react-icons/fa";
-import {deleteBoard} from "../../store/actions/boardAction.js";
+import {deleteBoard} from "../../../store/actions/boardAction.js";
 import {useNavigate} from "react-router-dom";
 import toast from "react-hot-toast";
 import {createPortal} from "react-dom";
-import AddMemberBoardModal from "./AddMemberBoardModal.jsx";
+import AddMemberBoardModal from "../../Board/AddMemberBoardModal.jsx";
+import OptionDashboardDropDown from "./OptionDashboardDropDown.jsx";
 
-export default function HeaderBoard() {
+export default function NavbarBoardDashboard() {
     const {board} = useSelector((state) => state.board);
     const {role} = useSelector((state) => state.user);
-    const [selectedOption, setSelectedOption] = useState("Bảng");
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isOpenDelete, setIsOpenDelete] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -66,15 +66,11 @@ export default function HeaderBoard() {
                         Workspace visible
                     </p>
                 </div>
-                <select
-                    className="bg-gray-400 font-semibold text-sm lg:text-md text-white py-1 rounded-md mx-2"
-                    value={selectedOption}
-                    onChange={(e) => setSelectedOption(e.target.value)}
-                >
-                    <option value="BoardItem">Board</option>
-                    <option value="Calendar">Calendar</option>
-                    <option value="Dashboard">Dashboard</option>
-                </select>
+
+                <div>
+                    <OptionDashboardDropDown/>
+                </div>
+
             </div>
 
             {/* Right Section */}

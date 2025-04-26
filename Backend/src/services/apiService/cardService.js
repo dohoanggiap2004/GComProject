@@ -15,7 +15,7 @@ const getCardByIdWithTasksService = async (boardId, listId, cardId) => {
         .populate({
             path: 'lists.cards.tasks',
             populate: {
-                path: 'assignedTo', // <<-- chính là phần cần thêm
+                path: 'assignedTo',
                 model: 'User',
                 select: 'fullname email'
             }
@@ -186,6 +186,14 @@ const addMemberToCardService = async (boardId, listId, cardId, userId) => {
         }
     )
         .populate({
+            path: 'lists.cards.tasks',
+            populate: {
+                path: 'assignedTo',
+                model: 'User',
+                select: 'fullname email'
+            }
+        })
+        .populate({
             path: 'lists.cards.memberIds',
             select: 'fullname email',
         })
@@ -225,6 +233,14 @@ const removeMemberFromCardService = async (boardId, listId, cardId, userId ) => 
             ]
         }
     )
+        .populate({
+            path: 'lists.cards.tasks',
+            populate: {
+                path: 'assignedTo',
+                model: 'User',
+                select: 'fullname email'
+            }
+        })
         .populate({
             path: 'lists.cards.memberIds',
             select: 'fullname email',

@@ -5,9 +5,9 @@ import {
     SortableContext,
     horizontalListSortingStrategy,
 } from '@dnd-kit/sortable';
-import NavbarWorkspace from "../components/Workspace/Navbar-Workspace.jsx";
+import NavbarWorkspace from "../components/Workspace/Navbar/Navbar-Workspace.jsx";
 import SidebarBoard from "../components/Board/SidebarBoard.jsx";
-import HeaderBoard from "../components/Board/HeaderBoard.jsx";
+import NavbarBoard from "../components/Board/Navbar/NavbarBoard.jsx";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -55,7 +55,12 @@ function BoardWorkspace() {
     };
 
     const handleToggleCheck = (isCompleted, _id, listId) => {
-        const newCard = { boardId, listId, _id, isCompleted: !isCompleted };
+        const newCard = {
+            boardId,
+            listId, _id,
+            isCompleted: !isCompleted,
+            completedAt: !isCompleted ? new Date() : null
+        };
         dispatch(updateCard(newCard));
     };
 
@@ -220,7 +225,7 @@ function BoardWorkspace() {
                     style={{ backgroundImage: `url(${board?.background})` }}
                 >
                     <div className="shrink-0">
-                        <HeaderBoard/>
+                        <NavbarBoard/>
                     </div>
 
                     {/* Vùng board (màu hồng) chiếm toàn bộ không gian còn lại, cuộn ngang */}

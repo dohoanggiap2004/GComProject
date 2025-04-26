@@ -5,7 +5,7 @@ const getUserIdFromToken = require("../utils/getUserIdFromToken");
 const checkBoardPermission = async (req, res, next) => {
     try {
         const userId = await getUserIdFromToken(req)
-        const boardId = req.params._id || req.body._id || req.query._id;
+        const boardId = req.params._id || req.body._id || req.query._id || req.params.boardId || req.body.boardId || req.query.boardId;
 
         if (!boardId) return res.status(400).json({ message: 'Board ID is required' });
         const board = await Board.findById(boardId).lean();

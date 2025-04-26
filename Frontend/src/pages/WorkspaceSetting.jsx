@@ -1,4 +1,4 @@
-import NavbarWorkspace from "../components/Workspace/Navbar-Workspace.jsx";
+import NavbarWorkspace from "../components/Workspace/Navbar/Navbar-Workspace.jsx";
 import SidebarBoard from "../components/Board/SidebarBoard.jsx";
 import {useEffect, useState} from "react";
 import {useLocation, useNavigate} from "react-router-dom";

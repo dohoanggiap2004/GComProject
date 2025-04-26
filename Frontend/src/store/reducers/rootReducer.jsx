@@ -5,6 +5,7 @@ import boardReducer from "./boardReducer.js";
 import cardReducer from "./cardReducer.js";
 import userReducer from "./userReducer.js";
 import attachmentReducer from "./attachmentReducer.js";
+import statisticReducer from "./statisticReducer.js";
 
 // Kết hợp các reducer
 const rootReducer = combineReducers({
@@ -14,6 +15,7 @@ const rootReducer = combineReducers({
   card: cardReducer,
   user: userReducer,
   attachment: attachmentReducer,
+  statistic: statisticReducer,
 });
 
 export default rootReducer;
