@@ -4,7 +4,7 @@ import {useEffect, useState} from "react";
 import {useLocation, useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {GoPlus} from "react-icons/go";
-import {deleteWorkspace, getWorkspaceByWorkspaceId} from "../store/actions/workspaceAction.js";
+import {deleteWorkspace, getWorkspaceByWorkspaceId} from "../store/actions/workspaceAction.jsx";
 import toast from "react-hot-toast";
 import AddMemberModal from "../components/Member/AddMemberModal.jsx";
 

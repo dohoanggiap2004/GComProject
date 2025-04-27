@@ -1,11 +1,12 @@
 import { combineReducers } from '@reduxjs/toolkit';
 import authReducer from './authReducer.jsx';
-import workspaceReducer from "./workspaceReducer.js";
-import boardReducer from "./boardReducer.js";
-import cardReducer from "./cardReducer.js";
-import userReducer from "./userReducer.js";
-import attachmentReducer from "./attachmentReducer.js";
-import statisticReducer from "./statisticReducer.js";
+import workspaceReducer from "./workspaceReducer.jsx";
+import boardReducer from "./boardReducer.jsx";
+import cardReducer from "./cardReducer.jsx";
+import userReducer from "./userReducer.jsx";
+import attachmentReducer from "./attachmentReducer.jsx";
+import statisticReducer from "./statisticReducer.jsx";
+import messageReducer from "./messageReducer.jsx";
 
 // Kết hợp các reducer
 const rootReducer = combineReducers({
@@ -16,6 +17,8 @@ const rootReducer = combineReducers({
   user: userReducer,
   attachment: attachmentReducer,
   statistic: statisticReducer,
+  message: messageReducer,
+
 });
 
 export default rootReducer;

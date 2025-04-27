@@ -1,5 +1,6 @@
 require("dotenv").config();
 const express = require("express");
+const http = require('http');
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const path = require("path");
@@ -12,6 +13,9 @@ const corsOptions = require("./config/corsOptions");
 const localPassport = require('./config/localPassport')
 const googlePassport = require('./config/googlePassport')
 const { connectDB } = require('./config/mongooseConnect')
+const {Server} = require("socket.io");
+const {handleSocket} = require("./app/controllers/apiController/SocketController");
+const initialSocket = require("./config/socket.io");
 // const verifyJWT = require("./middleware/verifyJWT");
 //banking
 
@@ -19,6 +23,9 @@ const { connectDB } = require('./config/mongooseConnect')
 
 const app = express();
 const port = process.env.PORT || 3500
+const server = http.createServer(app);
+
+
 
 //connect to db
 connectDB()
@@ -50,12 +57,15 @@ localPassport()
 googlePassport()
 app.use(passport.initialize());
 
+//init socket server
+initialSocket(server)
+
 //route
 route(app);
 
 // Custom Middleware Error Logger
 app.use(errorHandler);
 
-app.listen(port, () => {
+server.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });

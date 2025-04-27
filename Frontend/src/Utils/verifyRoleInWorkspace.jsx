@@ -2,7 +2,7 @@ import {Navigate, useLocation, useParams} from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux';
 import PropTypes from 'prop-types';
 import {useEffect} from "react";
-import {getUserRoleInWorkspaceOrBoard} from "../store/actions/userAction.js";
+import {getUserRoleInWorkspaceOrBoard} from "../store/actions/userAction.jsx";
 import LoadingSpinner from "../components/Shared/LoadingSpinner.jsx";
 
 const RoleProtectedRouteForWorkspace = ({children, allowedRoles = []}) => {

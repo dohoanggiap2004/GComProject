@@ -4,7 +4,7 @@ import {
     uploadAttachment,
     getAttachmentsByCardId,
     removeAttachment,
-} from "../actions/attachmentAction";
+} from "../actions/attachmentAction.jsx";
 
 const attachmentSlice = createSlice({
     initialState: {

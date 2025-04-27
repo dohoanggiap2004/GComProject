@@ -1,6 +1,6 @@
 import {createSlice} from "@reduxjs/toolkit";
 import {loginUser, loginGG, logoutUser, registerUser, setFalseRegister} from "../actions/authAction.jsx";
-import {getUserInfo} from "../actions/userAction.js";
+import {getUserInfo} from "../actions/userAction.jsx";
 
 const initialState = {
     loading: false,
@@ -12,7 +12,7 @@ const initialState = {
 };
 
 const authSlice = createSlice({
-    name: "login",
+    name: "auth",
     initialState,
     reducers: {
         loginUserSuccess(state) {

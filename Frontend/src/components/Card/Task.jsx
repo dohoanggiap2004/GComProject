@@ -1,5 +1,5 @@
 import {MdAccessTime, MdDeleteOutline, MdOutlineAssignmentInd} from "react-icons/md";
-import {updateTask} from "../../store/actions/taskAction.js";
+import {updateTask} from "../../store/actions/taskAction.jsx";
 import {useEffect, useState} from "react";
 import {useDispatch} from "react-redux";
 import MemberTaskModal from "./MemberTaskModal.jsx";

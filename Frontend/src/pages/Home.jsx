@@ -7,10 +7,10 @@ import Hero from "../components/Home/Hero/Hero.jsx";
 import {useEffect} from "react";
 import Cookies from "js-cookie";
 import {useDispatch, useSelector} from "react-redux";
-import {refreshToken} from "../store/actions/tokenAction.js";
+import {refreshToken} from "../store/actions/tokenAction.jsx";
 import {logoutUser} from "../store/actions/authAction.jsx";
 import {loginUserSuccess} from "../store/reducers/authReducer.jsx";
-import {getUserInfo} from "../store/actions/userAction.js";
+import {getUserInfo} from "../store/actions/userAction.jsx";
 
 const Home = () => {
     const dispatch = useDispatch();

@@ -1,6 +1,6 @@
 import {useState} from 'react';
 import toast from "react-hot-toast";
-import {uploadAttachment} from "../../store/actions/attachmentAction.js";
+import {uploadAttachment} from "../../store/actions/attachmentAction.jsx";
 import {useDispatch} from "react-redux";
 
 const UploadFile = ({cardId}) => {

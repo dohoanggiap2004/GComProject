@@ -7,7 +7,7 @@ import {
     getMemberQuantityInBoard,
     getTaskQuantityInList,
     getMonthlyProgress,
-} from "../actions/statisticAction.js";
+} from "../actions/statisticAction.jsx";
 
 const userSlice = createSlice({
     initialState: {

@@ -16,9 +16,9 @@ import {
     getBoardByBoardId,
     updateCardIndex,
     updateCard, updateListIndex,
-} from "../store/actions/boardAction.js";
+} from "../store/actions/boardAction.jsx";
 import SortableList from "../components/Board/SortableItem/SortableList.jsx";
-import {getWorkspaceByWorkspaceId} from "../store/actions/workspaceAction.js";
+import {getWorkspaceByWorkspaceId} from "../store/actions/workspaceAction.jsx";
 
 function BoardWorkspace() {
     const { boardId } = useParams();

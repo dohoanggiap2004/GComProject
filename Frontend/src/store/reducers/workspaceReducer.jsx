@@ -7,7 +7,7 @@ import {
     createWorkspace,
     updateWorkspace,
     deleteWorkspace,
-} from "../actions/workspaceAction";
+} from "../actions/workspaceAction.jsx";
 
 const workspaceSlice = createSlice({
     initialState: {

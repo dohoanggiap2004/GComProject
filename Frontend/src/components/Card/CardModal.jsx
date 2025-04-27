@@ -14,8 +14,8 @@ import {
 } from 'react-icons/fa';
 import {ActivitySVG, CompletedSVG, DescriptionSVG} from "../Icon/icons.jsx";
 import {useDispatch, useSelector} from "react-redux";
-import {deleteCard, updateCard} from "../../store/actions/boardAction.js";
-import {addMemberToCard, getCardWithTask, removeMemberFromCard} from "../../store/actions/cardAction.js";
+import {deleteCard, updateCard} from "../../store/actions/boardAction.jsx";
+import {addMemberToCard, getCardWithTask, removeMemberFromCard} from "../../store/actions/cardAction.jsx";
 import Checklist from "./Checklist.jsx";
 import toast from "react-hot-toast";
 import {useNavigate} from "react-router-dom";
@@ -23,7 +23,7 @@ import DateCardPickModal from "./DateCardPickModal.jsx";
 import DateRange from "./DateRange.jsx";
 import MemberCardModal from "./MemberCardModal.jsx";
 import UploadFile from "./UploadFile.jsx";
-import {getAttachmentsByCardId, removeAttachment} from "../../store/actions/attachmentAction.js";
+import {getAttachmentsByCardId, removeAttachment} from "../../store/actions/attachmentAction.jsx";
 import {formatDateTime} from "../../Utils/formatDate.jsx";
 import {FaX} from "react-icons/fa6";
 

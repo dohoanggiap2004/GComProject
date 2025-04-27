@@ -4,7 +4,7 @@ import {Link, useParams} from "react-router-dom";
 import { useEffect, useState } from "react";
 import AddMemberModal from "../components/Member/AddMemberModal.jsx";
 import { useDispatch, useSelector } from "react-redux";
-import { getWorkspaceByWorkspaceId } from "../store/actions/workspaceAction.js";
+import { getWorkspaceByWorkspaceId } from "../store/actions/workspaceAction.jsx";
 import { useUserFromToken } from "../Utils/User.jsx";
 import { GoX } from "react-icons/go";
 

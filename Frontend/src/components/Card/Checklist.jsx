@@ -2,7 +2,7 @@ import {useEffect, useState} from "react";
 import {IoMdCheckboxOutline} from "react-icons/io";
 import ProgressBar from "./ProgressBar.jsx";
 import {useDispatch, useSelector} from "react-redux";
-import {createTask, deleteTask,} from "../../store/actions/taskAction.js";
+import {createTask, deleteTask,} from "../../store/actions/taskAction.jsx";
 import Task from "./Task.jsx";
 
 export default function Checklist() {

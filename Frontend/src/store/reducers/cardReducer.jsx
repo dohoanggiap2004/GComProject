@@ -5,7 +5,7 @@ import {
     getCardWithTask,
     addMemberToCard,
     removeMemberFromCard,
-} from "../actions/cardAction";
+} from "../actions/cardAction.jsx";
 
 import {
     updateTask,
@@ -14,7 +14,7 @@ import {
     addMemberToTask,
     removeMemberFromTask,
 
-} from '../actions/taskAction.js'
+} from '../actions/taskAction.jsx'
 
 const cardSlice = createSlice({
     name: 'cards',

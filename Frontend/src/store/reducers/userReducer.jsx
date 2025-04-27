@@ -5,7 +5,7 @@ import {
     getUserRoleInWorkspaceOrBoard,
     getQuantityUserWorkspace,
 
-} from "../actions/userAction";
+} from "../actions/userAction.jsx";
 
 const userSlice = createSlice({
     initialState: {

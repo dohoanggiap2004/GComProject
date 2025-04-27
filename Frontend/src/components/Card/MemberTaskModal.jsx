@@ -2,7 +2,7 @@ import {useEffect, useRef, useState} from "react";
 import {FaTimes} from "react-icons/fa";
 import {useDispatch, useSelector} from "react-redux";
 import {FaX} from "react-icons/fa6";
-import {addMemberToTask, removeMemberFromTask} from "../../store/actions/taskAction.js";
+import {addMemberToTask, removeMemberFromTask} from "../../store/actions/taskAction.jsx";
 import toast from "react-hot-toast";
 
 export default function MemberTaskModal({onClose , task}) {

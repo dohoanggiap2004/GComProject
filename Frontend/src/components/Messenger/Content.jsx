@@ -1,66 +1,54 @@
-import React, { useState, useEffect, useRef } from 'react';
-
-// Fake data for boards and chat
-const initialBoards = [
-    {
-        id: 1,
-        name: 'Lớp 2 KTPM (Hậu)',
-        tag: 'KTPM',
-        lastMessage: 'Đơn t. vối 18 phút',
-        time: '6 phút',
-        messages: [
-            { id: 1, sender: 'Ngọc', content: 'Hỏi đc có anh Hậu ý', time: '' },
-            { id: 2, sender: 'Khô Vũ Tuấn', content: '😂', time: '' },
-            { id: 3, sender: 'Ngọc', content: 'Ra chỗ cô có hội', time: '' },
-            { id: 4, sender: 'Khô Vũ Tuấn', content: 'Kiêu j cha về đây', time: '' },
-            { id: 5, sender: 'Ngọc', content: 'Mấy bạn trong KTX', time: '' },
-            { id: 6, sender: 'Ngọc', content: 'Cho t mượn ở đây ở mua đ. K', time: '' },
-            { id: 7, sender: 'Hỏi', content: 'Lan lê cảm ở t rời :))', time: '' },
-            { id: 8, sender: 'Ngọc', content: 'Lan lê đi', time: '' },
-            { id: 9, sender: 'Ngọc', content: 'Đơn t. vối', time: '' },
-        ],
-    },
-    {
-        id: 2,
-        name: 'Quang Lee',
-        tag: '',
-        lastMessage: 'Tin nhắn và cuộc gọi được mã hóa đầu…',
-        time: '26 phút',
-        messages: [],
-    },
-    {
-        id: 3,
-        name: 'Thảo Nguyên',
-        tag: '',
-        lastMessage: 'Tin nhắn và cuộc gọi được mã hóa đầu…',
-        time: '29 phút',
-        messages: [],
-    },
-    {
-        id: 4,
-        name: 'Đỗ Trung Hòa',
-        tag: '',
-        lastMessage: 'Tin nhắn và cuộc gọi được mã hóa đầu…',
-        time: '37 phút',
-        messages: [],
-    },
-    {
-        id: 5,
-        name: 'Thu Hà',
-        tag: '',
-        lastMessage: 'Tin nhắn và cuộc gọi được mã hóa đầu…',
-        time: '2 giờ',
-        messages: [],
-    },
-
-];
+import {useState, useEffect, useRef} from 'react';
+import {useSelector} from "react-redux";
+import socket from "../../service/socket.io.jsx";
+import {formatDateTime} from "../../Utils/formatDate.jsx";
+import {IoSend} from "react-icons/io5";
+import {CiCamera, CiImageOn} from "react-icons/ci";
+import {IoIosAttach, IoIosMore} from "react-icons/io";
+import {FaPhone, FaVideo} from "react-icons/fa";
 
 const Content = () => {
-    const [boards, setBoards] = useState(initialBoards);
     const [selectedBoard, setSelectedBoard] = useState(null);
     const [message, setMessage] = useState('');
+    const [initialMessages, setInitialMessages] = useState(null)
     const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
     const chatContainerRef = useRef(null);
+    const {boardWithMessages} = useSelector(state => state.message)
+    const {userInfo} = useSelector(state => state.auth)
+    // Kết nối và tham gia phòng chat
+    useEffect(() => {
+        if (selectedBoard !== null) {
+            // Tham gia phòng
+            console.log('Join board', selectedBoard?._id);
+            socket.emit('joinBoard', selectedBoard?._id);
+
+            // Nhận tin nhắn ban đầu
+            socket.on('initialMessages', (initialMessages) => {
+                setInitialMessages(initialMessages)
+            });
+
+            // Nhận tin nhắn ban đầu
+            socket.on('receiveMessage', (newMessage) => {
+                if (newMessage && typeof newMessage === 'object') {
+                    setInitialMessages(prev => Array.isArray(prev) ? [...prev, newMessage] : [newMessage]);
+                }
+            });
+
+            // Xử lý lỗi
+            socket.on('error', (error) => {
+                console.error('Socket error:', error);
+                alert(error);
+            });
+
+            // Dọn dẹp khi component unmount hoặc boardId thay đổi
+            return () => {
+                socket.emit('leaveBoard', selectedBoard?._id);
+                socket.off('initialMessages');
+                socket.off('receiveMessage');
+                socket.off('error');
+            };
+        }
+    }, [selectedBoard]);
 
     // Handle resize for mobile
     useEffect(() => {
@@ -78,19 +66,13 @@ const Content = () => {
 
     const handleSendMessage = () => {
         if (message.trim() && selectedBoard) {
-            const newMessage = {
-                id: selectedBoard.messages.length + 1,
-                sender: 'You',
-                content: message,
-                time: '',
-            };
-            const updatedBoards = boards.map((board) =>
-                board.id === selectedBoard.id
-                    ? { ...board, messages: [...board.messages, newMessage], lastMessage: message, time: 'Just now' }
-                    : board
-            );
-            setBoards(updatedBoards);
-            setSelectedBoard({ ...selectedBoard, messages: [...selectedBoard.messages, newMessage] });
+            // Gửi tin nhắn qua socket
+            socket.emit('sendMessage', {
+                boardId: selectedBoard._id,
+                content: message
+            });
+
+            // Reset input field
             setMessage('');
         }
     };
@@ -98,6 +80,7 @@ const Content = () => {
     const handleKeyPress = (e) => {
         if (e.key === 'Enter') handleSendMessage();
     };
+
 
     return (
         <div className="flex h-[90vh] gap-4 font-sans mt-4 md:mx-4">
@@ -116,25 +99,31 @@ const Content = () => {
                 </div>
 
                 <div className="overflow-y-auto">
-                    {boards.map((board) => (
+                    {Array.isArray(boardWithMessages) && boardWithMessages.length > 0 && boardWithMessages.map((board) => (
                         <div
-                            key={board.id}
+                            key={board?._id}
                             className={`flex items-center p-3 hover:bg-gray-100 cursor-pointer ${
-                                selectedBoard?.id === board.id ? 'bg-gray-100' : ''
+                                selectedBoard?._id === board?._id ? 'bg-gray-100' : ''
                             }`}
                             onClick={() => setSelectedBoard(board)}
                         >
-                            <div className="w-12 h-12 bg-gray-300 rounded-full mr-3 flex items-center justify-center">
-                                {board.tag && (
-                                    <span className="text-xs text-white bg-green-500 px-1 rounded">{board.tag}</span>
+                            <div className={`mr-3 flex items-center justify-center`}>
+                                {board?.background ? (
+                                    <img className="w-10 h-10 rounded-full" src={board?.background} alt={'background'}/>
+                                ) : (
+                                    <div className="w-10 h-10 rounded-full bg-white"></div>
                                 )}
                             </div>
+
                             <div className="flex-1">
                                 <div className="flex justify-between items-center">
-                                    <h2 className="font-semibold text-gray-800">{board.name}</h2>
-                                    <span className="text-xs text-gray-500">{board.time}</span>
+                                    <h2 className="font-semibold text-gray-800">{board?.title}</h2>
+                                    <span
+                                        className="text-xs text-gray-500">{formatDateTime(new Date(board?.lastMessage?.createdAt))}</span>
                                 </div>
-                                <p className="text-sm text-gray-600 truncate">{board.lastMessage}</p>
+                                <p className="text-sm text-gray-600 truncate">
+                                    {board?.lastMessage?.content || 'No messages'}
+                                </p>
                             </div>
                         </div>
                     ))}
@@ -143,21 +132,27 @@ const Content = () => {
             </div>
 
             {/* Chat Area */}
-            <div className={`${isMobile && !selectedBoard ? 'hidden' : 'flex'} flex-col flex-1 bg-gray-50 rounded-2xl shadow-2xl`}>
+            <div
+                className={`${isMobile && !selectedBoard ? 'hidden' : 'flex'} flex-col flex-1 bg-gray-50 rounded-2xl shadow-2xl`}>
                 {selectedBoard ? (
                     <>
                         <div className="p-4 bg-white flex items-center border-b border-gray-200 rounded-t-2xl">
-                        {isMobile && (
+                            {isMobile && (
                                 <button className="mr-3 text-gray-600" onClick={() => setSelectedBoard(null)}>
                                     ←
                                 </button>
                             )}
-                            <div className="w-10 h-10 bg-gray-300 rounded-full mr-3"></div>
-                            <h2 className="font-semibold text-gray-800">{selectedBoard.name}</h2>
+                            {selectedBoard?.background ? (
+                                <img className="w-8 h-8 rounded-full" src={selectedBoard?.background}
+                                     alt={'background'}/>
+                            ) : (
+                                <div className="w-8 h-8 rounded-full bg-white"></div>
+                            )}
+                            <h2 className="ms-2 font-semibold text-gray-800">{selectedBoard?.title}</h2>
                             <div className="ml-auto flex space-x-2">
-                                <button className="text-gray-500">📞</button>
-                                <button className="text-gray-500">📹</button>
-                                <button className="text-gray-500">⋯</button>
+                                <button className="text-gray-500"><FaPhone/></button>
+                                <button className="text-gray-500"><FaVideo/></button>
+                                <button className="text-gray-500"><IoIosMore/></button>
                             </div>
                         </div>
                         <div
@@ -166,41 +161,41 @@ const Content = () => {
                             // Adjust height to leave space for header
                             // and input
                         >
-                            {selectedBoard.messages.length > 0 ? (
-                                selectedBoard.messages.map((msg) => (
+                            {Array.isArray(initialMessages) && initialMessages.length > 0 ? (
+                                initialMessages.map((msg) => (
                                     <div
-                                        key={msg.id}
-                                        className={`mb-2 flex ${msg.sender === 'You' ? 'justify-end' : 'justify-start'}`}
+                                        key={msg?._id}  // Sử dụng _id từ MongoDB
+                                        className={`mb-2 flex ${msg?.sender?._id === userInfo?._id ? 'justify-end' : 'justify-start'}`}
                                     >
-                                        {msg.sender !== 'You' && (
+                                        {msg?.sender?._id !== userInfo?._id && (
                                             <div className="w-8 h-8 bg-gray-300 rounded-full mr-2"></div>
                                         )}
                                         <div>
-                                            {msg.sender !== 'You' && (
-                                                <p className="text-xs text-gray-600">{msg.sender}</p>
+                                            {msg?.sender?._id !== userInfo?._id && (
+                                                <p className="text-xs text-gray-600">{msg?.sender?.fullname || 'Unknown'}</p>
                                             )}
                                             <div
                                                 className={`max-w-xs p-2 rounded-lg ${
-                                                    msg.sender === 'You'
+                                                    msg?.sender?._id === userInfo?._id
                                                         ? 'bg-blue-500 text-white'
                                                         : 'bg-white text-gray-800'
                                                 }`}
                                             >
-                                                <p>{msg.content}</p>
+                                                <p>{msg?.content || ''} </p>
                                             </div>
                                         </div>
                                     </div>
                                 ))
                             ) : (
                                 <div className="flex items-center justify-center h-full">
-                                    <p className="text-gray-500">Bắt đầu nhắn tin</p>
+                                    <p className="text-gray-500">Start messaging</p>
                                 </div>
                             )}
                         </div>
                         <div className="p-3 bg-white border-t border-gray-200 flex items-center rounded-b-2xl">
-                        <button className="text-blue-500 mr-2">🔵</button>
-                            <button className="text-blue-500 mr-2">📷</button>
-                            <button className="text-blue-500 mr-2">🎁</button>
+                            <button className="text-blue-500 mr-2"><CiImageOn/></button>
+                            <button className="text-blue-500 mr-2"><CiCamera/></button>
+                            <button className="text-blue-500 mr-2"><IoIosAttach/></button>
                             <input
                                 type="text"
                                 value={message}
@@ -209,12 +204,17 @@ const Content = () => {
                                 placeholder="Aa"
                                 className="flex-1 p-2 border border-gray-300 rounded-full focus:outline-none text-sm"
                             />
-                            <button className="text-blue-500 ml-2">😊</button>
+                            <button
+                                className="text-blue-500 ml-2"
+                                onClick={handleSendMessage}
+                            >
+                                <IoSend/>
+                            </button>
                         </div>
                     </>
                 ) : (
                     <div className="flex-1 flex items-center justify-center">
-                        <p className="text-gray-500">Chọn một đoạn chat để bắt đầu nhắn tin</p>
+                        <p className="text-gray-500">Select a conversation to start messaging. </p>
                     </div>
                 )}
             </div>

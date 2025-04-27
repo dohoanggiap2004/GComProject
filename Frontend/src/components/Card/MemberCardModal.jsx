@@ -3,7 +3,7 @@ import {FaTimes} from "react-icons/fa";
 import {useDispatch, useSelector} from "react-redux";
 import {FaX} from "react-icons/fa6";
 import toast from "react-hot-toast";
-import {addMemberToCard, removeMemberFromCard} from "../../store/actions/cardAction.js";
+import {addMemberToCard, removeMemberFromCard} from "../../store/actions/cardAction.jsx";
 
 export default function MemberCardModal({onClose}) {
     const modalRef = useRef(null);

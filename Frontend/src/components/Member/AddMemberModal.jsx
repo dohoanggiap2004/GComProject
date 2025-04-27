@@ -1,7 +1,7 @@
 import {useEffect, useState, useRef} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {searchUser} from "../../store/actions/userAction.js";
-import {updateWorkspace} from "../../store/actions/workspaceAction.js";
+import {searchUser} from "../../store/actions/userAction.jsx";
+import {updateWorkspace} from "../../store/actions/workspaceAction.jsx";
 import toast from "react-hot-toast";
 
 const AddMemberModal = ({isOpen, onClose}) => {

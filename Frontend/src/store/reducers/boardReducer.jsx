@@ -14,8 +14,10 @@ import {
     createList,
     updateList,
     deleteList,
-    updateListIndex, removeMemberFromBoard, getBoardByMemberId,
-} from "../actions/boardAction";
+    updateListIndex,
+    removeMemberFromBoard,
+    getBoardByMemberId,
+} from "../actions/boardAction.jsx";
 
 const boardSlice = createSlice({
     name: 'boards',

@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
-import {createBoard} from "../../store/actions/boardAction.js";
+import {createBoard} from "../../store/actions/boardAction.jsx";
 import {useDispatch, useSelector} from "react-redux";
-import {getWorkspaceByMemberId} from "../../store/actions/workspaceAction.js";
+import {getWorkspaceByMemberId} from "../../store/actions/workspaceAction.jsx";
 import toast from "react-hot-toast";
 
 const CreateBoardModal = ({isOpen, onClose, selectedWorkspaceId}) => {

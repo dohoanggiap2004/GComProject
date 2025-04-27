@@ -17,7 +17,7 @@ import {
     FaShareAlt,
     FaTimes
 } from "react-icons/fa";
-import {deleteBoard} from "../../../store/actions/boardAction.js";
+import {deleteBoard} from "../../../store/actions/boardAction.jsx";
 import {useNavigate} from "react-router-dom";
 import toast from "react-hot-toast";
 import {createPortal} from "react-dom";

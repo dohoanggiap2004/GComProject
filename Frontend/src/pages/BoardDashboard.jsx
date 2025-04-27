@@ -3,7 +3,7 @@ import NavbarWorkspace from "../components/Workspace/Navbar/Navbar-Workspace.jsx
 import SidebarBoard from "../components/Board/SidebarBoard.jsx";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import {getWorkspaceByWorkspaceId} from "../store/actions/workspaceAction.js";
+import {getWorkspaceByWorkspaceId} from "../store/actions/workspaceAction.jsx";
 import NavbarBoardDashboard from "../components/BoardDashboard/Navbar/NavbarBoardDashboard.jsx";
 import PieChart from "../components/BoardDashboard/Chart/PieChart.jsx";
 import LineChart from "../components/BoardDashboard/Chart/LineChart.jsx";
@@ -14,8 +14,8 @@ import {
     getCardQuantityInBoard,
     getMemberQuantityInBoard, getMonthlyProgress, getProductiveMembers,
     getTaskQuantityInBoard, getTaskQuantityInList
-} from "../store/actions/statisticAction.js";
-import {getBoardByBoardId} from "../store/actions/boardAction.js";
+} from "../store/actions/statisticAction.jsx";
+import {getBoardByBoardId} from "../store/actions/boardAction.jsx";
 
 function BoardDashboard() {
     const { boardId } = useParams();

@@ -1,6 +1,6 @@
 import {useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {createWorkspace} from "../../store/actions/workspaceAction.js";
+import {createWorkspace} from "../../store/actions/workspaceAction.jsx";
 import toast from "react-hot-toast";
 
 const WorkspaceCreateModal = ({isOpen, onClose}) => {

@@ -6,7 +6,7 @@ import { CSS } from "@dnd-kit/utilities";
 import {IoIosMore} from "react-icons/io";
 import {MdDragIndicator} from "react-icons/md";
 import {useDispatch, useSelector} from "react-redux";
-import {deleteList, updateList} from "../../../store/actions/boardAction.js";
+import {deleteList, updateList} from "../../../store/actions/boardAction.jsx";
 import toast from "react-hot-toast";
 import {GoPlus} from "react-icons/go";
 

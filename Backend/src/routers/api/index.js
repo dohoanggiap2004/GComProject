@@ -12,6 +12,7 @@ const workspaceRouter = require('./workspace')
 const transactionRouter = require('./transaction')
 const attachmentRouter = require('./attachment')
 const statisticRouter = require('./statistic')
+const messageRouter = require('./message')
 const verifyJWT = require('../../middlewares/verifyJWT')
 
 router.use('/boards', boardRouter)
@@ -26,6 +27,7 @@ router.use('/payos', payosRouter)
 router.use('/attachments', attachmentRouter)
 router.use('/transactions', transactionRouter)
 router.use('/statistics', statisticRouter)
+router.use('/messages', messageRouter)
 
 
 module.exports = router

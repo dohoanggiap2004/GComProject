@@ -1,8 +1,8 @@
 import {useEffect, useState, useRef} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {searchUser} from "../../store/actions/userAction.js";
+import {searchUser} from "../../store/actions/userAction.jsx";
 import toast from "react-hot-toast";
-import {removeMemberFromBoard, updateBoard} from "../../store/actions/boardAction.js";
+import {removeMemberFromBoard, updateBoard} from "../../store/actions/boardAction.jsx";
 
 const AddMemberBoardModal = ({isOpen, onClose}) => {
     const dispatch = useDispatch();

@@ -16,5 +16,4 @@ const getUserIdFromToken = async (req) => {
     });
 }
 
-
 module.exports = getUserIdFromToken;

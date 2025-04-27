@@ -6,10 +6,10 @@ import {GoPlus} from "react-icons/go";
 import {useDispatch, useSelector} from "react-redux";
 import WorkspaceCreateModel from "./WorkspaceCreateModal.jsx";
 import {useEffect, useState} from "react";
-import {getBoardByMemberId, getBoardByWorkspaceIds} from "../../store/actions/boardAction.js";
+import {getBoardByMemberId, getBoardByWorkspaceIds} from "../../store/actions/boardAction.jsx";
 import BoardCreateModel from "./BoardCreateModal.jsx";
 import {Link} from "react-router-dom";
-import {getQuantityUserWorkspace} from "../../store/actions/userAction.js";
+import {getQuantityUserWorkspace} from "../../store/actions/userAction.jsx";
 
 
 const recentBoards = [
@@ -88,6 +88,7 @@ const Dashboard = () => {
                                         </div>
                                     </button>
                                 </div>
+
                             </div>
                         ))
                     ) : (

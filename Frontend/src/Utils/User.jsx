@@ -1,7 +1,7 @@
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
 import { useEffect, useState } from "react";
-import { refreshToken } from "../store/actions/tokenAction";
+import { refreshToken } from "../store/actions/tokenAction.jsx";
 import { useDispatch } from "react-redux";
 
 export function useUserFromToken() {

@@ -3,7 +3,7 @@ import {useUserFromToken} from "../Utils/User.jsx";
 import {instanceAxios8000} from "../config/axiosConfig.jsx";
 import toast from "react-hot-toast";
 import {useDispatch, useSelector} from "react-redux";
-import {createTransaction, deleteTransaction} from "../store/actions/transactionAction.js";
+import {createTransaction, deleteTransaction} from "../store/actions/transactionAction.jsx";
 
 const PremiumPayment = () => {
     const dispatch = useDispatch();
