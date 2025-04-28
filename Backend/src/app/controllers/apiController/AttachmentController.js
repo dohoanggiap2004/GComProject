@@ -66,7 +66,6 @@ class AttachmentController{
                 });
 
             if (uploadError) {
-                console.log(uploadError);
                 return res.status(400).json({ message: 'Upload failed', error: uploadError.message });
             }
 

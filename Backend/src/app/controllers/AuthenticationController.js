@@ -6,15 +6,11 @@ class Authentication {
   async authenticateGoogle(req, res, next) {
     passport.authenticate("google", async (err, user, info) => {
       if (err) {
-        console.log("Error during authentication:", err);
         return next(err);
       }
       if (!user) {
-        console.log("Authentication failed:", info);
         return res.status(404).send(info);
       }
-
-      console.log("User authenticated successfully:", user);
 
       try {
         const accessToken = generateAccessToken(user);
@@ -41,7 +37,6 @@ class Authentication {
         });
         return res.redirect('http://localhost:3000/');
       } catch (error) {
-        console.log(error);
         return res.status(500).send({ message: "Error saving refresh token" }); // Handle errors properly
       }
     })(req, res, next);
@@ -50,11 +45,9 @@ class Authentication {
   authenticateLocal(req, res, next) {
     passport.authenticate("local", async (err, user, info) => {
       if (err) {
-        console.log("Error during authentication:", err);
         return next(err);
       }
       if (!user) {
-        console.log("Authentication failed:", info);
         return res.status(404).send(info); // Error message sent here
       }
 
@@ -93,15 +86,12 @@ class Authentication {
   authenticateLocalAdmin(req, res, next) {
     passport.authenticate("local", async (err, user, info) => {
       if (err) {
-        console.log("Error during authentication:", err);
         return next(err);
       }
       if (!user) {
-        console.log("Authentication failed:", info);
         return res.status(404).send(info); // Error message sent here
       }
       if (user.role !== 'admin') {
-        console.log('user role not match admin')
         return res.status(401).send('Unauthorized');
       }
 
@@ -112,6 +102,7 @@ class Authentication {
           token: refreshToken,
           userId: user._id,
         });
+
         await refreshTokenDoc.save();
         res.cookie("refreshToken", refreshToken, {
           httpOnly: true,
@@ -125,6 +116,7 @@ class Authentication {
           sameSite: "None",
           maxAge: 15 * 60 * 1000,
         });
+
         res.status(200).json({
           error: 0,
         })
