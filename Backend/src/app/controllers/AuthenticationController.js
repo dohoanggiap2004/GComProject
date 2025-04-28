@@ -61,27 +61,28 @@ class Authentication {
           userId: user._id,
         });
         await refreshTokenDoc.save();
-
         const refreshExpireDate = new Date();
         refreshExpireDate.setDate(refreshExpireDate.getDate() + 7);
 
-        // Tính ngày hết hạn cho accessToken (15 phút)
         const accessExpireDate = new Date();
         accessExpireDate.setMinutes(accessExpireDate.getMinutes() + 15);
 
-        // Thiết lập cookies (KHÔNG .toUTCString())
         res.cookie("refreshToken", refreshToken, {
           httpOnly: true,
-          secure: true,
+          secure: true, // Chỉ dùng secure trong production
           sameSite: "None",
-          expires: refreshExpireDate, // Truyền object Date trực tiếp
+          expires: refreshExpireDate,
+          domain: "g-com-project.vercel.app", // Thay bằng domain thực tế
+          path: "/",
         });
 
         res.cookie("accessToken", accessToken, {
-          httpOnly: false,
+          httpOnly: false, // Giữ nếu frontend cần truy cập
           secure: true,
           sameSite: "None",
-          expires: accessExpireDate, // Truyền object Date trực tiếp
+          expires: accessExpireDate,
+          domain: "g-com-project.vercel.app",
+          path: "/",
         });
         res.status(200).json({
           error: 0,
