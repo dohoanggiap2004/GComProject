@@ -10,6 +10,8 @@ import {getBoardByMemberId, getBoardByWorkspaceIds} from "../../store/actions/bo
 import BoardCreateModel from "./BoardCreateModal.jsx";
 import {Link} from "react-router-dom";
 import {getQuantityUserWorkspace} from "../../store/actions/userAction.jsx";
+import toast from "react-hot-toast";
+import Cookies from "js-cookie";
 
 
 const recentBoards = [
@@ -37,13 +39,28 @@ const Dashboard = () => {
         dispatch(getBoardByMemberId())
     }, [])
 
+
+    useEffect(() => {
+        const accessToken = Cookies.get("accessToken");
+        console.log('cookie: ', accessToken)
+        // if (accessToken) {
+        //     dispatch(getUserInfo())
+        //     dispatch(loginUserSuccess());
+        // } else if (!accessToken && isLoginUser) {
+        //     getAccessToken();
+        // } else if (!isLoginUser) {
+        //     dispatch(logoutUser());
+        // }
+
+    }, [Cookies.get("accessToken")]);
+
     useEffect(() => {
         if (workspaces && workspaces.length > 0) {
             const uniqueWorkspaceIds = [...new Set(workspaces.map(ws => ws._id))];
 
             Promise.all(uniqueWorkspaceIds.map(id => dispatch(getBoardByWorkspaceIds(id))))
-                .then(() => console.log("All boards fetched successfully"))
-                .catch(error => console.error("Error fetching boards:", error));
+                .then()
+                .catch(() => toast.error("Error fetching boards:"));
         }
     }, [workspaces]);
 
