@@ -7,7 +7,7 @@ const checkBoardPermission = require('../../middlewares/checkBoardPermission')
 const checkReOrderListCardPermission = require('../../middlewares/checkReOrderListCardPermission')
 // router.get('/', verifyJWT, verifyRoles('user'), BoardController.getBoards)
 
-// router.all('*', verifyJWT)
+router.all('*', verifyJWT)
 router.get('/board-guest', BoardController.getBoardByMemberId)
 router.get('/', BoardController.getBoards)
 router.get('/:_id', BoardController.getBoardById)
