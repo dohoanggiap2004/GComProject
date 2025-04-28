@@ -15,6 +15,7 @@ const statisticRouter = require('./statistic')
 const messageRouter = require('./message')
 const verifyJWT = require('../../middlewares/verifyJWT')
 
+router.use(verifyJWT)
 router.use('/boards', boardRouter)
 router.use('/workspaces', workspaceRouter)
 router.use('/acts', activityRouter)
