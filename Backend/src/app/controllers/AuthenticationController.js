@@ -71,18 +71,14 @@ class Authentication {
           httpOnly: true,
           secure: true, // Chỉ dùng secure trong production
           sameSite: "None",
-          expires: refreshExpireDate,
-          domain: "g-com-project.vercel.app", // Thay bằng domain thực tế
-          path: "/",
+          maxAge: 7 * 24 * 60 * 60 * 1000,
         });
 
         res.cookie("accessToken", accessToken, {
           httpOnly: false, // Giữ nếu frontend cần truy cập
           secure: true,
           sameSite: "None",
-          expires: accessExpireDate,
-          domain: "g-com-project.vercel.app",
-          path: "/",
+          maxAge: 15 * 60 * 1000,
         });
         res.status(200).json({
           error: 0,
