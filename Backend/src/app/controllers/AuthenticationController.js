@@ -35,6 +35,7 @@ class Authentication {
           sameSite: "None",
           maxAge: 15 * 60 * 1000,
         });
+
         return res.redirect('http://localhost:3000/');
       } catch (error) {
         return res.status(500).send({ message: "Error saving refresh token" }); // Handle errors properly
@@ -66,12 +67,14 @@ class Authentication {
           secure: true,
           sameSite: "None",
           maxAge: 7 * 24 * 60 * 60 * 1000,
+          domain: 'https://g-com-project.vercel.app'
         });
         res.cookie("accessToken", accessToken, {
           httpOnly: false,
           secure: true,
           sameSite: "None",
           maxAge: 15 * 60 * 1000,
+          domain: 'https://g-com-project.vercel.app',
         });
         res.status(200).json({
           error: 0,
