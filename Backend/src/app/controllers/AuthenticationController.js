@@ -72,7 +72,7 @@ class Authentication {
           secure: true, // Chỉ dùng secure trong production
           sameSite: "None",
           maxAge: 7 * 24 * 60 * 60 * 1000,
-          domain: '.gcom-klwa.onrender.com',
+          domain: 'gcomproject.onrender.com',
           path: '/'
         });
 
@@ -81,7 +81,7 @@ class Authentication {
           secure: true,
           sameSite: "None",
           maxAge: 15 * 60 * 1000,
-          domain: '.gcom-klwa.onrender.com',
+          domain: 'gcomproject.onrender.com',
           path: '/'
         });
         res.status(200).json({
