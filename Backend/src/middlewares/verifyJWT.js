@@ -3,6 +3,7 @@ require('dotenv').config()
 
 const verifyJWT = (req, res, next) => {
     const token = req.cookies.accessToken
+    console.log('check token', req.cookies)
     if (!token) return res.sendStatus(401); // Unauthorized
 
     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
