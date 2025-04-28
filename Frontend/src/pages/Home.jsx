@@ -29,19 +29,19 @@ const Home = () => {
     //     }
     // };
     //
-    // useEffect(() => {
-    //     const accessToken = Cookies.get("accessToken");
-    //
-    //     if (accessToken) {
-    //         dispatch(getUserInfo())
-    //         dispatch(loginUserSuccess());
-    //     } else if (!accessToken && isLoginUser) {
-    //         getAccessToken();
-    //     } else if (!isLoginUser) {
-    //         dispatch(logoutUser());
-    //     }
-    //
-    // }, []);
+    useEffect(() => {
+        const accessToken = Cookies.get("accessToken");
+        console.log('cookie: ', accessToken)
+        // if (accessToken) {
+        //     dispatch(getUserInfo())
+        //     dispatch(loginUserSuccess());
+        // } else if (!accessToken && isLoginUser) {
+        //     getAccessToken();
+        // } else if (!isLoginUser) {
+        //     dispatch(logoutUser());
+        // }
+
+    }, []);
     return (
 
         <main className="overflow-x-hidden bg-white text-dark">
