@@ -62,17 +62,26 @@ class Authentication {
         });
         await refreshTokenDoc.save();
 
+        const refreshExpireDate = new Date();
+        refreshExpireDate.setDate(refreshExpireDate.getDate() + 7);
+
+        // Tính ngày hết hạn cho accessToken (15 phút)
+        const accessExpireDate = new Date();
+        accessExpireDate.setMinutes(accessExpireDate.getMinutes() + 15);
+
+        // Thiết lập cookies
         res.cookie("refreshToken", refreshToken, {
           httpOnly: true,
           secure: true,
           sameSite: "None",
-          maxAge: 7 * 24 * 60 * 60 * 1000,
+          expires: refreshExpireDate.toUTCString(),
         });
+
         res.cookie("accessToken", accessToken, {
           httpOnly: false,
           secure: true,
           sameSite: "None",
-          maxAge: 15 * 60 * 1000,
+          expires: accessExpireDate.toUTCString(),
         });
         res.status(200).json({
           error: 0,
