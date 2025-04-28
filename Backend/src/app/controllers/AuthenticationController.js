@@ -69,19 +69,19 @@ class Authentication {
         const accessExpireDate = new Date();
         accessExpireDate.setMinutes(accessExpireDate.getMinutes() + 15);
 
-        // Thiết lập cookies
+        // Thiết lập cookies (KHÔNG .toUTCString())
         res.cookie("refreshToken", refreshToken, {
           httpOnly: true,
           secure: true,
           sameSite: "None",
-          expires: refreshExpireDate.toUTCString(),
+          expires: refreshExpireDate, // Truyền object Date trực tiếp
         });
 
         res.cookie("accessToken", accessToken, {
           httpOnly: false,
           secure: true,
           sameSite: "None",
-          expires: accessExpireDate.toUTCString(),
+          expires: accessExpireDate, // Truyền object Date trực tiếp
         });
         res.status(200).json({
           error: 0,
