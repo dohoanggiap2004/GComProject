@@ -42,7 +42,7 @@ const Dashboard = () => {
 
     useEffect(() => {
         const accessToken = Cookies.get("accessToken");
-        console.log('cookie: ', accessToken)
+        console.log('check cookie: ', accessToken)
         // if (accessToken) {
         //     dispatch(getUserInfo())
         //     dispatch(loginUserSuccess());
