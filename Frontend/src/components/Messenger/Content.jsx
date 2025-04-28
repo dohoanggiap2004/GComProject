@@ -19,7 +19,7 @@ const Content = () => {
     useEffect(() => {
         if (selectedBoard !== null) {
             // Tham gia phòng
-            console.log('Join board', selectedBoard?._id);
+            // console.log('Join board', selectedBoard?._id);
             socket.emit('joinBoard', selectedBoard?._id);
 
             // Nhận tin nhắn ban đầu
@@ -36,7 +36,6 @@ const Content = () => {
 
             // Xử lý lỗi
             socket.on('error', (error) => {
-                console.error('Socket error:', error);
                 alert(error);
             });
 

@@ -16,32 +16,32 @@ import toast from "react-hot-toast";
 const Home = () => {
     const dispatch = useDispatch();
     const {isLoginUser} = useSelector(state => state.auth)
-    // const getAccessToken = async () => {
-    //     try {
-    //         await dispatch(refreshToken());
-    //         const newAccessToken = Cookies.get("accessToken");
-    //         if (!newAccessToken) {
-    //             dispatch(logoutUser());
-    //         }
-    //     } catch (error) {
-    //         dispatch(logoutUser());
-    //         toast.error('Error refreshing token: ', error);
-    //     }
-    // };
-    //
+    const getAccessToken = async () => {
+        try {
+            await dispatch(refreshToken());
+            const newAccessToken = Cookies.get("accessToken");
+            if (!newAccessToken) {
+                dispatch(logoutUser());
+            }
+        } catch (error) {
+            dispatch(logoutUser());
+            toast.error('Error refreshing token: ', error);
+        }
+    };
+
     useEffect(() => {
         const accessToken = Cookies.get("accessToken");
         console.log('cookie: ', accessToken)
-        // if (accessToken) {
-        //     dispatch(getUserInfo())
-        //     dispatch(loginUserSuccess());
-        // } else if (!accessToken && isLoginUser) {
-        //     getAccessToken();
-        // } else if (!isLoginUser) {
-        //     dispatch(logoutUser());
-        // }
+        if (accessToken) {
+            dispatch(getUserInfo())
+            dispatch(loginUserSuccess());
+        } else if (!accessToken && isLoginUser) {
+            getAccessToken();
+        } else if (!isLoginUser) {
+            dispatch(logoutUser());
+        }
 
-    }, [Cookies.get("accessToken")]);
+    }, []);
     return (
 
         <main className="overflow-x-hidden bg-white text-dark">

@@ -35,7 +35,6 @@ instanceAxios8000.interceptors.response.use(
             });
             return await instanceAxios8000(config);
         } catch {
-            console.log(error);
             return await Promise.reject(error);
         }
     }

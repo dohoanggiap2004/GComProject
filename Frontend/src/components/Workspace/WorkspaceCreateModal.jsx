@@ -1,5 +1,5 @@
 import {useState} from "react";
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
 import {createWorkspace} from "../../store/actions/workspaceAction.jsx";
 import toast from "react-hot-toast";
 

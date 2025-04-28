@@ -19,10 +19,9 @@ const UploadFile = ({cardId}) => {
         formData.append('cardId', cardId);
 
         try {
-            const response = await dispatch(uploadAttachment(formData)).unwrap();
+            await dispatch(uploadAttachment(formData)).unwrap();
             toast.success('Attachment successfully uploaded');
         } catch (err) {
-            console.error(err);
             toast.error(err);
         }
     };

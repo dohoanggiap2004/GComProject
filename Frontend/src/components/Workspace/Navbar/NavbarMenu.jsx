@@ -1,5 +1,5 @@
 import {useState, useRef, useEffect} from 'react';
-import {FaChevronDown, FaChevronRight} from 'react-icons/fa';
+import {FaChevronDown,} from 'react-icons/fa';
 import {Link} from "react-router-dom";
 
 export default function NavbarMenu() {

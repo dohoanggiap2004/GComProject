@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 
 const AddMemberModal = ({isOpen, onClose}) => {
     const dispatch = useDispatch();
-    const {workspace, error} = useSelector((state) => state.workspace);
+    const {workspace} = useSelector((state) => state.workspace);
     const {usersSearch} = useSelector((state) => state.user);
     const [selectedUsers, setSelectedUsers] = useState([]);
     const [memberIds, setMemberIds] = useState([]);

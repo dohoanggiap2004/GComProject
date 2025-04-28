@@ -1,5 +1,4 @@
 import Navbar from "../components/Home/Navbar/Navbar.jsx";
-import {useUserFromToken} from "../Utils/User.jsx";
 import {instanceAxios8000} from "../config/axiosConfig.jsx";
 import toast from "react-hot-toast";
 import {useDispatch, useSelector} from "react-redux";
@@ -32,10 +31,9 @@ const PremiumPayment = () => {
                 if (checkoutUrl) {
                     window.location.href = checkoutUrl;
                 } else {
-                    console.error("Không tìm thấy checkoutUrl");
+                    toast.error("Not found checkoutUrl");
                 }
             } catch (error) {
-                console.error("Lỗi:", error.message);
                 dispatch(deleteTransaction(response._id));
                 toast.error(error.message)
             }

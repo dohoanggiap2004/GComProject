@@ -75,7 +75,6 @@ export const deleteBoard = createAsyncThunk('boards/deleteBoard', async (payload
 export const createList = createAsyncThunk('lists/createList', async (payload, thunkAPI) => {
     try {
         const response = await instanceAxios8000.post('/api/lists', payload);
-        console.log('check response', response.data.newList);
         return response.data.newList;
     } catch (error) {
         return thunkAPI.rejectWithValue(error.response.data.message);

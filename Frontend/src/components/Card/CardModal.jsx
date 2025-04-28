@@ -9,8 +9,7 @@ import {
     FaCopy,
     FaShareAlt,
     FaArchive,
-    FaEllipsisH,
-    FaLink, FaCheckCircle, FaRemoveFormat
+    FaCheckCircle,
 } from 'react-icons/fa';
 import {ActivitySVG, CompletedSVG, DescriptionSVG} from "../Icon/icons.jsx";
 import {useDispatch, useSelector} from "react-redux";
@@ -205,7 +204,7 @@ const CardModal = ({cardProp, onClose, onToggleCheck}) => {
     const handleRemoveAttachment = async (e, _id) => {
         e.preventDefault();
         try {
-            const response = await dispatch(removeAttachment(_id)).unwrap();
+            await dispatch(removeAttachment(_id)).unwrap();
             toast.success("Attachment already deleted successfully!");
         }catch (err){
             toast.error(err || "Error while deleting attachment!");

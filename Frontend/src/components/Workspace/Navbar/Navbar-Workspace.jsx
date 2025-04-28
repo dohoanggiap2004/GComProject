@@ -1,4 +1,4 @@
-import {FaChevronDown, FaPlus} from 'react-icons/fa';
+
 import {IoIosSearch, IoIosNotifications, IoIosHelpCircle,} from "react-icons/io";
 import {Link} from "react-router-dom";
 import {BsGrid1X2Fill} from "react-icons/bs";

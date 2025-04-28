@@ -11,8 +11,6 @@ import BoardCreateModel from "./BoardCreateModal.jsx";
 import {Link} from "react-router-dom";
 import {getQuantityUserWorkspace} from "../../store/actions/userAction.jsx";
 import toast from "react-hot-toast";
-import Cookies from "js-cookie";
-
 
 const recentBoards = [
     {title: "test", image: "http://localhost:8000/img/bg-purple.jpg"},
@@ -38,21 +36,6 @@ const Dashboard = () => {
     useEffect(() => {
         dispatch(getBoardByMemberId())
     }, [])
-
-
-    useEffect(() => {
-        const accessToken = Cookies.get("accessToken");
-        console.log('check cookie: ', accessToken)
-        // if (accessToken) {
-        //     dispatch(getUserInfo())
-        //     dispatch(loginUserSuccess());
-        // } else if (!accessToken && isLoginUser) {
-        //     getAccessToken();
-        // } else if (!isLoginUser) {
-        //     dispatch(logoutUser());
-        // }
-
-    }, [Cookies.get("accessToken")]);
 
     useEffect(() => {
         if (workspaces && workspaces.length > 0) {

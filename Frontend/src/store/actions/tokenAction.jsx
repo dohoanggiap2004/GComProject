@@ -8,7 +8,6 @@ export const refreshToken = createAsyncThunk(
         try {
             await instanceAxios8000.get('/refresh-token');
         } catch (error) {
-            console.error('Error refreshing token:', error);
             return thunkAPI.rejectWithValue(error.response?.data?.message || 'Failed to refresh token');
         }
     }

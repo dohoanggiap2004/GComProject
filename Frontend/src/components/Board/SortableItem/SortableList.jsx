@@ -19,7 +19,6 @@ const SortableList = ({ list, cards, onToggleCheck, onAddCard, boardId }) => {
         transition,
         isDragging,
     } = useSortable({ id: list._id });
-    const { error } = useSelector(state => state.board)
     const { role } = useSelector(state => state.user);
     const { setNodeRef: setDroppableRef } = useDroppable({ id: list._id });
     const [isAddingCard, setIsAddingCard] = useState(false);

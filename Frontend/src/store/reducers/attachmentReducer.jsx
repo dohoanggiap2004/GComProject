@@ -36,7 +36,6 @@ const attachmentSlice = createSlice({
             })
             .addCase(uploadAttachment.fulfilled, (state, action) => {
                 state.loading = false;
-                console.log(action.payload)
                 state.attachments.push(action.payload);
             })
             .addCase(uploadAttachment.rejected, (state, action) => {

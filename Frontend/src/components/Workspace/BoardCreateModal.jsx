@@ -9,13 +9,13 @@ const CreateBoardModal = ({isOpen, onClose, selectedWorkspaceId}) => {
     const {workspaces} = useSelector((state) => state.workspace);
     const backgrounds = [
         "",
-        "http://localhost:8000/img/bg-gray.jpeg",
-        "http://localhost:8000/img/cyan.jpg",
-        "http://localhost:8000/img/bg-sea.jpeg",
-        "http://localhost:8000/img/bg-purple.jpg",
-        "http://localhost:8000/img/white.jpg",
-        "http://localhost:8000/img/peach.jpg",
-        "http://localhost:8000/img/white2.jpg",
+        `${import.meta.env.VITE_API_URL}/img/bg-gray.jpeg`,
+        `${import.meta.env.VITE_API_URL}/img/cyan.jpg`,
+        `${import.meta.env.VITE_API_URL}/img/bg-sea.jpeg`,
+        `${import.meta.env.VITE_API_URL}/img/bg-purple.jpg`,
+        `${import.meta.env.VITE_API_URL}/img/white.jpg`,
+        `${import.meta.env.VITE_API_URL}/img/peach.jpg`,
+        `${import.meta.env.VITE_API_URL}/img/white2.jpg`,
     ];
 
     useEffect(() => {

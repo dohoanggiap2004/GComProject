@@ -42,7 +42,7 @@ export function useUserFromToken() {
                 });
                 setError(null);
             } catch (err) {
-                console.error('Error decoding token:', err.message);
+                // console.error('Error decoding token:', err.message);
                 setError(err.message);
                 setUser(null);
             }
