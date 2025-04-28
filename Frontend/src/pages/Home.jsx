@@ -41,7 +41,7 @@ const Home = () => {
         //     dispatch(logoutUser());
         // }
 
-    }, []);
+    }, [Cookies.get("accessToken")]);
     return (
 
         <main className="overflow-x-hidden bg-white text-dark">
