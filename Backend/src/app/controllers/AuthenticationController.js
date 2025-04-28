@@ -67,14 +67,12 @@ class Authentication {
           secure: true,
           sameSite: "None",
           maxAge: 7 * 24 * 60 * 60 * 1000,
-          domain: 'g-com-project.vercel.app'
         });
         res.cookie("accessToken", accessToken, {
           httpOnly: false,
           secure: true,
           sameSite: "None",
           maxAge: 15 * 60 * 1000,
-          domain: 'g-com-project.vercel.app',
         });
         res.status(200).json({
           error: 0,
