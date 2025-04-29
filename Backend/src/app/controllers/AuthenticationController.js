@@ -69,15 +69,14 @@ class Authentication {
 
         res.cookie("refreshToken", refreshToken, {
           httpOnly: true,
-          secure: true, // Chỉ dùng secure trong production
-          sameSite: "None",
+          secure: true,
+          sameSite: 'none',
           maxAge: 7 * 24 * 60 * 60 * 1000,
         });
 
         res.cookie("accessToken", accessToken, {
-          httpOnly: false, // Giữ nếu frontend cần truy cập
           secure: true,
-          sameSite: "None",
+          sameSite: 'none',
           maxAge: 15 * 60 * 1000,
         });
         res.status(200).json({
