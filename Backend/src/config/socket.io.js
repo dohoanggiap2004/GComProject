@@ -1,3 +1,4 @@
+require('dotenv').config();
 const {handleSocket} = require("../app/controllers/apiController/SocketController");
 const {verify} = require("jsonwebtoken");
 const User = require("../app/models/User");
@@ -6,7 +7,7 @@ const {Server} = require("socket.io");
 const initializeSocket = (server) => {
     const io = new Server(server, {
         cors: {
-            origin: 'http://localhost:3000', // URL của frontend
+            origin: process.env.CLIENT_URL, // URL của frontend
             methods: ["GET", "POST"],
             credentials: true,
             allowEIO3: true, // Cho phép Engine.IO version 3

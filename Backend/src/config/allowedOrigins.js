@@ -1,8 +1,10 @@
+require('dotenv').config();
+
 const allowedOrigins = [
     'https://www.google.com.vn',
     'http://localhost:3000',
     'http://localhost:3001',
-    'https://gcom-klwa.onrender.com'
+    process.env.CLIENT_URL,
 ];
 
 module.exports = allowedOrigins

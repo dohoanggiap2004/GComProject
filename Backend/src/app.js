@@ -13,29 +13,17 @@ const corsOptions = require("./config/corsOptions");
 const localPassport = require('./config/localPassport')
 const googlePassport = require('./config/googlePassport')
 const { connectDB } = require('./config/mongooseConnect')
-const {Server} = require("socket.io");
-const {handleSocket} = require("./app/controllers/apiController/SocketController");
 const initialSocket = require("./config/socket.io");
-// const verifyJWT = require("./middleware/verifyJWT");
-//banking
-
-
 
 const app = express();
 const port = process.env.PORT || 3500
 const server = http.createServer(app);
-
-
 
 //connect to db
 connectDB()
 
 // Custom middleware Logger
 app.use(logger);
-
-// Handle options check before - CORS
-// and fetch cookies credentials requirement
-// app.use(credentials);
 
 // Cross Origin Resource Sharing
 app.use(cors(corsOptions));
