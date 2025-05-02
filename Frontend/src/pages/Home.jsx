@@ -32,14 +32,14 @@ const Home = () => {
     useEffect(() => {
         const accessToken = Cookies.get("accessToken");
         console.log('cookie: ', accessToken)
-        // if (accessToken) {
-        //     dispatch(getUserInfo())
-        //     dispatch(loginUserSuccess());
-        // } else if (!accessToken && isLoginUser) {
-        //     getAccessToken();
-        // } else if (!isLoginUser) {
-        //     dispatch(logoutUser());
-        // }
+        if (accessToken) {
+            dispatch(getUserInfo())
+            dispatch(loginUserSuccess());
+        } else if (!accessToken && isLoginUser) {
+            getAccessToken();
+        } else if (!isLoginUser) {
+            dispatch(logoutUser());
+        }
 
     }, []);
     return (
