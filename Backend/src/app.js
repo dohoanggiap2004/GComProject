@@ -42,10 +42,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(express.static(path.join(__dirname, '../../Frontend/dist')));
 
-app.get('*', (req, res) => {
-  res.sendFile(path.resolve(__dirname, '../../Frontend/dist', 'index.html'));
-});
-
 //authenticate via passportjs
 localPassport()
 googlePassport()
@@ -56,6 +52,14 @@ initialSocket(server)
 
 //route
 route(app);
+
+app.get('*', (req, res) => {
+  if (!req.path.startsWith('/api')) {
+    res.sendFile(path.resolve(__dirname, '../../Frontend/dist', 'index.html'));
+  } else {
+    res.status(404).send('API route not found');
+  }
+});
 
 // Custom Middleware Error Logger
 app.use(errorHandler);
