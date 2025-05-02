@@ -40,10 +40,10 @@ app.use(cookieParser());
 // Serve static files
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(express.static(path.join(__dirname, '../client/dist')));
+app.use(express.static(path.join(__dirname, '../Frontend/dist')));
 
 app.get('*', (req, res) => {
-  res.sendFile(path.resolve(__dirname, '../client/dist', 'index.html'));
+  res.sendFile(path.resolve(__dirname, '../Frontend/dist', 'index.html'));
 });
 
 //authenticate via passportjs
