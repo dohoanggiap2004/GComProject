@@ -1,6 +1,8 @@
 import {useState, useRef, useEffect} from 'react';
 import {FaChevronDown,} from 'react-icons/fa';
 import {Link} from "react-router-dom";
+import {createPortal} from "react-dom";
+import BoardCreateModel from "../BoardCreateModal.jsx";
 
 export default function NavbarMenu() {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -75,6 +77,10 @@ export default function NavbarMenu() {
                     </div>
                 )}
             </div>
+            {createPortal(
+                <BoardCreateModel isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}/>,
+                document.body
+            )}
         </div>
     );
 }

@@ -3,24 +3,9 @@ import {IoIosSearch, IoIosNotifications, IoIosHelpCircle,} from "react-icons/io"
 import {Link} from "react-router-dom";
 import {BsGrid1X2Fill} from "react-icons/bs";
 import AvatarDropdown from "../../Dropdown/AvatarDropdown.jsx";
-import {useEffect, useState} from "react";
-import BoardCreateModel from "../BoardCreateModal.jsx";
-import {createPortal} from "react-dom";
 import NavbarMenu from "./NavbarMenu.jsx";
 
 export default function NavbarWorkspace() {
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    useEffect(() => {
-        if (isModalOpen) {
-            document.body.style.overflow = 'hidden';
-        } else {
-            document.body.style.overflow = 'auto';
-        }
-
-        return () => {
-            document.body.style.overflow = 'auto'; // Cleanup
-        };
-    }, [isModalOpen]);
 
     return (
 
@@ -76,10 +61,6 @@ export default function NavbarWorkspace() {
                     className="cursor-pointer text-gray-600 hover:text-black text-2xl hidden md:block"/>
                 <AvatarDropdown/>
             </div>
-            {createPortal(
-                <BoardCreateModel isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}/>,
-                document.body
-            )}
         </nav>
     );
 }

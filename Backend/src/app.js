@@ -54,11 +54,7 @@ initialSocket(server)
 route(app);
 
 app.get('*', (req, res) => {
-  if (!req.path.startsWith('/api')) {
-    res.sendFile(path.resolve(__dirname, '../../Frontend/dist', 'index.html'));
-  } else {
-    res.status(404).send('API route not found');
-  }
+  res.sendFile(path.resolve(__dirname, '../../Frontend/dist', 'index.html'));
 });
 
 // Custom Middleware Error Logger
