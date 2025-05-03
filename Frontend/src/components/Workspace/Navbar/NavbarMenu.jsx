@@ -1,5 +1,5 @@
 import {useState, useRef, useEffect} from 'react';
-import {FaChevronDown,} from 'react-icons/fa';
+import {FaChevronDown, FaPlus,} from 'react-icons/fa';
 import {Link} from "react-router-dom";
 import {createPortal} from "react-dom";
 import BoardCreateModel from "../BoardCreateModal.jsx";
@@ -50,13 +50,22 @@ export default function NavbarMenu() {
             </div>
 
             {/* Mobile */}
-            <div className="lg:hidden relative" ref={dropdownRef}>
+            <div className="lg:hidden relative flex" ref={dropdownRef}>
                 <button
                     onClick={() => setShowDropdown(!showDropdown)}
                     className="text-gray-400 px-2 py-1.5 rounded-md font-semibold text-md flex justify-center items-center gap-2"
                 >
                     More <FaChevronDown className="h-2 w-2 font-bold"/>
                 </button>
+                <button
+                    onClick={() => setIsModalOpen(true)}
+                    className="text-gray-400 px-2.5 rounded-md font-semibold text-md flex justify-center items-center ms-3
+                       bg-gray-300
+                    "
+                >
+                    <FaPlus className={'text-white'}/>
+                </button>
+
 
                 {showDropdown && (
                     <div className="absolute left-0 mt-2 w-48 bg-white border rounded-md shadow-lg z-50">
