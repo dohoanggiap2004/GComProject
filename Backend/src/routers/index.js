@@ -9,7 +9,8 @@ function route(app){
 
     app.get(/^\/(?!api\/|auth\/|$).*/, (req, res) => {
         res.sendFile(
-            path.resolve(__dirname, '../../Frontend/dist', 'index.html'), // hoặc đường dẫn tới Frontend/dist/index.html
+            path.resolve(__dirname, '../../../Frontend/dist', 'index.html'), // hoặc đường dẫn tới
+            // Frontend/dist/index.html
             err => {
                 console.log(err)
                 if (err) res.status(500).send('Error loading SPA')
