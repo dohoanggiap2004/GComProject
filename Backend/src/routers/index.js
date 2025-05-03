@@ -6,6 +6,16 @@ function route(app){
     app.use('/auth', authRouter)
     app.use('/', refreshTokenRouter)
     app.use('/api', apiRouter)
+
+    app.get(/^\/(?!api\/|auth\/|$).*/, (req, res) => {
+        res.sendFile(
+            path.resolve(__dirname, '../../Frontend/dist', 'index.html'), // hoặc đường dẫn tới Frontend/dist/index.html
+            err => {
+                if (err) res.status(500).send('Error loading SPA')
+            }
+        )
+    })
+
     app.all("*", (req, res) => {
         res.status(404);
         

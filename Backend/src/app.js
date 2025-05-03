@@ -53,10 +53,6 @@ initialSocket(server)
 //route
 route(app);
 
-app.get('*', (req, res) => {
-  res.sendFile(path.resolve(__dirname, '../../Frontend/dist', 'index.html'));
-});
-
 // Custom Middleware Error Logger
 app.use(errorHandler);
 
