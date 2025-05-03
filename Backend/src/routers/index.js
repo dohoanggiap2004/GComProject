@@ -11,6 +11,7 @@ function route(app){
         res.sendFile(
             path.resolve(__dirname, '../../Frontend/dist', 'index.html'), // hoặc đường dẫn tới Frontend/dist/index.html
             err => {
+                console.log(err)
                 if (err) res.status(500).send('Error loading SPA')
             }
         )
