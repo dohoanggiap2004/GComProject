@@ -150,7 +150,7 @@ const deleteWorkspaceService = async (workspaceId) => {
                 { _id: { $in: taskIds } },
                 { session }
             );
-            console.log(`Đã xóa ${taskDeleteResult.deletedCount} tasks`);
+            // console.log(`Đã xóa ${taskDeleteResult.deletedCount} tasks`);
         }
 
         // Xóa tất cả Boards thuộc Workspace
@@ -158,7 +158,7 @@ const deleteWorkspaceService = async (workspaceId) => {
             { workspaceId },
             { session }
         );
-        console.log(`Đã xóa ${boardDeleteResult.deletedCount} boards`);
+        // console.log(`Đã xóa ${boardDeleteResult.deletedCount} boards`);
 
         // Xóa Workspace
         await Workspace.deleteOne({ _id: workspaceId }, { session });

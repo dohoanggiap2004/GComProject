@@ -31,7 +31,6 @@ const Home = () => {
 
     useEffect(() => {
         const accessToken = Cookies.get("accessToken");
-        console.log('cookie: ', accessToken)
         if (accessToken) {
             dispatch(getUserInfo())
             dispatch(loginUserSuccess());

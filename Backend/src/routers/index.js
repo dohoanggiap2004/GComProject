@@ -12,7 +12,6 @@ function route(app){
             path.resolve(__dirname, '../../../Frontend/dist', 'index.html'), // hoặc đường dẫn tới
             // Frontend/dist/index.html
             err => {
-                console.log(err)
                 if (err) res.status(500).send('Error loading SPA')
             }
         )
@@ -20,7 +19,6 @@ function route(app){
 
     app.all("*", (req, res) => {
         res.status(404);
-        
         if (req.accepts("html")) {
             return res.sendFile(path.join(__dirname, "../views/404.html"), (err) => {
                 if (err) {

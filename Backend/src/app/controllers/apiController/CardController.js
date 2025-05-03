@@ -48,7 +48,7 @@ class CardController {
 
     async updateCard(req, res) {
         try {
-            console.log(req.body);
+            // console.log(req.body);
 
             if (!req?.body?.boardId || !req?.body?.listId || !req?.body?._id)
                 return res.status(400).json({message: "Card information is required"});

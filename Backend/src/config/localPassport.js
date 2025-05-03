@@ -8,12 +8,12 @@ const localPassport = () => {
             usernameField: "email", passwordField: "password",
         }, async function verify(email, password, done) {
             try {
-                console.log('check email', email)
-                console.log('check password', password)
+                // console.log('check email', email)
+                // console.log('check password', password)
                 const user = await User.findOne({email: email});
-                console.log('check user', user)
+                // console.log('check user', user)
                 if (!user) return done(null, false, {message: "No user found"});
-                console.log('check user', user)
+                // console.log('check user', user)
                 const isMatch = await bcrypt.compare(password, user.password);
                 if (!isMatch) return done(null, false, {message: "Wrong password"});
 

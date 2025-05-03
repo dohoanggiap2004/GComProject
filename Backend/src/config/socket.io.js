@@ -50,7 +50,7 @@ const initializeSocket = (server) => {
     });
 
     io.on('connection', (socket) => {
-        console.log('User connected:', socket.id);
+        // console.log('User connected:', socket.id);
         handleSocket(io, socket);
     });
 

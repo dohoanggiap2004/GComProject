@@ -33,7 +33,8 @@ const googlePassport = () => {
                     );
                     return cb(null, user);
                 } catch (error) {
-                    console.log(error)
+                    // console.log(error)
+                    return cb(error, null);
                 }
             }
         )

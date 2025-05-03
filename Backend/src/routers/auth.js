@@ -11,10 +11,10 @@ router.post('/register', async (req, res) => {
     const {email, password, ...userInfo} = req.body;
 
     try {
-        console.log('check email', userInfo)
+        // console.log('check email', userInfo)
         // Kiểm tra xem người dùng đã tồn tại chưa
         const user = await User.findOne({ email: email });
-        console.log(user);
+        // console.log(user);
         if (user) {
             return res.status(400).send('Username already exists');
         }
@@ -30,10 +30,10 @@ router.post('/register', async (req, res) => {
         });
 
         await newUser.save();
-        console.log('User registered successfully');
+        // console.log('User registered successfully');
         res.status(201).send('User registered successfully');
     } catch (err) {
-        console.log('Error registering user:', err);
+        // console.log('Error registering user:', err);
         res.status(500).send('Server error');
     }
 });
@@ -88,7 +88,7 @@ router.post("/logout", async (req, res, next) => {
         });
 
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         res.status(500).json({
             mes: "Internal server error",
         });

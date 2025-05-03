@@ -8,7 +8,7 @@ const handleSocket = (io, socket) => {
     // Tham gia phòng chat của board
     socket.on('joinBoard', async ( boardId ) => {
         try {
-            console.log('joinBoard', boardId)
+            // console.log('joinBoard', boardId)
             if (!socket.userId) {
                 socket.emit('error', 'Authentication required');
                 return;
@@ -39,7 +39,7 @@ const handleSocket = (io, socket) => {
             }
 
             socket.join(boardId);
-            console.log(`User ${socket.userId} joined board ${boardId}`);
+            // console.log(`User ${socket.userId} joined board ${boardId}`);
 
             // Lấy 50 tin nhắn gần nhất
             const messages = await Message.aggregate([
@@ -148,14 +148,14 @@ const handleSocket = (io, socket) => {
     // Rời phòng
     socket.on('leaveBoard', (boardId) => {
         socket.leave(boardId);
-        console.log(`User ${socket.userId} left board ${boardId}`);
+        // console.log(`User ${socket.userId} left board ${boardId}`);
     });
 
     socket.on('disconnect', () => {
-        console.log('User disconnected:', {
-            socketId: socket.id,
-            userId: socket.userId
-        });
+        // console.log('User disconnected:', {
+        //     socketId: socket.id,
+        //     userId: socket.userId
+        // });
     });
 };
 

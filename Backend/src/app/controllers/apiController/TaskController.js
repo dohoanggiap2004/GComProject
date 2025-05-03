@@ -52,7 +52,7 @@ class TaskController {
 
       const task = req.body;
       const result = await updateTaskService(task);
-      console.log(result)
+      // console.log(result)
       if (!result) return res.status(200).json({ message: "No taskchanged" });
 
       res.status(200).json({
