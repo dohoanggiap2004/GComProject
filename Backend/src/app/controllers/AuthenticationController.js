@@ -6,20 +6,28 @@ class Authentication {
   async authenticateGoogle(req, res, next) {
     passport.authenticate("google", async (err, user, info) => {
       if (err) {
-        return next(err);
+        // console.error('Google authentication error:', err);
+        return res.status(500).json({
+          error: 1,
+          message: 'Authentication failed',
+          details: err.message
+        });
       }
+
       if (!user) {
-        return res.status(404).send(info);
+        return res.status(401).json({
+          error: 1,
+          message: info?.message || 'Google authentication failed',
+        });
       }
 
       try {
         const accessToken = generateAccessToken(user);
         const refreshToken = generateRefreshToken(user);
 
-        // Assuming you have a RefreshToken model
         const refreshTokenDoc = new RefreshToken({
           token: refreshToken,
-          userId: user._id, // Use Mongoose's _id
+          userId: user._id,
         });
         await refreshTokenDoc.save();
 
@@ -36,9 +44,13 @@ class Authentication {
           maxAge: 15 * 60 * 1000,
         });
 
-        return res.redirect('http://localhost:3000/');
+        // Redirect to frontend with success parameter
+        return res.redirect('http://localhost:3000/auth/success');
+
       } catch (error) {
-        return res.status(500).send({ message: "Error saving refresh token" }); // Handle errors properly
+        // console.error('Token generation/saving error:', error);
+        // Redirect to frontend with error parameter
+        return res.redirect('http://localhost:3000/auth/error?message=' + encodeURIComponent('Failed to complete authentication'));
       }
     })(req, res, next);
   }
@@ -46,16 +58,22 @@ class Authentication {
   authenticateLocal(req, res, next) {
     passport.authenticate("local", async (err, user, info) => {
       if (err) {
-        return next(err);
+        return res.status(500).json({
+          error: 1,
+          message: 'Internal server error',
+          details: err.message
+        });
       }
       if (!user) {
-        return res.status(404).send(info); // Error message sent here
+        return res.status(401).json({
+          error: 1,
+          message: info.message || 'Authentication failed'
+        });
       }
 
       try {
         const accessToken = generateAccessToken(user);
         const refreshToken = generateRefreshToken(user);
-        // Assuming you have a RefreshToken model
         const refreshTokenDoc = new RefreshToken({
           token: refreshToken,
           userId: user._id,
@@ -81,10 +99,15 @@ class Authentication {
         });
         res.status(200).json({
           error: 0,
-        })
+          message: 'Authentication successful'
+        });
 
       } catch (error) {
-        console.log(error);
+        return res.status(500).json({
+          error: 1,
+          message: 'Error during token generation',
+          details: error.message
+        });
       }
     })(req, res, next);
   }
@@ -92,13 +115,25 @@ class Authentication {
   authenticateLocalAdmin(req, res, next) {
     passport.authenticate("local", async (err, user, info) => {
       if (err) {
-        return next(err);
+        return res.status(500).json({
+          error: 1,
+          message: 'Internal server error',
+          details: err.message
+        });
       }
+
       if (!user) {
-        return res.status(404).send(info); // Error message sent here
+        return res.status(401).json({
+          error: 1,
+          message: info?.message || 'Invalid credentials'
+        });
       }
+
       if (user.role !== 'admin') {
-        return res.status(401).send('Unauthorized');
+        return res.status(403).json({
+          error: 1,
+          message: 'Access denied. Admin privileges required'
+        });
       }
 
       try {
@@ -125,9 +160,15 @@ class Authentication {
 
         res.status(200).json({
           error: 0,
-        })
+          message: 'Admin authentication successful',
+        });
+
       } catch (error) {
-        console.log(error);
+        return res.status(500).json({
+          error: 1,
+          message: 'Error generating authentication tokens',
+          details: error.message
+        });
       }
     })(req, res, next);
   }
