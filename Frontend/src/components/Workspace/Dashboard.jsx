@@ -13,11 +13,11 @@ import {getQuantityUserWorkspace} from "../../store/actions/userAction.jsx";
 import toast from "react-hot-toast";
 
 const recentBoards = [
-    {title: "test", image: "http://localhost:8000/img/bg-purple.jpg"},
-    {title: "DoHoangGiap", image: "http://localhost:8000/img/bg-purple.jpg"},
-    {title: "A Lead Management Pipeline by Crmble", image: "http://localhost:8000/img/bg-purple.jpg"},
-    {title: "Mise-En-Place Personal Productivity System", image: "http://localhost:8000/img/bg-purple.jpg"},
-    {title: "Mise-En-Place Personal Productivity System", image: "http://localhost:8000/img/bg-purple.jpg"},
+    {title: "test", image: `${import.meta.env.VITE_API_URL}/img/bg-purple.jpg`},
+    {title: "DoHoangGiap", image: `${import.meta.env.VITE_API_URL}/img/bg-purple.jpg`},
+    {title: "A Lead Management Pipeline by Crmble", image: `${import.meta.env.VITE_API_URL}/img/bg-purple.jpg`},
+    {title: "Mise-En-Place Personal Productivity System", image: `${import.meta.env.VITE_API_URL}/img/bg-purple.jpg`},
+    {title: "Mise-En-Place Personal Productivity System", image: `${import.meta.env.VITE_API_URL}/img/bg-purple.jpg`},
 ];
 
 const Dashboard = () => {

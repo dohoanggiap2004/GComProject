@@ -41,12 +41,12 @@ const PieChart = () => {
     };
 
     const chartData = {
-        labels: taskQuantityInList.map(item => item.listTitle),
+        labels: taskQuantityInList?.map(item => item.listTitle),
         datasets: [
             {
                 label: 'Tasks',
-                data: taskQuantityInList.map(item => item.totalTasks),
-                backgroundColor: generateColors(taskQuantityInList.length),
+                data: taskQuantityInList?.map(item => item?.totalTasks),
+                backgroundColor: generateColors(taskQuantityInList?.length),
                 hoverOffset: 5,
             },
         ],
