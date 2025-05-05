@@ -5,7 +5,8 @@ const {
     updateUserService,
     deleteUserService,
     searchUsersService,
-    checkUserRoleService, countUserWorkspaceService,
+    checkUserRoleService,
+    countUserWorkspaceService,
 } = require("../../../services/apiService/userService");
 const getUserIdFromToken = require("../../../utils/getUserIdFromToken");
 
@@ -15,113 +16,178 @@ class UserController {
             const users = await getUsersService();
 
             if (!users) {
-                return res.status(200).json({message: "User not found"});
+                return res.status(404).json({
+                    error: 1,
+                    message: "Users not found"
+                });
             }
 
-            res.status(200).json({
+            return res.status(200).json({
+                error: 0,
                 data: users,
+                message: "Users retrieved successfully"
             });
         } catch (error) {
-            console.error(error);
-            res.status(500).json({message: "Internal Server Error"});
+            return res.status(500).json({
+                error: 1,
+                message: "Internal Server Error"
+            });
         }
     }
 
     async getUserById(req, res) {
         try {
             const id = await getUserIdFromToken(req);
-            if(!id) return res.status(400).json({message: "UserId is required"});
+            if (!id) {
+                return res.status(400).json({
+                    error: 1,
+                    message: "User ID is required"
+                });
+            }
+
             const user = await getUserByIdService(id);
 
             if (!user) {
-                return res.status(200).json({message: "User not found"});
+                return res.status(404).json({
+                    error: 1,
+                    message: "User not found"
+                });
             }
 
-            res.status(200).json({
+            return res.status(200).json({
+                error: 0,
                 data: user,
+                message: "User retrieved successfully"
             });
         } catch (error) {
-            console.error(error);
-            res.status(500).json({message: "Internal Server Error"});
+            return res.status(500).json({
+                error: 1,
+                message: "Internal Server Error"
+            });
         }
     }
 
     async searchUserByEmailAndName(req, res) {
         try {
-            if (!req?.query?.value)
-                return res.status(200).json({data: []});
+            if (!req?.query?.value) {
+                return res.status(200).json({
+                    error: 0,
+                    data: [],
+                    message: "No search query provided"
+                });
+            }
 
-            const {value} = req.query;
-
+            const { value } = req.query;
             const users = await searchUsersService(value);
 
             if (!users) {
                 return res.status(200).json({
-                    data: []
+                    error: 0,
+                    data: [],
+                    message: "No users found matching search criteria"
                 });
             }
 
-            res.status(200).json({
+            return res.status(200).json({
+                error: 0,
                 data: users,
+                message: "Users search completed successfully"
             });
         } catch (error) {
-            console.error(error);
-            res.status(500).json({message: "Internal Server Error"});
+            return res.status(500).json({
+                error: 1,
+                message: "Internal Server Error"
+            });
         }
     }
 
     async createUser(req, res) {
         try {
-            if (!req?.body)
-                return res.status(400).json({message: "User information is required"});
+            if (!req?.body) {
+                return res.status(400).json({
+                    error: 1,
+                    message: "User information is required"
+                });
+            }
 
             const user = req.body;
             const newUser = await createUserService(user);
 
-            res.status(201).json({
-                newUser: newUser,
+            return res.status(201).json({
+                error: 0,
+                data: newUser,
+                message: "User created successfully"
             });
 
         } catch (error) {
-            console.error(error);
-            res.status(500).json({message: "Internal Server Error"});
+            return res.status(500).json({
+                error: 1,
+                message: "Internal Server Error"
+            });
         }
     }
 
     async updateUser(req, res) {
         try {
-            if (!req?.body)
-                return res.status(400).json({message: "User information is required"});
+            if (!req?.body) {
+                return res.status(400).json({
+                    error: 1,
+                    message: "User information is required"
+                });
+            }
 
             const user = req.body;
             const result = await updateUserService(user);
-            //   console.log(result)
-            if (!result) return res.status(200).json({message: "No user changed"});
 
-            res.status(200).json({
-                rowsEffected: result,
+            if (!result) {
+                return res.status(404).json({
+                    error: 1,
+                    message: "User not found"
+                });
+            }
+
+            return res.status(200).json({
+                error: 0,
+                data: result,
+                message: "User updated successfully"
             });
         } catch (error) {
-            console.error(error);
-            res.status(500).json({message: "Internal Server Error"});
+            return res.status(500).json({
+                error: 1,
+                message: "Internal Server Error"
+            });
         }
     }
 
     async deleteUser(req, res) {
         try {
-            if (!req?.query?._id)
-                return res.status(400).json({message: "User information is required"});
+            if (!req?.query?._id) {
+                return res.status(400).json({
+                    error: 1,
+                    message: "User ID is required"
+                });
+            }
 
             const id = req.query._id;
             const result = await deleteUserService(id);
-            if (!result) return res.status(200).json({message: "No user be deleted"});
 
-            res.status(200).json({
-                rowsEffected: result,
+            if (!result) {
+                return res.status(404).json({
+                    error: 1,
+                    message: "User not found"
+                });
+            }
+
+            return res.status(200).json({
+                error: 0,
+                data: result,
+                message: "User deleted successfully"
             });
         } catch (error) {
-            console.error(error);
-            res.status(500).json({message: "Internal Server Error"});
+            return res.status(500).json({
+                error: 1,
+                message: "Internal Server Error"
+            });
         }
     }
 
@@ -129,37 +195,60 @@ class UserController {
         try {
             const { boardId, workspaceId } = req.query;
             const userId = await getUserIdFromToken(req);
+
             if ((!boardId && !workspaceId) || !userId) {
-                return res.status(400).json({ message: "Workspace, board information or userId is required" });
+                return res.status(400).json({
+                    error: 1,
+                    message: "Workspace/Board ID and User ID are required"
+                });
             }
 
             const roleInfo = await checkUserRoleService(userId, { workspaceId, boardId });
 
             if (!roleInfo) {
-                return res.status(403).json({ message: "You do not have access" });
+                return res.status(403).json({
+                    error: 1,
+                    message: "You do not have access"
+                });
             }
 
-            return res.status(200).json(roleInfo);
+            return res.status(200).json({
+                error: 0,
+                data: roleInfo,
+                message: "User role retrieved successfully"
+            });
         } catch (error) {
-            console.error(error);
-            res.status(500).json({message: "Internal Server Error"});
+            return res.status(500).json({
+                error: 1,
+                message: "Internal Server Error"
+            });
         }
     }
 
-    async countUserWorkspaces (req, res) {
-        const userId = await getUserIdFromToken(req)
-        if (!userId)
-            return res.status(400).json({message: "User information is required"});
+    async countUserWorkspaces(req, res) {
         try {
+            const userId = await getUserIdFromToken(req);
+            if (!userId) {
+                return res.status(400).json({
+                    error: 1,
+                    message: "User ID is required"
+                });
+            }
+
             const count = await countUserWorkspaceService(userId);
-            res.status(200).json({
+
+            return res.status(200).json({
+                error: 0,
                 data: count,
+                message: "Workspace count retrieved successfully"
             });
         } catch (error) {
-            console.error(error);
-            res.status(500).json({ message: "Server error" });
+            return res.status(500).json({
+                error: 1,
+                message: "Internal Server Error"
+            });
         }
-    };
+    }
 }
 
 module.exports = new UserController();

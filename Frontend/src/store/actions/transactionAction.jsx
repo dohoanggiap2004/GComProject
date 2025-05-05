@@ -4,7 +4,7 @@ import {createAsyncThunk} from "@reduxjs/toolkit";
 export const createTransaction = createAsyncThunk('transactions/createTransaction', async (payload, thunkAPI) => {
     try {
         const response = await instanceAxios8000.post('/api/transactions', payload);
-        return response.data.newTransaction;
+        return response.data.data;
     } catch (error) {
         return thunkAPI.rejectWithValue(error.response.data.message);
     }

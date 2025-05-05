@@ -4,7 +4,7 @@ import {createAsyncThunk} from "@reduxjs/toolkit";
 export const createTask = createAsyncThunk('tasks/createTask', async (payload, thunkAPI) => {
     try {
         const response = await instanceAxios8000.post(`/api/tasks`, payload);
-        return response.data.newTask;
+        return response.data.data;
     } catch (error) {
         return thunkAPI.rejectWithValue(error.response.data.message);
     }
@@ -13,7 +13,7 @@ export const createTask = createAsyncThunk('tasks/createTask', async (payload, t
 export const updateTask = createAsyncThunk('tasks/updateTask', async (payload, thunkAPI) => {
     try {
         const response = await instanceAxios8000.put(`/api/tasks`, payload);
-        return response.data.rowsEffected;
+        return response.data.data;
     } catch (error) {
         return thunkAPI.rejectWithValue(error.response.data.message);
     }

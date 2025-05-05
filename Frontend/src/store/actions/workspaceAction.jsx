@@ -32,7 +32,7 @@ export const getMemberInBoardsByWorkspaceId = createAsyncThunk('workspaces/getMe
 export const createWorkspace = createAsyncThunk('workspaces/createWorkspace', async (payload, thunkAPI) => {
     try {
         const response = await instanceAxios8000.post('/api/workspaces', payload);
-        return response.data.newWorkspace;
+        return response.data.data;
     } catch (error) {
         return thunkAPI.rejectWithValue(error.response.data.message);
     }
@@ -41,7 +41,7 @@ export const createWorkspace = createAsyncThunk('workspaces/createWorkspace', as
 export const updateWorkspace = createAsyncThunk('workspaces/updateWorkspace', async (payload, thunkAPI) => {
     try {
         const response = await instanceAxios8000.put('/api/workspaces', payload);
-        return response.data.rowsEffected;
+        return response.data.data;
     } catch (error) {
         return thunkAPI.rejectWithValue(error.response.data.message);
     }

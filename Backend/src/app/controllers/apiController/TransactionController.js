@@ -10,67 +10,112 @@ class TransactionController {
         try {
             const transactions = await getAllTransactionsService();
             if (!transactions) {
-                return res.status(200).json({message: "Transaction not found"});
+                return res.status(404).json({
+                    error: 1,
+                    message: "Transactions not found"
+                });
             }
 
-            res.status(200).json({
+            return res.status(200).json({
+                error: 0,
                 data: transactions,
+                message: "Transactions retrieved successfully"
             });
         } catch (error) {
-            console.error(error);
-            res.status(500).json({message: "Internal Server Error"});
+            return res.status(500).json({
+                error: 1,
+                message: "Internal Server Error"
+            });
         }
     }
 
     async createTransaction(req, res) {
         try {
-            if (!req?.body?.userId || !req?.body?.amount)
-                return res.status(400).json({message: "Transaction information is required"});
+            if (!req?.body?.userId || !req?.body?.amount) {
+                return res.status(400).json({
+                    error: 1,
+                    message: "User ID and amount are required"
+                });
+            }
 
             const transaction = req.body;
             const newTransaction = await createTransactionService(transaction);
-            res.status(201).json({
-                newTransaction: newTransaction,
+
+            return res.status(201).json({
+                error: 0,
+                data: newTransaction,
+                message: "Transaction created successfully"
             });
 
         } catch (error) {
-            console.error(error);
-            res.status(500).json({message: "Internal Server Error"});
+            return res.status(500).json({
+                error: 1,
+                message: "Internal Server Error"
+            });
         }
     }
 
     async updateTransaction(req, res) {
         try {
-            if (!req?.body?._id)
-                return res.status(400).json({message: "Transaction information is required"});
+            if (!req?.body?._id) {
+                return res.status(400).json({
+                    error: 1,
+                    message: "Transaction ID is required"
+                });
+            }
+
             const transaction = req.body;
             const result = await updateTransactionService(transaction);
 
-            if (!result) return res.status(200).json({message: "No transaction changed"});
+            if (!result) {
+                return res.status(404).json({
+                    error: 1,
+                    message: "Transaction not found"
+                });
+            }
 
-            res.status(200).json({
-                rowsEffected: result,
+            return res.status(200).json({
+                error: 0,
+                data: result,
+                message: "Transaction updated successfully"
             });
         } catch (error) {
-            console.error(error);
-            res.status(500).json({message: "Internal Server Error"});
+            return res.status(500).json({
+                error: 1,
+                message: "Internal Server Error"
+            });
         }
     }
 
     async deleteTransaction(req, res) {
         try {
-            if (!req?.query?._id)
-                return res.status(400).json({message: "Transaction information is required"});
-            const {_id} = req.query;
-            const result = await deleteTransactionService(_id);
-            if (!result) return res.status(200).json({message: "No transaction be deleted"});
+            if (!req?.query?._id) {
+                return res.status(400).json({
+                    error: 1,
+                    message: "Transaction ID is required"
+                });
+            }
 
-            res.status(200).json({
-                rowsEffected: result,
+            const { _id } = req.query;
+            const result = await deleteTransactionService(_id);
+
+            if (!result) {
+                return res.status(404).json({
+                    error: 1,
+                    message: "Transaction not found"
+                });
+            }
+
+            return res.status(200).json({
+                error: 0,
+                data: result,
+                message: "Transaction deleted successfully"
             });
         } catch (error) {
-            console.error(error);
-            res.status(500).json({message: "Internal Server Error"});
+            return res.status(500).json({
+                error: 1,
+                message: "Internal Server Error"
+            });
         }
     }
 }

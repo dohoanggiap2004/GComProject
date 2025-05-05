@@ -22,7 +22,7 @@ export const getUserRoleInWorkspaceOrBoard = createAsyncThunk('users/getUserRole
                 workspaceId: payload.workspaceId,
             }
         });
-        return response.data.role;
+        return response.data.data.role;
     } catch (error) {
         return thunkAPI.rejectWithValue(error.response.data.message);
     }
