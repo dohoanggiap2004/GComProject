@@ -23,6 +23,7 @@ const recentBoards = [
 const Dashboard = () => {
     const {workspaces} = useSelector((state) => state.workspace);
     const {boards, boardGuest} = useSelector((state) => state.board);
+    const {boardViewed} = useSelector((state) => state.history);
     const {quantityWorkspace} = useSelector(state => state.user)
     const dispatch = useDispatch();
     const [isWorkspaceOpen, setIsWorkspaceOpen] = useState(false);
@@ -51,21 +52,27 @@ const Dashboard = () => {
         <div className="flex justify-center mt-10">
             <Sidebar/>
             <div className="w-full lg:max-w-4xl p-6 -mt-2">
-                <h2 className="text-lg font-semibold mb-4 flex items-center text-gray-700">
-                    <MdAccessTime className="mr-2"/> Recently viewed
-                </h2>
-                <div className="grid md:grid-cols-3 lg:grid-cols-4 grid-cols-2 gap-6 mb-6">
-                    {recentBoards.map((board, index) => (
-                        <BoardItem key={index} title={board.title} background={board.image}/>
-                    ))}
-                </div>
-
+                {Array.isArray(boardViewed) && boardViewed.length > 0 && (
+                    <>
+                        <h2 className="text-lg font-semibold mb-4 flex items-center text-gray-700">
+                            <MdAccessTime className="mr-2"/> Recently viewed
+                        </h2>
+                        <div className="grid md:grid-cols-3 lg:grid-cols-4 grid-cols-2 gap-6 mb-6">
+                            {boardViewed.map((board) => (
+                                <Link to={`/user-workspace/board/${board._id}`} key={board._id} >
+                                    <BoardItem title={board.title} background={board.background}/>
+                                </Link>
+                            ))}
+                        </div>
+                    </>
+                )}
                 <h2 className="text-lg font-bold text-gray-700 mb-4">YOUR WORKSPACES</h2>
                 {
                     Array.isArray(workspaces) && workspaces.length > 0 ? (
                         workspaces.map((workspace) => (
                             <div className={'mb-6'} key={workspace._id}>
-                                <HorizontalWorkspace workspaceId={workspace._id}  name={workspace.name} memberQuantity={workspace.memberQuantity}/>
+                                <HorizontalWorkspace workspaceId={workspace._id} name={workspace.name}
+                                                     memberQuantity={workspace.memberQuantity}/>
 
                                 <div className="w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                                     {Array.isArray(boards[workspace._id]) && boards[workspace._id].length > 0 ? boards[workspace._id].map((board, index) => (
@@ -78,12 +85,16 @@ const Dashboard = () => {
                                     )) : null}
                                     <button
                                         className="w-40 h-24 md:w-48 bg-gray-200 rounded-lg overflow-hidden shadow-md relative"
-                                        onClick={() => {setIsBoardOpen(true); setSelectedId(workspace._id) }}
+                                        onClick={() => {
+                                            setIsBoardOpen(true);
+                                            setSelectedId(workspace._id)
+                                        }}
                                     >
                                         <div className="absolute inset-0 flex-col flex items-center justify-center">
                                             <p className="text-gray-700 font-semibold">Create new board</p>
                                             {quantityWorkspace !== 'unlimited' && (
-                                                <p className="text-gray-600 i text-xs font-semibold">Limited 5 boards</p>
+                                                <p className="text-gray-600 i text-xs font-semibold">Limited 5
+                                                    boards</p>
                                             )}
                                         </div>
                                     </button>
@@ -106,7 +117,9 @@ const Dashboard = () => {
                     )
                 }
 
-                {(Array.isArray(boardGuest) && boardGuest.length > 0) && (
+                {(
+                    Array.isArray(boardGuest) && boardGuest.length > 0
+                ) && (
                     <h2 className="text-lg font-bold text-gray-700 my-4">GUEST WORKSPACES</h2>
                 )}
                 <div className="w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">

@@ -19,6 +19,7 @@ import {
 } from "../store/actions/boardAction.jsx";
 import SortableList from "../components/Board/SortableItem/SortableList.jsx";
 import {getWorkspaceByWorkspaceId} from "../store/actions/workspaceAction.jsx";
+import {createHistoryView} from "../store/actions/historyviewAction.jsx";
 
 function BoardWorkspace() {
     const { boardId } = useParams();
@@ -32,7 +33,12 @@ function BoardWorkspace() {
     const [reListInfo, setReListInfo] = useState(null);
 
     useEffect(() => {
-        dispatch(getBoardByBoardId(boardId));
+        if(boardId !== null){
+            dispatch(getBoardByBoardId(boardId));
+            dispatch(createHistoryView({
+                boardId: boardId,
+            }))
+        }
     }, [boardId]);
 
     useEffect(() => {

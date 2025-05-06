@@ -7,6 +7,7 @@ import userReducer from "./userReducer.jsx";
 import attachmentReducer from "./attachmentReducer.jsx";
 import statisticReducer from "./statisticReducer.jsx";
 import messageReducer from "./messageReducer.jsx";
+import historyviewReducer from "./historyviewReducer.jsx";
 
 // Kết hợp các reducer
 const rootReducer = combineReducers({
@@ -18,7 +19,7 @@ const rootReducer = combineReducers({
   attachment: attachmentReducer,
   statistic: statisticReducer,
   message: messageReducer,
-
+  history: historyviewReducer
 });
 
 export default rootReducer;

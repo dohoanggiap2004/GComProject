@@ -24,13 +24,15 @@ function BoardDashboard() {
     const { taskQuantity, cardQuantity, memberQuantity, productiveMember } = useSelector((state) => state.statistic);
 
     useEffect(() => {
-        dispatch(getBoardByBoardId(boardId));
-        dispatch(getCardQuantityInBoard(boardId));
-        dispatch(getTaskQuantityInBoard(boardId));
-        dispatch(getMemberQuantityInBoard(boardId));
-        dispatch(getProductiveMembers(boardId));
-        dispatch(getMonthlyProgress(boardId));
-        dispatch(getTaskQuantityInList(boardId));
+        if(boardId !== null){
+            dispatch(getBoardByBoardId(boardId));
+            dispatch(getCardQuantityInBoard(boardId));
+            dispatch(getTaskQuantityInBoard(boardId));
+            dispatch(getMemberQuantityInBoard(boardId));
+            dispatch(getProductiveMembers(boardId));
+            dispatch(getMonthlyProgress(boardId));
+            dispatch(getTaskQuantityInList(boardId));
+        }
     }, [boardId]);
 
     useEffect(() => {

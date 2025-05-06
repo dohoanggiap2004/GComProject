@@ -9,7 +9,6 @@ const bcrypt = require("bcrypt");
 
 router.post('/register', async (req, res) => {
     const {email, password, ...userInfo} = req.body;
-
     try {
         // console.log('check email', userInfo)
         // Kiểm tra xem người dùng đã tồn tại chưa
@@ -64,7 +63,6 @@ router.post("/admin/login", AuthenticationController.authenticateLocalAdmin);
 
 //logout
 router.post("/logout", async (req, res, next) => {
-
     try {
         if (req.cookies.refreshToken) {
             const refreshToken = req.cookies.refreshToken;
@@ -93,7 +91,6 @@ router.post("/logout", async (req, res, next) => {
             mes: "Internal server error",
         });
     }
-
 });
 
 module.exports = router;
