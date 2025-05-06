@@ -6,12 +6,12 @@ const Unauthorized = () => {
             <div className="container flex flex-col items-center ">
                 <div className="flex flex-col gap-6 max-w-md text-center">
                     <h2 className="font-extrabold text-9xl text-gray-600 dark:text-gray-100">
-                        <span className="sr-only"></span>Lỗi
+                        <span className="sr-only"></span>Error
                     </h2>
-                    <p className="text-2xl md:text-3xl dark:text-gray-300">Bạn không có quyền truy cập.</p>
+                    <p className="text-2xl md:text-3xl dark:text-gray-300">You don't have access permission.</p>
                     <Link to={"/"}
-                       className="px-8 py-4 text-xl font-semibold rounded-sm bg-purple-600 text-gray-50 hover:text-gray-2">
-                        Quay lại trang chủ
+                          className="px-8 py-4 text-xl font-semibold rounded-sm bg-purple-600 text-gray-50 hover:text-gray-2">
+                        Back to homepage
                     </Link>
                 </div>
             </div>

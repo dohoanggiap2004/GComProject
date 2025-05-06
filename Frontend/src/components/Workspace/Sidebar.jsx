@@ -11,9 +11,9 @@ const Sidebar = () => {
                 <button className="flex items-center w-full p-2 text-blue-600 bg-blue-100 rounded-lg text-sm font-semibold">
                     <FaRegClipboard className="mr-2" /> Boards
                 </button>
-                <button className="flex items-center w-full p-2 text-gray-700 hover:bg-gray-200 rounded-lg text-sm font-semibold">
+                <Link to={'/coming-soon'} className="flex items-center w-full p-2 text-gray-700 hover:bg-gray-200 rounded-lg text-sm font-semibold">
                     <BsGrid1X2Fill className="mr-2"/> Templates
-                </button>
+                </Link>
             </div>
 
             <hr className={'text-gray-600'} />

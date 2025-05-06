@@ -113,7 +113,6 @@ export default function NavbarBoard() {
                                 <button className="w-full flex items-center text-sm p-2 hover:bg-gray-100 rounded-sm">
                                     <FaInfoCircle className="mr-2 text-gray-500"/>
                                     About this board
-                                    <span className="ml-1 text-xs text-gray-500">Add a description to your board</span>
                                 </button>
                                 <button className="w-full flex items-center text-sm p-2 hover:bg-gray-100 rounded-sm">
                                     <FaList className="mr-2 text-gray-500"/>

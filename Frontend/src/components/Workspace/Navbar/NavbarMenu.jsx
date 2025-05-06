@@ -29,18 +29,18 @@ export default function NavbarMenu() {
                 <span className="cursor-pointer hover:text-black flex items-center gap-2 text-gray-600 font-semibold text-md">
                   Workspaces <FaChevronDown/>
                 </span>
-                <span
+                <Link to={'/coming-soon'}
                             className="cursor-pointer hover:text-black flex items-center gap-2 text-gray-600 font-semibold text-md">
                   Recent <FaChevronDown/>
-                </span>
+                </Link>
                 <Link to={'/messenger'}
                             className="cursor-pointer hover:text-black flex items-center gap-2 text-gray-600 font-semibold text-md">
                   Messenger <FaChevronDown/>
                 </Link>
-                <span
+                <Link to={'/coming-soon'}
                             className="cursor-pointer hover:text-black flex items-center gap-2 text-gray-600 font-semibold text-md">
                   Templates <FaChevronDown/>
-                </span>
+                </Link>
                 <button
                     onClick={() => setIsModalOpen(true)}
                     className="bg-blue-600 text-white px-4 py-2 rounded-md"

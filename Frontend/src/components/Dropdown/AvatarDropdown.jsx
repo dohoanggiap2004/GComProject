@@ -36,7 +36,6 @@ const AvatarDropdown = () => {
     };
 
 
-
     useEffect(() => {
         if (isOpen) {
             document.addEventListener("mousedown", handleClickOutside);
@@ -60,7 +59,8 @@ const AvatarDropdown = () => {
 
             {/* Modal Content */}
             {isOpen && (
-                <div className="absolute right-0 mt-2 w-64 bg-white rounded-lg shadow-lg border border-gray-200 z-10" ref={modalRef}>
+                <div className="absolute right-0 mt-2 w-68 bg-white rounded-lg shadow-lg border border-gray-200 z-10"
+                     ref={modalRef}>
                     {/* Account Section */}
                     <div className="p-4 border-b border-gray-200">
                         <h3 className="text-xs font-semibold text-gray-500 uppercase">Account</h3>
@@ -76,26 +76,7 @@ const AvatarDropdown = () => {
                         </div>
                         <div className="mt-2 space-y-1">
                             <button className="w-full text-left text-sm text-gray-700 hover:bg-gray-100 p-1 rounded-sm">
-                                Switch accounts
-                            </button>
-                            <button className="w-full text-left text-sm text-gray-700 hover:bg-gray-100 p-1 rounded-sm">
                                 Manage account
-                            </button>
-                        </div>
-                    </div>
-
-                    {/* Trello Section */}
-                    <div className="p-4 border-b border-gray-200">
-                        <h3 className="text-xs font-semibold text-gray-500 uppercase">GCom</h3>
-                        <div className="mt-2 space-y-1">
-                            <button className="w-full text-left text-sm text-gray-700 hover:bg-gray-100 p-1 rounded-sm">
-                                Profile and visibility
-                            </button>
-                            <button className="w-full text-left text-sm text-gray-700 hover:bg-gray-100 p-1 rounded-sm">
-                                Activity
-                            </button>
-                            <button className="w-full text-left text-sm text-gray-700 hover:bg-gray-100 p-1 rounded-sm">
-                                Cards
                             </button>
                         </div>
                     </div>
@@ -106,8 +87,14 @@ const AvatarDropdown = () => {
                             className="w-full text-left text-sm text-gray-700 hover:bg-gray-100 p-1 rounded-sm flex items-center space-x-2"
                             onClick={() => setIsWorkspaceOpen(true)}>
                             <span className="flex items-center">
-                                <GoPlus className={'mr-2'}/> Create a Workspace
-                                {quantityWorkspace !== 'unlimited' ? ` (Remain ${(5 - quantityWorkspace) >= 0 ? (5 - quantityWorkspace) : 0 })` : ''}
+                                <GoPlus className={'mr-2'}/>
+                                <p>Create a Workspace
+                                    {quantityWorkspace !== 'unlimited' ? ` (Remain ${(
+                                        5 - quantityWorkspace
+                                    ) >= 0 ? (
+                                        5 - quantityWorkspace
+                                    ) : 0})` : ''}
+                                </p>
                             </span>
                         </button>
                     </div>
@@ -129,9 +116,6 @@ const AvatarDropdown = () => {
                     {/* Help, Shortcuts, Log out */}
                     <div className="p-4">
                         <div className="space-y-1">
-                            <button className="w-full text-left text-sm text-gray-700 hover:bg-gray-100 p-1 rounded-sm">
-                                Help
-                            </button>
                             <button className="w-full text-left text-sm text-red-600 hover:bg-gray-100 p-1 rounded-sm"
                                     onClick={handleLogout}
                             >

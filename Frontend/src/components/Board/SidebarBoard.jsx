@@ -16,10 +16,10 @@ const SidebarBoard = () => {
             <div className={'border-b-2 border-gray-400 m-4'}></div>
 
             <div className="space-y-2">
-                <button
+                <Link to={'/coming-soon'}
                     className="flex items-center w-full p-1 text-gray-700 hover:bg-gray-200 rounded-lg text-sm">
                     <FaRegClipboard className="mr-2"/> Boards
-                </button>
+                </Link>
                 <Link to={`/user-workspace/member/${workspace?._id}`}
                     className="flex items-center w-full p-1 text-gray-700 hover:bg-gray-200 rounded-lg text-sm">
                     <FaUserFriends className="mr-2"/> Members
@@ -33,14 +33,14 @@ const SidebarBoard = () => {
             <div className="mt-4">
                 <h3 className="text-gray-500 text-sm font-semibold">Workspaces</h3>
                 <div className="ml-1 space-y-2 mt-2">
-                    <button
+                    <Link to={'/coming-soon'}
                         className="flex items-center w-full p-1 text-gray-700 hover:bg-gray-200 rounded-lg text-sm">
                         <CiViewTable className="mr-2"/> Table
-                    </button>
-                    <button
+                    </Link>
+                    <Link to={'/coming-soon'}
                         className="flex items-center w-full p-1 text-gray-700 hover:bg-gray-200 rounded-lg text-sm">
                         <IoCalendarOutline className="mr-2"/> Calendar
-                    </button>
+                    </Link>
                 </div>
             </div>
 

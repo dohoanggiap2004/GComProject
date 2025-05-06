@@ -19,6 +19,7 @@ import Pricing from "./pages/Pricing.jsx";
 import PremiumPayment from "./pages/PremiumPayment.jsx";
 import Messenger from "./pages/Messenger.jsx";
 import BoardDashboard from "./pages/BoardDashboard.jsx";
+import ComingSoon from "./pages/ComingSoon.jsx";
 
 const App = () => {
     return (
@@ -91,6 +92,7 @@ const App = () => {
                                 </RoleProtectedRouteForWorkspace>
                             </RoleProtectedRoute>
                         }/>
+                        <Route path='/coming-soon' element={<ComingSoon/>}/>
                         <Route path='/unauthorized' element={<Unauthorized/>}/>
                     </Routes>
                 </Router>

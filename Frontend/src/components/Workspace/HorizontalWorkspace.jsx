@@ -15,9 +15,9 @@ const HorizontalWorkspace = ({name, memberQuantity, workspaceId}) => {
             </div>
 
             <div className="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-2 md:gap-2">
-                <button className="flex items-center justify-center px-1 bg-gray-200 rounded-sm md:w-28 h-8 text-sm">
+                <Link to={'/coming-soon'} className="flex items-center justify-center px-1 bg-gray-200 rounded-sm md:w-28 h-8 text-sm">
                     <MdViewList className="mr-1 shrink-0"/> Boards
-                </button>
+                </Link>
                 <Link to={`/user-workspace/member/${workspaceId}`} className="flex items-center justify-center px-1 bg-gray-200 rounded-sm md:w-28 h-8 text-sm">
                     <MdPeople className="mr-1 shrink-0"/> Members ({memberQuantity})
                 </Link>

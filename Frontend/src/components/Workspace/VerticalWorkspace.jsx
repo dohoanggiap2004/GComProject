@@ -42,14 +42,14 @@ const VerticalWorkspace = () => {
                         {/* Các mục bên dưới, hiển thị khi isOpen là true */}
                         {openWorkspaces[workspace._id] && (
                             <div className="ml-6 space-y-2 mt-2">
-                                <button
+                                <Link to={'/coming-soon'}
                                     className="flex items-center w-full p-2 text-gray-700 hover:bg-gray-200 rounded-lg text-sm">
                                     <FaRegClipboard className="mr-2"/> Boards
-                                </button>
-                                <button
+                                </Link>
+                                <Link to={'/coming-soon'}
                                     className="flex items-center w-full p-2 text-gray-700 hover:bg-gray-200 rounded-lg text-sm">
                                     <FaRegHeart className="mr-2"/> Hightlights
-                                </button>
+                                </Link>
                                 <Link to={`/user-workspace/member/${workspace._id}`}
                                     className="flex justify-between items-center w-full p-2 text-gray-700 hover:bg-gray-200 rounded-lg text-sm"
                                 >
