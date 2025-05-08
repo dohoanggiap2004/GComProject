@@ -156,36 +156,36 @@ const CardModal = ({cardProp, onClose, onToggleCheck}) => {
     }
 
     useEffect(() => {
-        const payload = {
-            boardId: formData.boardId,
-            listId: formData.listId,
-            cardId: formData._id,
+        if (formData.listId && formData.boardId && formData._id) {
+            dispatch(getCardWithTask({
+                boardId: formData.boardId,
+                listId: formData.listId,
+                cardId: formData._id,
+            }))
         }
-        if (formData.listId) {
-            dispatch(getCardWithTask(payload))
-        }
-    }, [formData.listId, board])
+    }, [formData.boardId, formData.listId, formData._id]);
+
 
     useEffect(() => {
-        if (cardProp) {
-            setFormData({
-                ...formData,
-                _id: cardProp._id || '',
-                listId: cardProp.listId || '',
-                title: cardProp.title || '',
-                description: cardProp.description || '',
-                memberIds: cardProp?.memberIds || [],
-                dueDate: cardProp?.dueDate || null,
-                startDate: cardProp?.startDate || null,
-                dateReminder: cardProp?.dateReminder || null,
-            });
-        }
-    }, [cardProp]);
+        if (!cardProp) return;
+        const memberIds = card?.memberIds?.map((m) => m._id) || [];
+        setFormData({
+            boardId: board?._id || '',
+            _id: cardProp._id || '',
+            listId: cardProp.listId || '',
+            title: cardProp.title ?? '',
+            description: cardProp.description ?? '',
+            memberIds,
+            dueDate: cardProp.dueDate || null,
+            startDate: cardProp.startDate || null,
+            dateReminder: cardProp.dateReminder || null,
+        });
+    }, [cardProp, card]);
 
     useEffect(() => {
-        if (cardProp)
+        if (cardProp?._id)
             dispatch(getAttachmentsByCardId(cardProp._id))
-    }, [cardProp])
+    }, [cardProp?._id])
 
     const getMimeTypeLabel = (mimeType) => {
         // Xử lý các trường hợp phổ biến
