@@ -1,6 +1,6 @@
 const nodemailer = require('nodemailer');
 
-const mailSenderService = ({ user, card }) => {
+const mailSenderService = (user, card) => {
     const transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
@@ -35,12 +35,14 @@ const mailSenderService = ({ user, card }) => {
     `
     };
 
-    transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-            console.log('Error sending reminder:', error);
-        } else {
-            console.log('Reminder email sent:', info.response);
-        }
+    return new Promise((resolve, reject) => {
+        transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+                return reject({ success: false, error });
+            } else {
+                return resolve({ success: true, info });
+            }
+        });
     });
 };
 
