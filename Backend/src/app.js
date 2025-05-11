@@ -54,6 +54,10 @@ app.use(passport.initialize());
 //init socket server
 initialSocket(server)
 
+app.get('/ping', (req, res) => {
+  res.status(200).send('OK');
+});
+
 //route
 route(app);
 
