@@ -3,7 +3,7 @@ const Workspace = require("../../app/models/Workspace");
 const Board = require("../../app/models/Board");
 
 const getUsersService = async () => {
-    return User.find().lean();
+    return User.find().select('-password').lean();
 };
 
 const getUserByIdService = async (userId) => {

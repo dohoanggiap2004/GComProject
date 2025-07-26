@@ -13,4 +13,10 @@ router.get('/productive-member/:boardId', checkBoardPermission, StatisticControl
 router.get('/monthly-progress/:boardId', checkBoardPermission, StatisticController.getMonthlyProgress)
 router.get('/task-in-list/:boardId', checkBoardPermission, StatisticController.getTaskQuantityInList)
 
+//for admin dashboard
+router.get('/monthly-revenue', StatisticController.getMonthlyRevenue)
+router.get('/revenue', StatisticController.getRevenue)
+router.get('/workspace-quantity', StatisticController.getWorkspaceQuantityInWeb)
+router.get('/user-quantity', StatisticController.getUserQuantityInWeb)
+
 module.exports = router

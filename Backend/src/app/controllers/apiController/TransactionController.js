@@ -28,6 +28,7 @@ class TransactionController {
             });
         }
     }
+    
 
     async createTransaction(req, res) {
         try {
@@ -80,6 +81,7 @@ class TransactionController {
                 message: "Transaction updated successfully"
             });
         } catch (error) {
+            console.log(error)
             return res.status(500).json({
                 error: 1,
                 message: "Internal Server Error"
