@@ -158,7 +158,7 @@ export default function MemberCardModal({onClose}) {
                         <div
                             className={`w-8 h-8 bg-orange-600 rounded-full flex items-center justify-center text-white font-semibold `}
                         >
-                            {member?.fullname.slice(0, 2)}
+                            {member?.fullname?.slice(0, 2)}
                         </div>
                         <div>
                             <h2 className="text-sm font-medium">{member?.fullname}</h2>
