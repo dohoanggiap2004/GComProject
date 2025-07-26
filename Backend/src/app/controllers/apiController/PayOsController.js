@@ -2,7 +2,7 @@ const { payos } = require('../../../config/payos');
 const { isValidSignature } = require("../../../utils/checkCheckSumKey");
 const { updateStatusAndUserService, getTransactionByOrderCode } = require("../../../services/apiService/payOSService");
 const { createWebhookService } = require("../../../services/apiService/webhookService");
-
+require('dotenv').config();
 class PayOsController {
     async createPaymentLink(req, res) {
         try {
@@ -28,8 +28,8 @@ class PayOsController {
                 amount: reqData.amount,
                 description: `Paying for GCom's Premium`,
                 items: items,
-                cancelUrl: "http://localhost:3000/pricing",
-                returnUrl: "http://localhost:3000",
+                cancelUrl: `${process.env.CLIENT_URL}/pricing`,
+                returnUrl: `${process.env.CLIENT_URL}`,
                 expiredAt,
             };
 
