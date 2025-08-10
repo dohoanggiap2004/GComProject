@@ -12,7 +12,7 @@ const localPassport = () => {
                 // console.log('check password', password)
                 const user = await User.findOne({email: email});
                 // console.log('check user', user)
-                if (!user) return done(null, false, {message: "No user found"});
+                if (!user) return done(null, false, {message: "Incorrect email or password"});
                 // console.log('check user', user)
                 const isMatch = await bcrypt.compare(password, user.password);
                 if (!isMatch) return done(null, false, {message: "Wrong password"});

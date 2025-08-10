@@ -7,6 +7,7 @@ const initialState = {
     isLoginUser: false,
     role: '',
     error: null,
+    registerError: null,
     isRegister: false,
     userInfo: {},
 };
@@ -77,7 +78,7 @@ const authSlice = createSlice({
             // logoutUser
             .addCase(registerUser.pending, (state) => {
                 state.loading = true;
-                state.error = null;
+                state.registerError = null;
             })
             .addCase(registerUser.fulfilled, (state) => {
                 state.loading = false;
@@ -85,7 +86,7 @@ const authSlice = createSlice({
             })
             .addCase(registerUser.rejected, (state, action) => {
                 state.loading = false;
-                state.error = action.payload;
+                state.registerError = action.payload;
             })
 
             //setFalseRegister

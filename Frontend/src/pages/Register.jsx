@@ -2,11 +2,13 @@ import {useEffect, useState} from "react";
 import {Link, useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {registerUser, setFalseRegister} from "../store/actions/authAction.jsx";
+import toast from "react-hot-toast";
 
 const Register = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { isRegister, error } = useSelector(state => state.auth);
+    const {isRegister, registerError} = useSelector(state => state.auth);
+    const [error, setError] = useState('');
     const [formData, setFormData] = useState({
         fullname: "",
         email: "",
@@ -16,20 +18,33 @@ const Register = () => {
     });
 
     const handleChange = (e) => {
-        const { name, value, type, checked } = e.target;
+        const {name, value, type, checked} = e.target;
         setFormData({
             ...formData,
             [name]: type === "checkbox" ? checked : value,
         });
+        setError('')
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        dispatch(registerUser(formData))
+        if( formData?.password !== formData?.confirmPassword ) {
+            setError('Confirm password does not match');
+        } else if( !formData.terms ) {
+            setError('Term must be checked');
+        }
+        else {
+            dispatch(registerUser(formData))
+        }
     };
 
     useEffect(() => {
-        if(isRegister) {
+        setError(registerError)
+    }, [registerError])
+
+    useEffect(() => {
+        if (isRegister) {
+            toast.success("Register successfully!");
             dispatch(setFalseRegister())
             navigate("/login")
         }
@@ -97,7 +112,8 @@ const Register = () => {
                             className="mr-2"
                         />
                         <label className="text-gray-700">
-                            I agree to the <a href="#" className="text-blue-500 hover:underline">terms and conditions</a>
+                            I agree to the <a href="#" className="text-blue-500 hover:underline">terms and
+                            conditions</a>
                         </label>
                     </div>
                     <button

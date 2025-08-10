@@ -8,14 +8,16 @@ const User = require("../app/models/User");
 const bcrypt = require("bcrypt");
 
 router.post('/register', async (req, res) => {
-    const {email, password, ...userInfo} = req.body;
+    const {email, password, confirmPassword, ...userInfo} = req.body;
     try {
-        // console.log('check email', userInfo)
+        if (password !== confirmPassword) {
+            return res.status(400).json({ message: 'Confirm password does not match!' });
+        }
         // Kiểm tra xem người dùng đã tồn tại chưa
         const user = await User.findOne({ email: email });
         // console.log(user);
         if (user) {
-            return res.status(400).send('Username already exists');
+            return res.status(400).json({ message: 'User already exists!' });
         }
 
         // Mã hóa mật khẩu

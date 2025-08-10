@@ -2,6 +2,7 @@ import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {loginGG, loginUser} from "../store/actions/authAction.jsx";
 import {Link, useNavigate} from "react-router-dom";
+import toast from "react-hot-toast";
 
 const Login = () => {
     const dispatch = useDispatch();
@@ -29,6 +30,7 @@ const Login = () => {
 
     useEffect(() => {
         if (isLoginUser) {
+            toast.success("Login successfully!");
             navigate("/");
         } else {
             navigate("/login");
