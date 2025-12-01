@@ -120,7 +120,7 @@ export default function MemberTaskModal({onClose , task}) {
                     <div className="flex items-center gap-3 p-2 rounded hover:bg-gray-100 cursor-pointer relative">
                         <div
                             className="w-8 h-8 bg-orange-600 rounded-full flex items-center justify-center text-white font-semibold">
-                            {member?.fullname.slice(0, 2)}
+                            {member?.fullname?.slice(0, 2)}
                         </div>
                         <div>
                             <h2 className="text-sm font-medium">{member?.fullname}</h2>

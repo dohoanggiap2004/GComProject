@@ -92,6 +92,33 @@ const countUserWorkspaceService = async (userId) => {
     return Workspace.countDocuments({"memberIds": userId})
 }
 
+const checkServiceExpiry = async () => {
+    try {
+        const now = new Date();
+
+        const expiredUsers = await User.find({
+            serviceExpiry: { $lt: now },
+            service: 'premium'
+        });
+
+        if (expiredUsers.length === 0) {
+            return [];
+        }
+
+        for (const user of expiredUsers) {
+            user.service = 'standard';
+            user.serviceExpiry = null;
+            user.updated_at = new Date();
+
+            await user.save();
+        }
+
+        return expiredUsers;
+    } catch (error) {
+        return [];
+    }
+};
+
 
 module.exports = {
     getUsersService,
@@ -102,4 +129,5 @@ module.exports = {
     searchUsersService,
     checkUserRoleService,
     countUserWorkspaceService,
+    checkServiceExpiry,
 };

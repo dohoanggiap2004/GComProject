@@ -14,7 +14,7 @@ const localPassport = require('./config/localPassport')
 const googlePassport = require('./config/googlePassport')
 const { connectDB } = require('./config/mongooseConnect')
 const initialSocket = require("./config/socket.io");
-const cronMail = require('./config/cron')
+const { cronMail, cronCheckUserService } = require('./config/cron')
 
 const app = express();
 const port = process.env.PORT || 3500
@@ -25,6 +25,7 @@ connectDB()
 
 //cron send mail
 cronMail.start()
+cronCheckUserService.start()
 
 // Custom middleware Logger
 app.use(logger);
